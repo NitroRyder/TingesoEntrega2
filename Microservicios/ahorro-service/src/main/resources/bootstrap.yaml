@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: ahorro-service
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8081
+  datasource:
+    url: jdbc:postgresql://localhost:5433/entrega2
+    username: postgres
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
