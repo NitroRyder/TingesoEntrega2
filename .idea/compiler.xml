@@ -8,9 +8,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="usuario-service" />
+        <module name="eureka-service" />
         <module name="credito-service" />
         <module name="config-service" />
         <module name="ahorro-service" />
+        <module name="gateway-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -19,6 +21,8 @@
       <module name="ahorro-service" options="-parameters" />
       <module name="config-service" options="-parameters" />
       <module name="credito-service" options="-parameters" />
+      <module name="eureka-service" options="-parameters" />
+      <module name="gateway-service" options="-parameters" />
       <module name="usuario-service" options="-parameters" />
     </option>
   </component>
