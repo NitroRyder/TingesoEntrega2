@@ -156,8 +156,8 @@ public class CreditoService {
         //-------------------------------------------------------------------------//
         if ( !"PENDIENTE".equalsIgnoreCase(solicitud.getState())) {
             System.out.println("SOLICITUD NO ESTÁ EN ESTADO PENDIENTE");
-            usuario.addNotification("ERROR: LA SOLICITUD DE CRÉDITO NO ESTÁ EN ESTADO PENDIENTE");
-            usuarioRepository.save(usuario);
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "ERROR: LA SOLICITUD DE CRÉDITO NO ESTÁ EN ESTADO PENDIENTE", String.class);
             return null;
         }
         //-------------------------------------------------------------------------//
@@ -177,15 +177,14 @@ public class CreditoService {
         } else {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
-            //----------------------------------------------------------------------//-------------------------------------------------------------------------//
+            //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            usuario.setSolicitud(solicitud);
-            //----------------------------------------------------------------------//
             Credito savedSolicitud = creditoRepository.save(solicitud);
-            //----------------------------------------------------------------------//
-            usuario.addNotification("TASA DE INTERÉS MENSUAL ES INCORRECTA");
-            usuarioRepository.save(usuario);
-            //----------------------------------------------------------------------//
+            //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
+            // AGREGAR NOTIFICACIÓN AL USUARIO
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "TASA DE INTERÉS MENSUAL ES INCORRECTA", String.class);
+
             return null;
         }
         //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
@@ -200,13 +199,12 @@ public class CreditoService {
             solicitud.setState("RECHAZADA");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            usuario.setSolicitud(solicitud);
-            //-------------------------------------------------------------------------//
             Credito savedSolicitud = creditoRepository.save(solicitud);
-            //-------------------------------------------------------------------------//
-            usuario.addNotification("RELACIÓN CUOTA/INGRESO RECHAZADA: CUOTA/INGRESO TIENE QUE SER MENOR O IGUAL QUE EL UMBRAL ESTABLECIDO POR EL BANCO");
-            usuarioRepository.save(usuario);
-            //-------------------------------------------------------------------------//
+            //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
+            // AGREGAR NOTIFICACIÓN AL USUARIO
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "RELACIÓN CUOTA/INGRESO RECHAZADA: CUOTA/INGRESO TIENE QUE SER MENOR O IGUAL QUE EL UMBRAL ESTABLECIDO POR EL BANCO", String.class);
+
             return null;
         }
         //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
@@ -218,13 +216,12 @@ public class CreditoService {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            usuario.setSolicitud(solicitud);
-            //-------------------------------------------------------------------------//
             Credito savedSolicitud = creditoRepository.save(solicitud);
-            //-------------------------------------------------------------------------//
-            usuario.addNotification("NO SE HA INGRESADO UN ARCHIVO DICOM");
-            usuarioRepository.save(usuario);
-            //-------------------------------------------------------------------------//
+
+            // AGREGAR NOTIFICACIÓN AL USUARIO
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "NO SE HA INGRESADO UN ARCHIVO DICOM", String.class);
+
             return null;
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
         } else if (dicom.length < 4 || dicom[0] != '%' || dicom[1] != 'P' || dicom[2] != 'D' || dicom[3] != 'F') {
@@ -232,13 +229,12 @@ public class CreditoService {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            usuario.setSolicitud(solicitud);
-            //-------------------------------------------------------------------------//
             Credito savedSolicitud = creditoRepository.save(solicitud);
-            //-------------------------------------------------------------------------//
-            usuario.addNotification("NO SE HA INGRESADO UN ARCHIVO DICOM DEL TIPO PDF");
-            usuarioRepository.save(usuario);
-            //-------------------------------------------------------------------------//
+
+            // AGREGAR NOTIFICACIÓN AL USUARIO
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "NO SE HA INGRESADO UN ARCHIVO DICOM DEL TIPO PDF", String.class);
+
             return null;
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
         } else {
@@ -258,13 +254,12 @@ public class CreditoService {
             solicitud.setState("RECHAZADA");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            usuario.setSolicitud(solicitud);
-            //-------------------------------------------------------------------------//
             Credito savedSolicitud = creditoRepository.save(solicitud);
-            //-------------------------------------------------------------------------//
-            usuario.addNotification("POR FAVOR, SI NO ERES UN TRABAJADOR INDEPENDIENTE, DEBES TENER MÁS DE 1 AÑO DE TRABAJO");
-            usuarioRepository.save(usuario);
-            //-------------------------------------------------------------------------//
+
+            // AGREGAR NOTIFICACIÓN AL USUARIO
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "POR FAVOR, SI NO ERES UN TRABAJADOR INDEPENDIENTE, DEBES TENER MÁS DE 1 AÑO DE TRABAJO", String.class);
+
             return null;
         }
         // [R4]--------------------------------------------------------------------//
@@ -274,13 +269,12 @@ public class CreditoService {
             solicitud.setState("RECHAZADA");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            usuario.setSolicitud(solicitud);
-            //-------------------------------------------------------------------------//
             Credito savedSolicitud = creditoRepository.save(solicitud);
-            //-------------------------------------------------------------------------//
-            usuario.addNotification("LA SUMA DE DEUDAS NO PUEDE SER MAYOR AL 50% DE LOS INGRESOS");
-            usuarioRepository.save(usuario);
-            //-------------------------------------------------------------------------//
+
+            // AGREGAR NOTIFICACIÓN AL USUARIO
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "LA SUMA DE DEUDAS NO PUEDE SER MAYOR AL 50% DE LOS INGRESOS", String.class);
+
             return null;
         } else {
             //System.out.println("LA SUMA DE DEUDAS ES MENOR AL 50% DE LOS INGRESOS");
@@ -318,13 +312,12 @@ public class CreditoService {
             solicitud.setState("RECHAZADA");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            usuario.setSolicitud(solicitud);
-            //-------------------------------------------------------------------------//
             Credito savedSolicitud = creditoRepository.save(solicitud);
-            //-------------------------------------------------------------------------//
-            usuario.addNotification("CREDITO RECHAZADO: NO CUMPLE CON LOS REQUISITOS, PORFAVOR REVIZAR LOS VALORES INGRESADOS Y LOS ARCHIVOS");
-            usuarioRepository.save(usuario);
-            //-------------------------------------------------------------------------//
+
+            // AGREGAR NOTIFICACIÓN AL USUARIO
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "CREDITO RECHAZADO: NO CUMPLE CON LOS REQUISITOS, PORFAVOR REVIZAR LOS VALORES INGRESADOS Y LOS ARCHIVOS", String.class);
+
             return null;
         }
         // [R6]--------------------------------------------------------------------//
@@ -334,13 +327,12 @@ public class CreditoService {
             solicitud.setState("RECHAZADA");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            usuario.setSolicitud(solicitud);
-            //-------------------------------------------------------------------------//
             Credito savedSolicitud = creditoRepository.save(solicitud);
-            //-------------------------------------------------------------------------//
-            usuario.addNotification("CREDITO RECHAZADO: EL SOLICITANTE ESTÁ MUY CERCANO A LA EDAD MÁXIMA PERMITIDA");
-            usuarioRepository.save(usuario);
-            //-------------------------------------------------------------------------//
+
+            // AGREGAR NOTIFICACIÓN AL USUARIO
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "CREDITO RECHAZADO: EL SOLICITANTE ESTÁ MUY CERCANO A LA EDAD MÁXIMA PERMITIDA", String.class);
+
             return null;
         } else {
             //System.out.println("EDAD DENTRO DE RANGO ACEPTABLE");
@@ -500,13 +492,14 @@ public class CreditoService {
             //System.out.println("SOLICITUD DE CRÉDITO APROBADO");
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "APROBADO"
             solicitud.setState("APROBADO");
-            usuario.addNotification("CRÉDITO APROBADO");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            usuario.setSolicitud(solicitud);
-            //-------------------------------------------------------------------------//
             Credito savedSolicitud = creditoRepository.save(solicitud);
-            //-------------------------------------------------------------------------//
+
+            // AGREGAR NOTIFICACIÓN AL USUARIO
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "CRÉDITO APROBADO", String.class);
+
             return response;
         } else if (errores >= 3 && errores < 5) {
             //System.out.println("SOLICITUD DE CRÉDITO EN REVISIÓN ADICIONAL");
@@ -514,11 +507,12 @@ public class CreditoService {
             solicitud.setState("REVISION ADICIONAL");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            usuario.setSolicitud(solicitud);
-            //-------------------------------------------------------------------------//
             Credito savedSolicitud = creditoRepository.save(solicitud);
-            //-------------------------------------------------------------------------//
-            //System.out.println("CRÉDITO RECHAZADO: EL SOLICITANTE ESTÁ MUY CERCANO A LA EDAD MÁXIMA PERMITIDA");
+
+            // AGREGAR NOTIFICACIÓN AL USUARIO
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "SOLICITUD DE CRÉDITO EN REVISIÓN ADICIONAL", String.class);
+
             return response;
         } else {
             //System.out.println("SOLICITUD DE CRÉDITO RECHAZADO");
@@ -526,16 +520,13 @@ public class CreditoService {
             solicitud.setState("RECHAZADA");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            usuario.setSolicitud(solicitud);
-            //-------------------------------------------------------------------------//
             Credito savedSolicitud = creditoRepository.save(solicitud);
-            //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
-            usuario.addNotification("CRÉDITO RECHAZADO: EL SOLICITANTE NO CUMPLE CON LOS REQUISITOS");
-            usuarioRepository.save(usuario);
-            //-------------------------------------------------------------------------//
-            //System.out.println("CRÉDITO RECHAZADO: EL SOLICITANTE ESTÁ MUY CERCANO A LA EDAD MÁXIMA PERMITIDA");
+
+            // AGREGAR NOTIFICACIÓN AL USUARIO
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "CRÉDITO RECHAZADO: EL SOLICITANTE NO CUMPLE CON LOS REQUISITOS", String.class);
+
             return response;
-            //return creditoRepository.findById(savedSolicitud.getId()).orElse(null);
         }
     }
 }
