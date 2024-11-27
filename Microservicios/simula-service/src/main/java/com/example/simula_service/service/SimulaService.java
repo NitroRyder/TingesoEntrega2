@@ -1,17 +1,29 @@
-package com.example.credito_service.service;
+package com.example.simula_service.service;
 
+import com.example.simula_service.entity.Simula;
 import com.example.simula_service.repository.SimulaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 
 @Service
 public class SimulaService {
     @Autowired
     SimulaRepository simulaRepository;
 
+    public ArrayList<Simula> getAllSimulacion() {
+        return (ArrayList<Simula>) simulaRepository.findAll();
+    }
+
+    public Simula getSimulacionById(int id) {
+        return simulaRepository.findById(id).get();
+    }
+
+    public void saveSimulacion(Simula simula) {
+        simulaRepository.save(simula);
+    }
     //----------------[P1]- FUNCIONES DE CALCULO DE CRÉDITO HIPOTECARIO-----------------//
     // + SIMULACIÓN DE CRÉDITO HIPOTECARIO POR VALORES INGRESADOS:
     public double Credito_Hipotecario(double P, double r, double n, double V, int tipo) {
