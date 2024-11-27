@@ -9,20 +9,26 @@
         <outputRelativeToContentRoot value="true" />
         <module name="usuario-service" />
         <module name="eureka-service" />
+        <module name="simula-service" />
         <module name="credito-service" />
         <module name="config-service" />
         <module name="ahorro-service" />
         <module name="gateway-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="credito-service (1)" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="ahorro-service" options="-parameters" />
       <module name="config-service" options="-parameters" />
       <module name="credito-service" options="-parameters" />
+      <module name="credito-service (1)" options="-parameters" />
       <module name="eureka-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
+      <module name="simula-service" options="-parameters" />
       <module name="usuario-service" options="-parameters" />
     </option>
   </component>
