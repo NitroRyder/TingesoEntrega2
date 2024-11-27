@@ -75,4 +75,12 @@ public class UsuarioController {
         Credito creditoNew = usuarioService.saveCredito(usuarioId, credito);
         return ResponseEntity.ok(creditoNew);
     }
+    @PostMapping("/addnotification/{userId}")
+    public ResponseEntity<String> addNotification(@PathVariable("userId") int userId, @RequestBody String notification) {
+        Usuario usuario = usuarioService.getUsuarioById(userId);
+        if (usuario == null)
+            return ResponseEntity.notFound().build();
+        usuarioService.addNotification(userId, notification);
+        return ResponseEntity.ok("Notification added");
+    }
 }

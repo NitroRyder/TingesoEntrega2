@@ -56,6 +56,13 @@ public class UsuarioService {
         Credito creditoNew = restTemplate.postForObject("http://localhost:8003/credito", request, Credito.class);
         return creditoNew;
     }
+    public void addNotification(int userId, String notification) {
+        Usuario usuario = usuarioRepository.findById(userId).orElse(null);
+        if (usuario != null) {
+            usuario.getNotifications().add(notification);
+            usuarioRepository.save(usuario);
+        }
+    }
     //-----------------------[P2]- FUNCIONES DE REGISTRO DE USUARIO-------------------------//
     // + REGISTRO DE USUARIO POR VALORES INGRESADOS:
     public Usuario registerUsuario(String rut, String name, int age, int workage, int houses, int valorpropiedad, int ingresos, int sumadeuda, String objective, String independiente, List<Ahorro> ahorros, List<Credito> creditos) {
