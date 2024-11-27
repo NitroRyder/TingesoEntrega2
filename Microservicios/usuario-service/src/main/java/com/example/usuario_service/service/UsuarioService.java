@@ -93,5 +93,19 @@ public class UsuarioService {
         }
         return userSalvado;
     }
+    //-----------------------[EXTRA]- FUNCIONES DE NOTIFICACIONES-------------------------------//
+    // + OBTENER NOTIFICACIONES DEL USUARIO POR ID DEL USUARIO:
+    public List<String> getNotifications(Long userId) {
+        // Convert Long to Integer
+        Integer userIdInt = userId.intValue();
 
+        // Fetch the Usuario object using the converted Integer ID
+        Usuario usuario = usuarioRepository.findById(userIdInt).orElse(null);
+
+        if (usuario == null) {
+            throw new IllegalArgumentException("ERROR: USUARIO NO ENCONTRADO");
+        }
+
+        return usuario.getNotifications();
+    }
 }

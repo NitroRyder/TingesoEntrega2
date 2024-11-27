@@ -83,5 +83,9 @@ public class UsuarioController {
         usuarioService.addNotification(userId, notification);
         return ResponseEntity.ok("Notification added");
     }
-
+    @GetMapping("/notifications/{userId}")
+    public ResponseEntity<List<String>> getNotifications(@PathVariable("userId") Long userId) {
+        List<String> notifications = usuarioService.getNotifications(userId);
+        return ResponseEntity.ok(notifications);
+    }
 }
