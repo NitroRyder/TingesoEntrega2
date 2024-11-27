@@ -22,4 +22,20 @@ public class AhorroService {
     }
 
     public List<Ahorro> byUsuarioId(int usuarioId) {return ahorroRepository.findByUsuarioId(usuarioId);}
+
+    //------------------------------[OPERACIONES AHORRO]------------------------------------//
+    // + OBTENER EL VALOR POSITIVO MAS CHICO DENTRO DE LA LISTA DE AHORROS DEL USUARIO
+    public int obtenerValorPositivoMasPequeno(List<Ahorro> ahorros) {
+        int valorPositivoMasPequeno = Integer.MAX_VALUE;
+        boolean foundPositive = false;
+
+        for (Ahorro ahorro : ahorros) {
+            int transaccion = ahorro.getTransaccion();
+            if (transaccion > 0 && transaccion < valorPositivoMasPequeno) {
+                valorPositivoMasPequeno = transaccion;
+                foundPositive = true;
+            }
+        }
+        return foundPositive ? valorPositivoMasPequeno : -1; // Devuelve -1 si no se encuentra ningún valor positivo
+    }
 }

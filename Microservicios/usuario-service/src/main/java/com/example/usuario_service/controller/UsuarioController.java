@@ -83,4 +83,5 @@ public class UsuarioController {
         usuarioService.addNotification(userId, notification);
         return ResponseEntity.ok("Notification added");
     }
+
 }

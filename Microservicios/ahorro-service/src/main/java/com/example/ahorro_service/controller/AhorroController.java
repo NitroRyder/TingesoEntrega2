@@ -42,4 +42,11 @@ public class AhorroController {
         List<Ahorro> ahorros = ahorroService.byUsuarioId(usuarioId);
         return ResponseEntity.ok(ahorros);
     }
+
+    @GetMapping("/valorpositivomaspequeno/{usuarioId}")
+    public ResponseEntity<Integer> getValorPositivoMasPequeno(@PathVariable("usuarioId") int usuarioId) {
+        List<Ahorro> ahorros = ahorroService.byUsuarioId(usuarioId);
+        int valorPositivoMasPequeno = ahorroService.obtenerValorPositivoMasPequeno(ahorros);
+        return ResponseEntity.ok(valorPositivoMasPequeno);
+    }
 }

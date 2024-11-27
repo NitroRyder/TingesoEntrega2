@@ -1,6 +1,7 @@
 package com.example.credito_service.service;
 
 import com.example.credito_service.entity.Credito;
+import com.example.credito_service.model.Ahorro;
 import com.example.credito_service.model.Usuario;
 import com.example.credito_service.repository.CreditoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,6 @@ public class CreditoService {
         public void deleteCredito(int id) {creditoRepository.deleteById(id);}
 
         public List<Credito> byUsuarioId(int usuarioId) {return creditoRepository.findByUsuarioId(usuarioId);}
-
     //----------------[P1]- FUNCIONES DE CALCULO DE CRÉDITO HIPOTECARIO-----------------//
     // + SIMULACIÓN DE CRÉDITO HIPOTECARIO POR VALORES INGRESADOS:
     public double Credito_Hipotecario(double P, double r, double n, double V, int tipo) {
@@ -248,7 +248,7 @@ public class CreditoService {
         } else if (usuario.getIndependiente().equalsIgnoreCase("INDEPENDIENTE")) {
             //System.out.println("TRABAJADOR INDEPENDIENTE");
             // OBTENCIÓN DE LOS AHORROS DEL USUARIO
-            List<Ahorros> ahorros = usuario.getAhorros(); // OBTENGO LOS AHORROS DEL USUARIO -> PARA REALIZAR EVALUACIÓN
+            List<Ahorro> ahorros =  restTemplate.getForObject("http://localhost:8002/ahorro/byusuario/" + userId, List.class); // OBTENGO LOS AHORROS DEL USUARIO -> PARA REALIZAR EVALUACIÓN
         } else {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
@@ -342,15 +342,17 @@ public class CreditoService {
         // [R7]-----[R71]---------------------------------------------------------//--------------------------------------------------------------------//
         // + VERIFICO SI EL SALDO POSITIVO MÁS PEQUEÑO MAYOR O IGUAL AL 10% DEL MONTO DEL PRÉSTAMO:
         // OBTENGO LOS AHORROS DEL USUARIO
-        List<Ahorros> ahorros = usuario.getAhorros();
+        List<Ahorro> ahorros = restTemplate.getForObject("http://localhost:8002/ahorro/byusuario/" + userId, List.class);
         // OBTENGO EL VALOR POSITIVO MÁS PEQUEÑO
-        int valorPositivoMasPequeno = usuarioService.obtenerValorPositivoMasPequeno(ahorros);
-        if(valorPositivoMasPequeno >= Math.round(usuario.getSolicitud().getMontop()*0.1)){
+        int valorPositivoMasPequeno = restTemplate.getForObject("http://localhost:8002/ahorro/valorpositivomaspequeno/" + userId, Integer.class);
+
+
+        if(valorPositivoMasPequeno >= Math.round(solicitud.getMontop() * 0.1)){
             //System.out.println("SALDO POSITIVO MÁS PEQUEÑO MAYOR O IGUAL AL 10% DEL MONTO DEL PRÉSTAMO");
         }else{
             //-------------------------------------------------------------------------//
-            usuario.addNotification("ERROR-1: SALDO POSITIVO MÁS PEQUEÑO MENOR AL 10% DEL MONTO DEL PRÉSTAMO");
-            usuarioRepository.save(usuario);
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "ERROR-1: SALDO POSITIVO MÁS PEQUEÑO MENOR AL 10% DEL MONTO DEL PRÉSTAMO", String.class);
             //-------------------------------------------------------------------------//
             errores--; // CHEQUEO NEGATIVO
         }
@@ -364,14 +366,14 @@ public class CreditoService {
         double analisis = 0;      // REPRESENTA LOS ULTIMOS 12 MESES
         // ------------------------------------------------------------------------//
         // OBTENCIÓN DE LA CANTIDAD DE MESES DE AHORRO DEL USUARIO
-        for (Ahorros ahorro : ahorros) {
+        for (Ahorro ahorro : ahorros) {
             cantidad = cantidad + 1;
         }
         //System.out.println("CANTIDAD DE MESES DE AHORRO: " + cantidad);
         analisis = cantidad; // REPRESENTA LOS ULTIMOS 12 MESES
         // ------------------------------------------------------------------------//
         // OBTENCIÓN DE LOS AHORROS DEL USUARIO TOTALES EN LOS ULTIMOS 12 MESES
-        for (Ahorros ahorro : ahorros) {
+        for (Ahorro ahorro : ahorros) {
             acumulado = acumulado + ahorro.getTransaccion();
             if (ahorro.getTipo().equalsIgnoreCase("RETIRO") && Math.abs(ahorro.getTransaccion()) > saldo * 0.5 && analisis <= 12) {
                 bandera = 1; // SI ES 1, HAY UN RETIRO MAYOR A 50% DEL SALDO DENTRO DE LOS ULTIMOS 12 MESES
@@ -382,21 +384,22 @@ public class CreditoService {
         // ------------------------------------------------------------------------//
         if (cantidad < 12) {   // SI NO HAY 12 MESES DE AHORRO MARCO MAL EL ANALISIS
             //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
-            usuario.addNotification("ERROR-2: MENOS DE 12 MESES DE AHORRO");
-            usuarioRepository.save(usuario);
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "ERROR-2: MENOS DE 12 MESES DE AHORRO", String.class);
             //System.out.println("ERROR-2: MENOS DE 12 MESES DE AHORRO");
+            //-------------------------------------------------------------------------//
             errores--;// CHEQUEO NEGATIVO
         }else if (saldo < 0) { // SI EL SALDO ES NEGATIVO MARCO MAL EL ANALISIS
             //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
-            usuario.addNotification("ERROR-2: SALDO TOTAL ES NEGATIVO");
-            usuarioRepository.save(usuario);
-            //System.out.println("ERROR-2: SALDO TOTAL ES NEGATIVO");
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "ERROR-2: SALDO TOTAL ES NEGATIVO", String.class);
+            //-------------------------------------------------------------------------//
             errores--;// CHEQUEO NEGATIVO
         }else if (bandera == 1) { // SI HAY UN RETIRO MAYOR A 50% DEL SALDO DENTRO DE LOS ULTIMOS 12 MESES
             //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
-            usuario.addNotification("ERROR-2: RETIRO MAYOR A 50% DEL SALDO");
-            usuarioRepository.save(usuario);
-            //System.out.println("ERROR-2: RETIRO MAYOR A 50% DEL SALDO");
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "ERROR-2: RETIRO MAYOR A 50% DEL SALDO", String.class);
+            //-------------------------------------------------------------------------//
             errores--;// CHEQUEO NEGATIVO
         }else{
             //System.out.println("HISTORIAL DE AHORRO CONSISTENTE");
@@ -410,7 +413,7 @@ public class CreditoService {
         analisis = cantidad; // REPRESENTA LOS ULTIMOS 12 MESES
         // ------------------------------------------------------------------------//
         // OBTENCIÓN DE LOS DEPOSITOS MENSUALES Y TRIMESTRALES DEL USUARIO SIEMPRE Y CUANDO LA CUENTA DE AHORRO POSEA 12 O MAS MESES DE HISTORIAL
-        for (Ahorros ahorro : ahorros) {
+        for (Ahorro ahorro : ahorros) {
             if (ahorro.getTipo().equalsIgnoreCase("DEPOSITO") && analisis <= 12 && cantidad >= 12) {
                 sumdepos = sumdepos + ahorro.getTransaccion();
                 mensual = mensual + 1;
@@ -424,17 +427,17 @@ public class CreditoService {
         // SI NO HAY DEPOSITOS MENSUALES O TRIMESTRALES MARCO MAL EL ANALISIS DENTRO DE LOS ULTIMOS 12 MESES
         if (mensual < 12 && trimestral < 4) {
             //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
-            usuario.addNotification("ERROR-3: HAY MENOS DE 12 DEPOSITOS MENSUALES O MENOS DE 4 DEPOSITOS TRIMESTRALES");
-            usuarioRepository.save(usuario);
-            //System.out.println("ERROR-3: HAY MENOS DE 12 DEPOSITOS MENSUALES O MENOS DE 4 DEPOSITOS TRIMESTRALES");
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "ERROR-3: HAY MENOS DE 12 DEPOSITOS MENSUALES O MENOS DE 4 DEPOSITOS TRIMESTRALES", String.class);
+           //-------------------------------------------------------------------------//
             bandera = 1; // SI ES 1, NO NECESITO SEGUIR RESTANDO ERRORES, PARA LA COMPARACIÓN DIGUIENTE
         }
         // MONTO MINIMO: LOS DEPOSITOS DEBEN SUMAR AL MENOS EL 5% DE LOS INGRESOS MENSUALES
         if (sumdepos < usuario.getIngresos() * 0.05) {
             //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
-            usuario.addNotification("ERROR-3: LOS DEPOSITOS NO SUMAN AL MENOS EL 5% DE LOS INGRESOS MENSUALES");
-            usuarioRepository.save(usuario);
-            //System.out.println("ERROR-3: LOS DEPOSITOS NO SUMAN AL MENOS EL 5% DE LOS INGRESOS MENSUALES");
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "ERROR-3: LOS DEPOSITOS NO SUMAN AL MENOS EL 5% DE LOS INGRESOS MENSUALES", String.class);
+
             bandera = 1; // SI ES 1, NO NECESITO SEGUIR RESTANDO ERRORES, PARA LA COMPARACIÓN DIGUIENTE
         }
         // ------------------------------------------------------------------------//
@@ -445,14 +448,14 @@ public class CreditoService {
         }
         // [R7]-----[R74]---------------------------------------------------------//--------------------------------------------------------------------//
         // RELACIÓN ENTRE AÑOS DE ANTIUGEDAD Y SALDO ACUMULADO RESPECTO AL MONTO DEL PRÉSTAMO
-        if (cantidad < 24 && acumulado >= usuario.getSolicitud().getMontop()*0.2 ){
+        if (cantidad < 24 && acumulado >= solicitud.getMontop()*0.2 ){
             //System.out.println("CUENTA DE AHORROS MENOR A 2 AÑOS Y CON UN SALDO ACUMULADO AL MENOS DE 20% DEL PRESTAMO");
-        }else if(cantidad >= 24 && acumulado >= usuario.getSolicitud().getMontop()*0.1){
+        }else if(cantidad >= 24 && acumulado >= solicitud.getMontop()*0.1){
             //System.out.println("CUENTA DE AHORROS MAYOR O IGUAL A 2 AÑOS Y CON UN SALDO ACUMULADO AL MENOS DE 10% DEL PRESTAMO");
         }else{
             //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
-            usuario.addNotification("ERROR-4: CUENTA DE AHORROS NO CUMPLE CON RELACIÓN ENTRE AÑOS DE ANTIUGEDAD Y SALDO ACUMULADO RESPECTO AL MONTO DEL PRÉSTAMO");
-            usuarioRepository.save(usuario);
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "ERROR-4: CUENTA DE AHORROS NO CUMPLE CON RELACIÓN ENTRE AÑOS DE ANTIUGEDAD Y SALDO ACUMULADO RESPECTO AL MONTO DEL PRÉSTAMO", String.class);
             //-------------------------------------------------------------------------//
             //System.out.println("ERROR-4: CUENTA DE AHORROS NO CUMPLE CON RELACIÓN ENTRE AÑOS DE ANTIUGEDAD Y SALDO ACUMULADO RESPECTO AL MONTO DEL PRÉSTAMO");
             errores--; // CHEQUEO NEGATIVO
@@ -463,14 +466,14 @@ public class CreditoService {
         saldo = 0;       // REUTILIZACIÓN, SALDO DE LA CUENTA DE AHORROS DE LOS ULTIMOS 6 MESES
         analisis = cantidad; // REPRESENTA LOS ULTIMOS 12 MESES
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        for(Ahorros ahorro : ahorros){
+        for(Ahorro ahorro : ahorros){
             if(analisis <= 6){
                 saldo = saldo + ahorro.getTransaccion();
             }
             analisis = analisis - 1;
         }
 
-        for (Ahorros ahorro : ahorros) {
+        for (Ahorro ahorro : ahorros) {
             if(ahorro.getTipo().equalsIgnoreCase("RETIRO") && Math.abs(ahorro.getTransaccion()) > saldo*0.3){
                 //System.out.println("tipo:" + ahorro.getTipo() + " transaccion:" + ahorro.getTransaccion() + " saldo:" + saldo);
                 bandera = 1;
@@ -479,8 +482,8 @@ public class CreditoService {
         // ------------------------------------------------------------------------//
         if (bandera == 1) {
             //System.out.println("RETIROS MAYORES AL 30% DEL SALDO EN LOS ULTIMOS 6 MESES");
-            usuario.addNotification("ERROR-5: RETIROS MAYORES AL 30% DEL SALDO EN LOS ULTIMOS 6 MESES");
-            usuarioRepository.save(usuario);
+            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "ERROR-5: RETIROS MAYORES AL 30% DEL SALDO EN LOS ULTIMOS 6 MESES", String.class);
             errores--; // CHEQUEO NEGATIVO
         }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
