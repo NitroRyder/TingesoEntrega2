@@ -56,5 +56,35 @@ public class UsuarioService {
         Credito creditoNew = restTemplate.postForObject("http://localhost:8003/credito", request, Credito.class);
         return creditoNew;
     }
+    //-----------------------[P2]- FUNCIONES DE REGISTRO DE USUARIO-------------------------//
+    // + REGISTRO DE USUARIO POR VALORES INGRESADOS:
+    public Usuario registerUsuario(String rut, String name, int age, int workage, int houses, int valorpropiedad, int ingresos, int sumadeuda, String objective, String independiente, List<Ahorro> ahorros, List<Credito> creditos) {
+        Usuario usuario = new Usuario();
+        usuario.setRut(rut);
+        usuario.setName(name);
+        usuario.setAge(age);
+        usuario.setWorkage(workage);
+        usuario.setHouses(houses);
+        usuario.setValorpropiedad(valorpropiedad);
+        usuario.setIngresos(ingresos);
+        usuario.setSumadeuda(sumadeuda);
+        usuario.setObjective(objective.toUpperCase());
+        usuario.setIndependiente(independiente);
+
+        Usuario userSalvado = usuarioRepository.save(usuario);
+
+        for (Ahorro ahorro : ahorros) {
+            ahorro.setUsuarioId(userSalvado.getId());
+            HttpEntity<Ahorro> request = new HttpEntity<Ahorro>(ahorro);
+            restTemplate.postForObject("http://localhost:8002/ahorro", request, Ahorro.class);
+        }
+
+        for (Credito credito : creditos) {
+            credito.setUsuarioId(userSalvado.getId());
+            HttpEntity<Credito> request = new HttpEntity<Credito>(credito);
+            restTemplate.postForObject("http://localhost:8003/credito", request, Credito.class);
+        }
+        return userSalvado;
+    }
 
 }
