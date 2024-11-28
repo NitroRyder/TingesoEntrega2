@@ -11,6 +11,7 @@
         <option value="$PROJECT_DIR$/Microservicios/eureka-service/pom.xml" />
         <option value="$PROJECT_DIR$/Microservicios/gateway-service/pom.xml" />
         <option value="$PROJECT_DIR$/Microservicios/simula-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Microservicios/evalua-service/pom.xml" />
       </list>
     </option>
   </component>

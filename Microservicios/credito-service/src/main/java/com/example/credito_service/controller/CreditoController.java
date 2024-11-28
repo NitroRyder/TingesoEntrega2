@@ -32,9 +32,9 @@ public class CreditoController {
         return ResponseEntity.ok(credito);
     }
 
-    @PostMapping()
-    public ResponseEntity<Credito> save(@RequestBody Credito credito) {
-        Credito creditoNew = creditoService.save(credito);
+    @PostMapping("/save")
+    public ResponseEntity<Credito> saveCredito(@RequestBody Credito credito) {
+        Credito creditoNew = creditoService.saveCredito(credito);
         return ResponseEntity.ok(creditoNew);
     }
 

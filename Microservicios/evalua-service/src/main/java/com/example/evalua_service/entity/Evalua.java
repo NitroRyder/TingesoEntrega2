@@ -13,5 +13,10 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Evalua {
-    
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private int id;
+        private int idusuario;
+        private int idcredito;
+        private String estado;
 }
