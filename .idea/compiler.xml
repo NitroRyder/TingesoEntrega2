@@ -15,6 +15,7 @@
         <module name="ahorro-service" />
         <module name="gateway-service" />
         <module name="evalua-service" />
+        <module name="seguimiento-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -30,6 +31,7 @@
       <module name="eureka-service" options="-parameters" />
       <module name="evalua-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
+      <module name="seguimiento-service" options="-parameters" />
       <module name="simula-service" options="-parameters" />
       <module name="usuario-service" options="-parameters" />
     </option>

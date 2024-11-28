@@ -60,22 +60,7 @@ public class CreditoService {
         //-------------------------------------------------------------------------//
         return savedSolicitud;
     }
-    //-----------------------[P5]- FUNCIONES DE SEGUIMENTO ---------------------------------------//
-    // + SEQUIMIENTO DEL ESTADO DE LA SOLICITUD POR ID DEL USUARIO:
-    public Credito followCredito(Long userId, Long creditId) {
-        // Fetch the Usuario object using RestTemplate
-        Usuario usuario = restTemplate.getForObject("http://localhost:8030/usuario/" + userId, Usuario.class); // OBTENCIÓN DE USUARIO COMPLETO POR ID
-        if (usuario == null) {
-            throw new IllegalArgumentException("ERROR: USUARIO NO ENCONTRADO");
-        }
-        // ENTREGAME LA SOLICITUD POR SU ID
-        Credito solicitud = getCreditoById(creditId.intValue()); // OBTENGO LA SOLICITUD DEL USUARIO -> PARA EL RETORNO DE ARCHIVOS
-        if (solicitud == null) {
-            throw new IllegalArgumentException("ERROR: SOLICITUD NO ENCONTRADA");
-        }
-        //-------------------------------------------------------------------------//
-        return solicitud;
-    }
+
     //-----------------------[P6]- FUNCIONES DE CALCULO DE COSTOS TOTALES-------------------//
     // + CALCULO DE COSTOS TOTALES DE LA SOLICITUD DE CRÉDITO POR ID DEL USUARIO:
     public List<Double> calcularCostosTotales(Long userId, Long creditId) {
