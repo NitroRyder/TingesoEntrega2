@@ -75,6 +75,7 @@ public class UsuarioController {
         Credito creditoNew = usuarioService.saveCredito(usuarioId, credito);
         return ResponseEntity.ok(creditoNew);
     }
+
     @PostMapping("/addnotification/{userId}")
     public ResponseEntity<String> addNotification(@PathVariable("userId") int userId, @RequestBody String notification) {
         Usuario usuario = usuarioService.getUsuarioById(userId);
@@ -83,9 +84,28 @@ public class UsuarioController {
         usuarioService.addNotification(userId, notification);
         return ResponseEntity.ok("Notification added");
     }
+
     @GetMapping("/notifications/{userId}")
     public ResponseEntity<List<String>> getNotifications(@PathVariable("userId") Long userId) {
         List<String> notifications = usuarioService.getNotifications(userId);
         return ResponseEntity.ok(notifications);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Usuario> registerUsuario(
+            @RequestParam String rut,
+            @RequestParam String name,
+            @RequestParam int age,
+            @RequestParam int workage,
+            @RequestParam int houses,
+            @RequestParam int valorpropiedad,
+            @RequestParam int ingresos,
+            @RequestParam int sumadeuda,
+            @RequestParam String objective,
+            @RequestParam String independiente,
+            @RequestBody List<Ahorro> ahorros,
+            @RequestBody List<Credito> creditos) {
+        Usuario usuario = usuarioService.registerUsuario(rut, name, age, workage, houses, valorpropiedad, ingresos, sumadeuda, objective, independiente, ahorros, creditos);
+        return ResponseEntity.ok(usuario);
     }
 }
