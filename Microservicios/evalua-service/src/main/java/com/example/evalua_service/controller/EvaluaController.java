@@ -1,7 +1,5 @@
 package com.example.evalua_service.controller;
 
-
-import com.example.evalua_service.entity.Evalua;
 import com.example.evalua_service.service.EvaluaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,27 +14,10 @@ public class EvaluaController {
     @Autowired
     EvaluaService evaluaService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Evalua>> getAll() {
-        List<Evalua> evaluaciones = evaluaService.getAll();
-        return ResponseEntity.ok(evaluaciones);
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<Evalua> getEvaluaById(@PathVariable int id) {
-        Evalua evalua = evaluaService.getEvaluaById(id);
-        return ResponseEntity.ok(evalua);
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<Evalua> saveEvalua(@RequestBody Evalua evalua) {
-        Evalua savedEvalua = evaluaService.saveEvalua(evalua);
-        return ResponseEntity.ok(savedEvalua);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteEvalua(@PathVariable int id) {
-        evaluaService.deleteEvalua(id);
-        return ResponseEntity.noContent().build();
+    @PostMapping("/evaluateCredito")
+    public ResponseEntity<Map<String, Object>> evaluateCredito(@RequestParam Long userId, @RequestParam Long creditId) {
+        Map<String, Object> response = evaluaService.evaluateCredito(userId, creditId);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/updateState")

@@ -1,11 +1,8 @@
 package com.example.evalua_service.service;
 
-import com.example.evalua_service.entity.Evalua;
 import com.example.evalua_service.model.Credito;
 import com.example.evalua_service.model.Ahorro;
 import com.example.evalua_service.model.Usuario;
-import com.example.evalua_service.repository.EvaluaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,27 +11,9 @@ import java.util.*;
 
 @Service
 public class EvaluaService {
-    @Autowired
-    EvaluaRepository evaluaRepository;
 
     RestTemplate restTemplate;
 
-    public List<Evalua> getAll() {
-        return evaluaRepository.findAll();
-    }
-
-    public Evalua getEvaluaById(int id) {
-        return evaluaRepository.findById(id).orElse(null);
-    }
-
-    public Evalua saveEvalua(Evalua evalua) {
-        Evalua evaluaNew = evaluaRepository.save(evalua);
-        return evaluaNew;
-    }
-
-    public void deleteEvalua(int id) {
-        evaluaRepository.deleteById(id);
-    }
     //-----------------------[P4]- EVALUACIÓN DE CRÉDITO-------------------------//
     // + REVICIÓN DE SOLCITUD CREADA Y ENTREGA DE ARCHIVOS EN CASO DE PASAR LAS PRUEBAS:
     public Map<String, Object> evaluateCredito(Long userId, Long creditId) {
