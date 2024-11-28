@@ -1,6 +1,6 @@
 spring:
   application:
-    name: calculo-total-service
+    name: total-service
   cloud:
     config:
       enabled: true

@@ -1,4 +1,4 @@
-package com.example.calculo_total_service;
+package com.example.total_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class CalculoTotalServiceApplication {
+public class TotalServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CalculoTotalServiceApplication.class, args);
+		SpringApplication.run(TotalServiceApplication.class, args);
 	}
 	@Bean
 	public TomcatServletWebServerFactory servletContainer() {

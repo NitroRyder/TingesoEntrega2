@@ -9,7 +9,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="usuario-service" />
         <module name="eureka-service" />
-        <module name="calculo-total-service" />
         <module name="simula-service" />
         <module name="credito-service" />
         <module name="config-service" />
@@ -17,9 +16,11 @@
         <module name="gateway-service" />
         <module name="evalua-service" />
         <module name="seguimiento-service" />
+        <module name="total-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="calculo-total-service" target="17" />
       <module name="credito-service (1)" target="17" />
     </bytecodeTargetLevel>
   </component>
@@ -35,6 +36,7 @@
       <module name="gateway-service" options="-parameters" />
       <module name="seguimiento-service" options="-parameters" />
       <module name="simula-service" options="-parameters" />
+      <module name="total-service" options="-parameters" />
       <module name="usuario-service" options="-parameters" />
     </option>
   </component>

@@ -14,7 +14,13 @@
         <option value="$PROJECT_DIR$/Microservicios/evalua-service/pom.xml" />
         <option value="$PROJECT_DIR$/Microservicios/seguimiento-service/pom.xml" />
         <option value="$PROJECT_DIR$/Microservicios/calculo-total-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Microservicios/total-service/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/Microservicios/calculo-total-service/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="azul-17" project-jdk-type="JavaSDK">

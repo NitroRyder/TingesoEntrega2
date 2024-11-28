@@ -1,4 +1,4 @@
-package com.example.calculo_total_service.entity;
+package com.example.total_service.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,10 +12,10 @@ import java.util.ArrayList;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CalculoTotal {
+public class Total {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int id;
-        private int idusuario;
+        private int usuarioId;
         private int idcredito;
 }

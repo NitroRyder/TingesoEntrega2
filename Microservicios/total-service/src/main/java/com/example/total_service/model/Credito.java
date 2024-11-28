@@ -1,4 +1,4 @@
-package com.example.calculo_total_service.model;
+package com.example.total_service.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
