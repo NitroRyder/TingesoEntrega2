@@ -43,5 +43,25 @@ public class CreditoController {
         List<Credito> creditos = creditoService.byUsuarioId(usuarioId);
         return ResponseEntity.ok(creditos);
     }
-
+    @PostMapping("/createSolicitud")
+    public ResponseEntity<Credito> createSolicitud(
+            @RequestParam Long userId,
+            @RequestParam double montop,
+            @RequestParam int plazo,
+            @RequestParam double intanu,
+            @RequestParam double intmen,
+            @RequestParam double segudesg,
+            @RequestParam double seguince,
+            @RequestParam double comiad,
+            @RequestBody byte[] comprobanteIngresos,
+            @RequestBody byte[] certificadoAvaluo,
+            @RequestBody byte[] historialCrediticio,
+            @RequestBody byte[] escrituraPrimeraVivienda,
+            @RequestBody byte[] planNegocios,
+            @RequestBody byte[] estadosFinancieros,
+            @RequestBody byte[] presupuestoRemodelacion,
+            @RequestBody byte[] dicom) {
+        Credito solicitud = creditoService.createSolicitud(userId, montop, plazo, intanu, intmen, segudesg, seguince, comiad, comprobanteIngresos, certificadoAvaluo, historialCrediticio, escrituraPrimeraVivienda, planNegocios, estadosFinancieros, presupuestoRemodelacion, dicom);
+        return ResponseEntity.ok(solicitud);
+    }
 }
