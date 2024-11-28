@@ -22,27 +22,19 @@ public class EvaluaService {
     public List<Evalua> getAll() {
         return evaluaRepository.findAll();
     }
-    /*
-    public List<Evalua> getEvaluaciones(int usuarioId) {
-        List<Evalua> evaluaciones = evaluaRepository.findByUsuarioId(usuarioId);
-        return evaluaciones;
+
+    public Evalua getEvaluaById(int id) {
+        return evaluaRepository.findById(id).orElse(null);
     }
 
-    public List<Evalua> getEvaluacionesCredito(int creditoId) {
-        List<Evalua> evaluaciones = evaluaRepository.findByCreditoId(creditoId);
-        return evaluaciones;
+    public Evalua saveEvalua(Evalua evalua) {
+        Evalua evaluaNew = evaluaRepository.save(evalua);
+        return evaluaNew;
     }
 
-    public List<Evalua> getEvaluacionesPendientes() {
-        List<Evalua> evaluaciones = evaluaRepository.findByEstado("PENDIENTE");
-        return evaluaciones;
+    public void deleteEvalua(int id) {
+        evaluaRepository.deleteById(id);
     }
-
-    public List<Evalua> getEvaluacionesAceptadas() {
-        List<Evalua> evaluaciones = evaluaRepository.findByEstado("ACEPTADA");
-        return evaluaciones;
-    }
-     */
     //-----------------------[P4]- EVALUACIÓN DE CRÉDITO-------------------------//
     // + REVICIÓN DE SOLCITUD CREADA Y ENTREGA DE ARCHIVOS EN CASO DE PASAR LAS PRUEBAS:
     public Map<String, Object> evaluateCredito(Long userId, Long creditId) {
