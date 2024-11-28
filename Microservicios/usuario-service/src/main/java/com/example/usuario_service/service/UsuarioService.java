@@ -83,13 +83,13 @@ public class UsuarioService {
         for (Ahorro ahorro : ahorros) {
             ahorro.setUsuarioId(userSalvado.getId());
             HttpEntity<Ahorro> request = new HttpEntity<Ahorro>(ahorro);
-            restTemplate.postForObject("http://localhost:8002/ahorro", request, Ahorro.class);
+            restTemplate.postForObject("http://localhost:8010/ahorro", request, Ahorro.class);
         }
 
         for (Credito credito : creditos) {
             credito.setUsuarioId(userSalvado.getId());
             HttpEntity<Credito> request = new HttpEntity<Credito>(credito);
-            restTemplate.postForObject("http://localhost:8003/credito", request, Credito.class);
+            restTemplate.postForObject("http://localhost:8020/credito", request, Credito.class);
         }
         return userSalvado;
     }
