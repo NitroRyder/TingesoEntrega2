@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/simularCredito")
+@RequestMapping("/simula")
 
 public class SimulaController {
     @Autowired
