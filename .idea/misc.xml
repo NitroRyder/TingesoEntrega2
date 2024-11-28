@@ -13,6 +13,7 @@
         <option value="$PROJECT_DIR$/Microservicios/simula-service/pom.xml" />
         <option value="$PROJECT_DIR$/Microservicios/evalua-service/pom.xml" />
         <option value="$PROJECT_DIR$/Microservicios/seguimiento-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Microservicios/calculo-total-service/pom.xml" />
       </list>
     </option>
   </component>
