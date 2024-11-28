@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/calculo_total")
+@RequestMapping("/calculo")
 
 public class CalculoTotalController {
 
