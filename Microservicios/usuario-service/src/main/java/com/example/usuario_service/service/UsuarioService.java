@@ -65,7 +65,7 @@ public class UsuarioService {
     }
     //-----------------------[P2]- FUNCIONES DE REGISTRO DE USUARIO-------------------------//
     // + REGISTRO DE USUARIO POR VALORES INGRESADOS:
-    public Usuario registerUsuario(String rut, String name, int age, int workage, int houses, int valorpropiedad, int ingresos, int sumadeuda, String objective, String independiente, List<Ahorro> ahorros) {
+    public Usuario registerUsuario(String rut, String name, int age, int workage, int houses, int valorpropiedad, int ingresos, int sumadeuda, String objective, String independiente) {
         Usuario usuario = new Usuario();
         usuario.setRut(rut);
         usuario.setName(name);
@@ -80,12 +80,6 @@ public class UsuarioService {
 
 
         Usuario userSalvado = usuarioRepository.save(usuario);
-
-        for (Ahorro ahorro : ahorros) {
-            ahorro.setUsuarioId(userSalvado.getId());
-            HttpEntity<Ahorro> request = new HttpEntity<Ahorro>(ahorro);
-            restTemplate.postForObject("http://ahorro-service/ahorro", request, Ahorro.class);
-        }
         return userSalvado;
     }
     //-----------------------[EXTRA]- FUNCIONES DE NOTIFICACIONES-------------------------------//

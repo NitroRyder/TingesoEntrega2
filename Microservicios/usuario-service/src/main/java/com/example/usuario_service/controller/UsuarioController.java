@@ -92,7 +92,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Usuario> registerUsuario(@RequestBody Usuario usuario, @RequestParam List<Ahorro> ahorros) {
+    public ResponseEntity<Usuario> registerUsuario(@RequestBody Usuario usuario) {
         Usuario usuarioRegistrado = usuarioService.registerUsuario(
                 usuario.getRut(),
                 usuario.getName(),
@@ -103,8 +103,7 @@ public class UsuarioController {
                 usuario.getIngresos(),
                 usuario.getSumadeuda(),
                 usuario.getObjective(),
-                usuario.getIndependiente(),
-                ahorros
+                usuario.getIndependiente()
         );
         return ResponseEntity.ok(usuarioRegistrado);
     }
