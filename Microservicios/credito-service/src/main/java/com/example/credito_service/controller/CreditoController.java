@@ -89,7 +89,8 @@ public class CreditoController {
                     presupuestoRemodelacion != null ? presupuestoRemodelacion.getBytes() : null,
                     dicom.getBytes()
             );
-            return ResponseEntity.ok(solicitud);
+            System.out.printf("Solicitud de crédito creada: %s\n", solicitud);
+            return ResponseEntity.ok("SOLICITUD DE CRÉDITO CREADA O ACTUALIZADA CORRECTAMENTE");
         } catch (Exception e) {
             e.printStackTrace(); // Log the exception details
             return ResponseEntity.status(500).body("ERROR INTERNO DEL SERVIDOR: " + e.getMessage());
