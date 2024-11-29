@@ -65,7 +65,7 @@ public class UsuarioService {
     }
     //-----------------------[P2]- FUNCIONES DE REGISTRO DE USUARIO-------------------------//
     // + REGISTRO DE USUARIO POR VALORES INGRESADOS:
-    public Usuario registerUsuario(String rut, String name, int age, int workage, int houses, int valorpropiedad, int ingresos, int sumadeuda, String objective, String independiente, List<Ahorro> ahorros, List<Credito> creditos) {
+    public Usuario registerUsuario(String rut, String name, int age, int workage, int houses, int valorpropiedad, int ingresos, int sumadeuda, String objective, String independiente, List<Ahorro> ahorros) {
         Usuario usuario = new Usuario();
         usuario.setRut(rut);
         usuario.setName(name);
@@ -85,12 +85,6 @@ public class UsuarioService {
             ahorro.setUsuarioId(userSalvado.getId());
             HttpEntity<Ahorro> request = new HttpEntity<Ahorro>(ahorro);
             restTemplate.postForObject("http://ahorro-service/ahorro", request, Ahorro.class);
-        }
-
-        for (Credito credito : creditos) {
-            credito.setUsuarioId(userSalvado.getId());
-            HttpEntity<Credito> request = new HttpEntity<Credito>(credito);
-            restTemplate.postForObject("http://credito-service/credito", request, Credito.class);
         }
         return userSalvado;
     }
