@@ -41,8 +41,7 @@ public class UsuarioService {
     }
 
     public List<Credito> getCreditos(int usuarioId) {
-        String url = "http://credito-service/credito/byusuario/" + usuarioId;
-        List<Credito> creditos = restTemplate.getForObject(url, List.class);
+        List<Credito> creditos = restTemplate.getForObject("http://credito-service/credito/byusuario/" + usuarioId, List.class);
         return creditos;
     }
 
