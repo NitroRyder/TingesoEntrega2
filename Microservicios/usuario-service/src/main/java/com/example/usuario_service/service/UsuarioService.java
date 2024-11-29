@@ -63,6 +63,10 @@ public class UsuarioService {
             usuarioRepository.save(usuario);
         }
     }
+    // delete usuario
+    public void deleteUsuario(int id) {
+        usuarioRepository.deleteById(id);
+    }
     //-----------------------[P2]- FUNCIONES DE REGISTRO DE USUARIO-------------------------//
     // + REGISTRO DE USUARIO POR VALORES INGRESADOS:
     public Usuario registerUsuario(String rut, String name, int age, int workage, int houses, int valorpropiedad, int ingresos, int sumadeuda, String objective, String independiente) {

@@ -90,7 +90,11 @@ public class UsuarioController {
         List<String> notifications = usuarioService.getNotifications(userId);
         return ResponseEntity.ok(notifications);
     }
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUsuario(@PathVariable("id") int id) {
+        usuarioService.deleteUsuario(id);
+        return ResponseEntity.ok("Usuario eliminado");
+    }
     @PostMapping("/register")
     public ResponseEntity<Usuario> registerUsuario(@RequestBody Usuario usuario) {
         Usuario usuarioRegistrado = usuarioService.registerUsuario(
