@@ -54,6 +54,6 @@ public class CreditoService {
         credito.setState("PENDIENTE");
         credito.setUsuarioId(userId.intValue());
         // Guardado de nuevo crédito
-        return credito;
+        return creditoRepository.save(credito);
     }
 }
