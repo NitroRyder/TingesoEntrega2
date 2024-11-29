@@ -72,7 +72,7 @@ public class CreditoController {
             @RequestParam MultipartFile dicom) {
 
         try {
-            Credito solicitud = creditoService.createSolicitud(
+            Credito solicitud = creditoService.createCredito(
                     userId,
                     montop,
                     plazo,
