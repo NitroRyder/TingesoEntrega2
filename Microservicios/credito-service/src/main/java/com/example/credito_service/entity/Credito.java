@@ -22,28 +22,20 @@ public class Credito {
     private double seguince;
     private double comiad;
     @Lob
-    @Basic(fetch = FetchType.LAZY)
     private byte[] comprobanteIngresos;
     @Lob
-    @Basic(fetch = FetchType.LAZY)
     private byte[] certificadoAvaluo;
     @Lob
-    @Basic(fetch = FetchType.LAZY)
     private byte[] historialCrediticio;
     @Lob
-    @Basic(fetch = FetchType.LAZY)
     private byte[] escrituraPrimeraVivienda;
     @Lob
-    @Basic(fetch = FetchType.LAZY)
     private byte[] planNegocios;
     @Lob
-    @Basic(fetch = FetchType.LAZY)
     private byte[] estadosFinancieros;
     @Lob
-    @Basic(fetch = FetchType.LAZY)
     private byte[] presupuestoRemodelacion;
     @Lob
-    @Basic(fetch = FetchType.LAZY)
     private byte[] dicom;
     private String state;
     private int usuarioId;
