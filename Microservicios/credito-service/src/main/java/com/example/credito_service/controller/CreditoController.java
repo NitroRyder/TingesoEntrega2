@@ -70,7 +70,6 @@ public class CreditoController {
             @RequestParam(value = "estadosFinancieros", required = false) MultipartFile estadosFinancieros,
             @RequestParam(value = "presupuestoRemodelacion", required = false) MultipartFile presupuestoRemodelacion,
             @RequestParam("dicom") MultipartFile dicom) {
-
         try {
             Credito solicitud = creditoService.createCredito(
                     userId,
