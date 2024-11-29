@@ -51,10 +51,8 @@ public class CreditoController {
         return ResponseEntity.ok("Credito eliminado");
     }
 
-    // CreditoController.java
-    @PostMapping("/createSolicitud")
-    public ResponseEntity<?> createSolicitud(
-            @RequestParam("userId") Long userId,
+    @PostMapping("/registrar")
+    public ResponseEntity<Credito> registrarCredito(
             @RequestParam("montop") double montop,
             @RequestParam("plazo") int plazo,
             @RequestParam("intanu") double intanu,
@@ -69,10 +67,10 @@ public class CreditoController {
             @RequestParam(value = "planNegocios", required = false) MultipartFile planNegocios,
             @RequestParam(value = "estadosFinancieros", required = false) MultipartFile estadosFinancieros,
             @RequestParam(value = "presupuestoRemodelacion", required = false) MultipartFile presupuestoRemodelacion,
-            @RequestParam("dicom") MultipartFile dicom) {
+            @RequestParam("dicom") MultipartFile dicom,
+            @RequestParam("usuarioId") int usuarioId) {
         try {
-            Credito solicitud = creditoService.createCredito(
-                    userId,
+            Credito credito = creditoService.registrarCredito(
                     montop,
                     plazo,
                     intanu,
@@ -87,13 +85,13 @@ public class CreditoController {
                     planNegocios != null ? planNegocios.getBytes() : null,
                     estadosFinancieros != null ? estadosFinancieros.getBytes() : null,
                     presupuestoRemodelacion != null ? presupuestoRemodelacion.getBytes() : null,
-                    dicom.getBytes()
+                    dicom.getBytes(),
+                    usuarioId
             );
-            System.out.printf("Solicitud de crédito creada: %s\n", solicitud);
-            return ResponseEntity.ok("SOLICITUD DE CRÉDITO CREADA O ACTUALIZADA CORRECTAMENTE");
+            return ResponseEntity.ok(credito);
         } catch (Exception e) {
-            e.printStackTrace(); // Log the exception details
-            return ResponseEntity.status(500).body("ERROR INTERNO DEL SERVIDOR: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
         }
     }
 }
