@@ -91,7 +91,7 @@ public class CreditoController {
             );
             return ResponseEntity.ok(solicitud);
         } catch (Exception e) {
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(500).body(null);
         }
     }
 }
