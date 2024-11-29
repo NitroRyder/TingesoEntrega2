@@ -53,7 +53,7 @@ public class CreditoController {
 
     // CreditoController.java
     @PostMapping("/createSolicitud")
-    public ResponseEntity<Credito> createSolicitud(
+    public ResponseEntity<?> createSolicitud(
             @RequestParam Long userId,
             @RequestParam double montop,
             @RequestParam int plazo,
@@ -93,7 +93,7 @@ public class CreditoController {
             return ResponseEntity.ok(solicitud);
         } catch (Exception e) {
             e.printStackTrace(); // Log the exception details
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(500).body("ERROR INTERNO DEL SERVIDOR: " + e.getMessage());
         }
     }
 }
