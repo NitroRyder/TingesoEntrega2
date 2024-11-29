@@ -43,6 +43,13 @@ public class CreditoController {
         List<Credito> creditos = creditoService.byUsuarioId(usuarioId);
         return ResponseEntity.ok(creditos);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteCredito(@PathVariable("id") int id) {
+        creditoService.deleteCredito(id);
+        return ResponseEntity.ok("Credito eliminado");
+    }
+
     @PostMapping("/createSolicitud")
     public ResponseEntity<Credito> createSolicitud(
             @RequestParam Long userId,
