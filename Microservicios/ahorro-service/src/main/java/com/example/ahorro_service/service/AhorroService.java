@@ -32,6 +32,9 @@ public class AhorroService {
         return ahorro;
     }
 
+    public void deleteAhorro(int id) {
+        ahorroRepository.deleteById(id);
+    }
     //------------------------------[OPERACIONES AHORRO]------------------------------------//
     // + OBTENER EL VALOR POSITIVO MAS CHICO DENTRO DE LA LISTA DE AHORROS DEL USUARIO
     public int obtenerValorPositivoMasPequeno(List<Ahorro> ahorros) {

@@ -48,6 +48,12 @@ public class AhorroController {
         return ResponseEntity.ok(ahorro);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAhorro(@PathVariable("id") int id) {
+        ahorroService.deleteAhorro(id);
+        return ResponseEntity.ok("Ahorro eliminado");
+    }
+
     @GetMapping("/valorpositivomaspequeno/{usuarioId}")
     public ResponseEntity<Integer> getValorPositivoMasPequeno(@PathVariable("usuarioId") int usuarioId) {
         List<Ahorro> ahorros = ahorroService.byUsuarioId(usuarioId);
