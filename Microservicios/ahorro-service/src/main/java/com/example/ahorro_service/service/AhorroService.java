@@ -23,6 +23,15 @@ public class AhorroService {
 
     public List<Ahorro> byUsuarioId(int usuarioId) {return ahorroRepository.findByUsuarioId(usuarioId);}
 
+    // CREAR AHORRO CON EL ID DE UN USUARIO
+    public Ahorro createAhorro(int transaccion, String tipo, int usuarioId) {
+        Ahorro ahorro = new Ahorro();
+        ahorro.setTransaccion(transaccion);
+        ahorro.setTipo(tipo);
+        ahorro.setUsuarioId(usuarioId);
+        return ahorro;
+    }
+
     //------------------------------[OPERACIONES AHORRO]------------------------------------//
     // + OBTENER EL VALOR POSITIVO MAS CHICO DENTRO DE LA LISTA DE AHORROS DEL USUARIO
     public int obtenerValorPositivoMasPequeno(List<Ahorro> ahorros) {

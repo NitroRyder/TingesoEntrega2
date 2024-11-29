@@ -42,6 +42,11 @@ public class AhorroController {
         List<Ahorro> ahorros = ahorroService.byUsuarioId(usuarioId);
         return ResponseEntity.ok(ahorros);
     }
+    @PostMapping("/create")
+    public ResponseEntity<Ahorro> createAhorro(@RequestParam int transaccion, @RequestParam String tipo, @RequestParam int usuarioId) {
+        Ahorro ahorro = ahorroService.createAhorro(transaccion, tipo, usuarioId);
+        return ResponseEntity.ok(ahorro);
+    }
 
     @GetMapping("/valorpositivomaspequeno/{usuarioId}")
     public ResponseEntity<Integer> getValorPositivoMasPequeno(@PathVariable("usuarioId") int usuarioId) {
