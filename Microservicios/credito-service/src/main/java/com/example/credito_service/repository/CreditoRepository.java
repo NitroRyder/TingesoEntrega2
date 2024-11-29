@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CreditoRepository extends JpaRepository<Credito, Integer> { List<Credito> findByUsuarioId(int usuarioId);}
+public interface CreditoRepository extends JpaRepository<Credito, Integer> {
+    List<Credito> findByUsuarioId(int usuarioId);
+}
