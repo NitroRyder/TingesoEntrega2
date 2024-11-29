@@ -67,7 +67,7 @@ public class SimulaService {
             return M;
             //-------------------------------------------------------------------------//
         }else{
-            //System.out.println("TOMA ESTE 0");
+            System.out.println("TOMA ESTE 0");
             return 0;
         }
     }
