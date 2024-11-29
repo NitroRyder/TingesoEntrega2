@@ -54,22 +54,22 @@ public class CreditoController {
     // CreditoController.java
     @PostMapping("/createSolicitud")
     public ResponseEntity<?> createSolicitud(
-            @RequestParam Long userId,
-            @RequestParam double montop,
-            @RequestParam int plazo,
-            @RequestParam double intanu,
-            @RequestParam double intmen,
-            @RequestParam double segudesg,
-            @RequestParam double seguince,
-            @RequestParam double comiad,
-            @RequestParam MultipartFile comprobanteIngresos,
-            @RequestParam MultipartFile certificadoAvaluo,
-            @RequestParam MultipartFile historialCrediticio,
-            @RequestParam MultipartFile escrituraPrimeraVivienda,
-            @RequestParam MultipartFile planNegocios,
-            @RequestParam MultipartFile estadosFinancieros,
-            @RequestParam MultipartFile presupuestoRemodelacion,
-            @RequestParam MultipartFile dicom) {
+            @RequestParam("userId") Long userId,
+            @RequestParam("montop") double montop,
+            @RequestParam("plazo") int plazo,
+            @RequestParam("intanu") double intanu,
+            @RequestParam("intmen") double intmen,
+            @RequestParam("segudesg") double segudesg,
+            @RequestParam("seguince") double seguince,
+            @RequestParam("comiad") double comiad,
+            @RequestParam("comprobanteIngresos") MultipartFile comprobanteIngresos,
+            @RequestParam("certificadoAvaluo") MultipartFile certificadoAvaluo,
+            @RequestParam(value = "historialCrediticio", required = false) MultipartFile historialCrediticio,
+            @RequestParam(value = "escrituraPrimeraVivienda", required = false) MultipartFile escrituraPrimeraVivienda,
+            @RequestParam(value = "planNegocios", required = false) MultipartFile planNegocios,
+            @RequestParam(value = "estadosFinancieros", required = false) MultipartFile estadosFinancieros,
+            @RequestParam(value = "presupuestoRemodelacion", required = false) MultipartFile presupuestoRemodelacion,
+            @RequestParam("dicom") MultipartFile dicom) {
 
         try {
             Credito solicitud = creditoService.createCredito(
