@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 public class Credito {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private double montop;
     private int plazo;
