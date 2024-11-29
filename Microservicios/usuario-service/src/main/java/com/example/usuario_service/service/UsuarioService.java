@@ -41,17 +41,9 @@ public class UsuarioService {
     }
 
     public List<Credito> getCreditos(int usuarioId) {
-        try {
-            return restTemplate.getForObject("http://credito-service/credito/byusuario/" + usuarioId, List.class);
-        } catch (HttpServerErrorException e) {
-            // Log the error and rethrow or handle it accordingly
-            System.err.println("Error calling credito-service: " + e.getMessage());
-            throw e;
-        } catch (RestClientException e) {
-            // Handle other RestClientExceptions
-            System.err.println("Error calling credito-service: " + e.getMessage());
-            throw e;
-        }
+        String url = "http://credito-service/credito/byusuario/" + usuarioId;
+        List<Credito> creditos = restTemplate.getForObject(url, List.class);
+        return creditos;
     }
 
     public Ahorro saveAhorro(int usuarioId, Ahorro ahorro) {
