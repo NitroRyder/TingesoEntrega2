@@ -9,6 +9,8 @@ import com.example.usuario_service.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -39,8 +41,17 @@ public class UsuarioService {
     }
 
     public List<Credito> getCreditos(int usuarioId) {
-        List<Credito> creditos = restTemplate.getForObject("http://credito-service/credito/byusuario/" + usuarioId, List.class);
-        return creditos;
+        try {
+            return restTemplate.getForObject("http://credito-service/credito/byusuario/" + usuarioId, List.class);
+        } catch (HttpServerErrorException e) {
+            // Log the error and rethrow or handle it accordingly
+            System.err.println("Error calling credito-service: " + e.getMessage());
+            throw e;
+        } catch (RestClientException e) {
+            // Handle other RestClientExceptions
+            System.err.println("Error calling credito-service: " + e.getMessage());
+            throw e;
+        }
     }
 
     public Ahorro saveAhorro(int usuarioId, Ahorro ahorro) {
