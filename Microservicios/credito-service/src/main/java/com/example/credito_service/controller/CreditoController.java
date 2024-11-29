@@ -82,11 +82,11 @@ public class CreditoController {
                     comiad,
                     comprobanteIngresos.getBytes(),
                     certificadoAvaluo.getBytes(),
-                    historialCrediticio.getBytes(),
-                    escrituraPrimeraVivienda.getBytes(),
-                    planNegocios.getBytes(),
-                    estadosFinancieros.getBytes(),
-                    presupuestoRemodelacion.getBytes(),
+                    historialCrediticio != null ? historialCrediticio.getBytes() : null,
+                    escrituraPrimeraVivienda != null ? escrituraPrimeraVivienda.getBytes() : null,
+                    planNegocios != null ? planNegocios.getBytes() : null,
+                    estadosFinancieros != null ? estadosFinancieros.getBytes() : null,
+                    presupuestoRemodelacion != null ? presupuestoRemodelacion.getBytes() : null,
                     dicom.getBytes()
             );
             return ResponseEntity.ok(solicitud);
