@@ -34,26 +34,26 @@ public class UsuarioService {
     }
 
     public List<Ahorro> getAhorros(int usuarioId) {
-        List<Ahorro> ahorros = restTemplate.getForObject("http://localhost:8002/ahorro/byusuario/" + usuarioId, List.class);
+        List<Ahorro> ahorros = restTemplate.getForObject("http://ahorro-service/ahorro/byusuario/" + usuarioId, List.class);
         return ahorros;
     }
 
     public List<Credito> getCreditos(int usuarioId) {
-        List<Credito> creditos = restTemplate.getForObject("http://localhost:8003/credito/byusuario/" + usuarioId, List.class);
+        List<Credito> creditos = restTemplate.getForObject("http://credito-service/credito/byusuario/" + usuarioId, List.class);
         return creditos;
     }
 
     public Ahorro saveAhorro(int usuarioId, Ahorro ahorro) {
         ahorro.setUsuarioId(usuarioId);
         HttpEntity<Ahorro> request = new HttpEntity<Ahorro>(ahorro);
-        Ahorro ahorroNew = restTemplate.postForObject("http://localhost:8002/ahorro", request, Ahorro.class);
+        Ahorro ahorroNew = restTemplate.postForObject("http://ahorro-service/ahorro", request, Ahorro.class);
         return ahorroNew;
     }
 
     public Credito saveCredito(int usuarioId, Credito credito) {
         credito.setUsuarioId(usuarioId);
         HttpEntity<Credito> request = new HttpEntity<Credito>(credito);
-        Credito creditoNew = restTemplate.postForObject("http://localhost:8003/credito", request, Credito.class);
+        Credito creditoNew = restTemplate.postForObject("http://credito-service/credito", request, Credito.class);
         return creditoNew;
     }
     public void addNotification(int userId, String notification) {
@@ -78,18 +78,19 @@ public class UsuarioService {
         usuario.setObjective(objective.toUpperCase());
         usuario.setIndependiente(independiente);
 
+
         Usuario userSalvado = usuarioRepository.save(usuario);
 
         for (Ahorro ahorro : ahorros) {
             ahorro.setUsuarioId(userSalvado.getId());
             HttpEntity<Ahorro> request = new HttpEntity<Ahorro>(ahorro);
-            restTemplate.postForObject("http://localhost:8010/ahorro", request, Ahorro.class);
+            restTemplate.postForObject("http://ahorro-service/ahorro", request, Ahorro.class);
         }
 
         for (Credito credito : creditos) {
             credito.setUsuarioId(userSalvado.getId());
             HttpEntity<Credito> request = new HttpEntity<Credito>(credito);
-            restTemplate.postForObject("http://localhost:8020/credito", request, Credito.class);
+            restTemplate.postForObject("http://credito-service/credito", request, Credito.class);
         }
         return userSalvado;
     }
