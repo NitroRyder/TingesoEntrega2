@@ -26,9 +26,9 @@ public class Credito {
     private byte[] comprobanteIngresos;
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    private byte[] certificadoAvaluo
+    private byte[] certificadoAvaluo;
     @Lob
-    @Basic(fetch = FetchType.LAZY);
+    @Basic(fetch = FetchType.LAZY)
     private byte[] historialCrediticio;
     @Lob
     @Basic(fetch = FetchType.LAZY)
