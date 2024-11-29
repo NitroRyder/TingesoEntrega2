@@ -1,13 +1,9 @@
 package com.example.credito_service.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 @Entity
 @Data
@@ -25,13 +21,29 @@ public class Credito {
     private double segudesg;
     private double seguince;
     private double comiad;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] comprobanteIngresos;
-    private byte[] certificadoAvaluo;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] certificadoAvaluo
+    @Lob
+    @Basic(fetch = FetchType.LAZY);
     private byte[] historialCrediticio;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] escrituraPrimeraVivienda;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] planNegocios;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] estadosFinancieros;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] presupuestoRemodelacion;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] dicom;
     private String state;
     private int usuarioId;

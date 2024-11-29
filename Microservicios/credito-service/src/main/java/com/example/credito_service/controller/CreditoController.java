@@ -5,6 +5,7 @@ import com.example.credito_service.service.CreditoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -52,22 +53,22 @@ public class CreditoController {
 
     @PostMapping("/createSolicitud")
     public ResponseEntity<Credito> createSolicitud(
-            @RequestParam Long userId,
-            @RequestParam double montop,
-            @RequestParam int plazo,
-            @RequestParam double intanu,
-            @RequestParam double intmen,
-            @RequestParam double segudesg,
-            @RequestParam double seguince,
-            @RequestParam double comiad,
-            @RequestBody byte[] comprobanteIngresos,
-            @RequestBody byte[] certificadoAvaluo,
-            @RequestBody byte[] historialCrediticio,
-            @RequestBody byte[] escrituraPrimeraVivienda,
-            @RequestBody byte[] planNegocios,
-            @RequestBody byte[] estadosFinancieros,
-            @RequestBody byte[] presupuestoRemodelacion,
-            @RequestBody byte[] dicom) {
+            @RequestParam("userId") Long userId,
+            @RequestParam("montop") double montop,
+            @RequestParam("plazo") int plazo,
+            @RequestParam("intanu") double intanu,
+            @RequestParam("intmen") double intmen,
+            @RequestParam("segudesg") double segudesg,
+            @RequestParam("seguince") double seguince,
+            @RequestParam("comiad") double comiad,
+            @RequestParam("comprobanteIngresos") MultipartFile comprobanteIngresos,
+            @RequestParam("certificadoAvaluo") MultipartFile certificadoAvaluo,
+            @RequestParam(value = "historialCrediticio", required = false) MultipartFile historialCrediticio,
+            @RequestParam(value = "escrituraPrimeraVivienda", required = false) MultipartFile escrituraPrimeraVivienda,
+            @RequestParam(value = "planNegocios", required = false) MultipartFile planNegocios,
+            @RequestParam(value = "estadosFinancieros", required = false) MultipartFile estadosFinancieros,
+            @RequestParam(value = "presupuestoRemodelacion", required = false) MultipartFile presupuestoRemodelacion,
+            @RequestParam("dicom") MultipartFile dicom) {
         Credito solicitud = creditoService.createSolicitud(userId, montop, plazo, intanu, intmen, segudesg, seguince, comiad, comprobanteIngresos, certificadoAvaluo, historialCrediticio, escrituraPrimeraVivienda, planNegocios, estadosFinancieros, presupuestoRemodelacion, dicom);
         return ResponseEntity.ok(solicitud);
     }
