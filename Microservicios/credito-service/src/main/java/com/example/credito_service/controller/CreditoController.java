@@ -51,6 +51,7 @@ public class CreditoController {
         return ResponseEntity.ok("Credito eliminado");
     }
 
+    // CreditoController.java
     @PostMapping("/createSolicitud")
     public ResponseEntity<Credito> createSolicitud(
             @RequestParam Long userId,
@@ -91,6 +92,7 @@ public class CreditoController {
             );
             return ResponseEntity.ok(solicitud);
         } catch (Exception e) {
+            e.printStackTrace(); // Log the exception details
             return ResponseEntity.status(500).body(null);
         }
     }

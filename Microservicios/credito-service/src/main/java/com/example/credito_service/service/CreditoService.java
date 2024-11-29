@@ -32,10 +32,9 @@ public class CreditoService {
         public List<Credito> byUsuarioId(int usuarioId) {return creditoRepository.findByUsuarioId(usuarioId);}
     //-----------------------[P3]- FUNCIONES DE CREACIÓN  DE SOLICITUD DE CRÉDITO-------------------------//
     // + CREACIÓN DE SOLICITUD DE CRÉDITO POR VALORES INGRESADOS BAJO ID DE USUARIO INGRESADO:
+    // CreditoService.java
     public Credito createSolicitud(Long userId, double montop, int plazo, double intanu, double intmen, double segudesg, double seguince, double comiad, byte[] comprobanteIngresos, byte[] certificadoAvaluo, byte[] historialCrediticio, byte[] escrituraPrimeraVivienda, byte[] planNegocios, byte[] estadosFinancieros, byte[] presupuestoRemodelacion, byte[] dicom) {
-        //Usuario usuario = restTemplate.getForObject("http;//usuario-service/usuario/" + userId, Usuario.class); // OBTENCION DE USUARIO POR ID
-        //-------------------------------------------------------------------------//
-        // CREACIÓN DE NUEVA SOLICITUD
+        // Creación de nueva solicitud
         Credito solicitud = new Credito();
         solicitud.setMontop(montop);
         solicitud.setPlazo(plazo);
@@ -53,11 +52,8 @@ public class CreditoService {
         solicitud.setPresupuestoRemodelacion(presupuestoRemodelacion);
         solicitud.setDicom(dicom);
         solicitud.setState("PENDIENTE");
-        solicitud.setUsuarioId(userId.intValue()); // ASIGNACION DE ID DE USUARIO A SOLICITUD
-        //-------------------------------------------------------------------------//
-        // GUARDADO DE NUEVA SOLICITUD
-        Credito savedSolicitud = creditoRepository.save(solicitud);
-        //-------------------------------------------------------------------------//
-        return savedSolicitud;
+        solicitud.setUsuarioId(userId.intValue());
+        // Guardado de nueva solicitud
+        return creditoRepository.save(solicitud);
     }
 }
