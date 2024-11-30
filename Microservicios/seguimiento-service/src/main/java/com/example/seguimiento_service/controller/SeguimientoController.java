@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/seguimiento")
 public class SeguimientoController {
@@ -13,8 +15,12 @@ public class SeguimientoController {
     SeguimientoService seguimientoService;
 
     @GetMapping("/followCredito")
-    public ResponseEntity<Credito> followCredito(@RequestParam Long userId, @RequestParam Long creditId) {
-        Credito solicitud = seguimientoService.followCredito(userId, creditId);
-        return ResponseEntity.ok(solicitud);
+    public ResponseEntity<List<Credito>> followCredito(@RequestParam Long userId) {
+        try {
+            List<Credito> solicitudes = seguimientoService.followCredito(userId);
+            return ResponseEntity.ok(solicitudes);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 }
