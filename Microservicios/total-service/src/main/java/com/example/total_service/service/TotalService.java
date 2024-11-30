@@ -2,6 +2,7 @@ package com.example.total_service.service;
 
 import com.example.total_service.model.Credito;
 import com.example.total_service.model.Usuario;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,8 +12,8 @@ import java.util.ArrayList;
 @Service
 public class TotalService {
 
-    RestTemplate restTemplate;
-
+    @Autowired
+    private RestTemplate restTemplate;
     //-----------------------[P6]- FUNCIONES DE CALCULO DE COSTOS TOTALES-------------------//
     // + CALCULO DE COSTOS TOTALES DE LA SOLICITUD DE CRÉDITO POR ID DEL USUARIO:
     public List<Double> calcularCostosTotales(Long userId, Long creditId) {
