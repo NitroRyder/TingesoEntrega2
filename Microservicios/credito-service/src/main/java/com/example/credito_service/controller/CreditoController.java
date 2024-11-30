@@ -60,14 +60,6 @@ public class CreditoController {
             @RequestParam("segudesg") double segudesg,
             @RequestParam("seguince") double seguince,
             @RequestParam("comiad") double comiad,
-            @RequestParam("comprobanteIngresos") MultipartFile comprobanteIngresos,
-            @RequestParam("certificadoAvaluo") MultipartFile certificadoAvaluo,
-            @RequestParam(value = "historialCrediticio", required = false) MultipartFile historialCrediticio,
-            @RequestParam(value = "escrituraPrimeraVivienda", required = false) MultipartFile escrituraPrimeraVivienda,
-            @RequestParam(value = "planNegocios", required = false) MultipartFile planNegocios,
-            @RequestParam(value = "estadosFinancieros", required = false) MultipartFile estadosFinancieros,
-            @RequestParam(value = "presupuestoRemodelacion", required = false) MultipartFile presupuestoRemodelacion,
-            @RequestParam("dicom") MultipartFile dicom,
             @RequestParam("usuarioId") int usuarioId) {
         try {
             Credito credito = creditoService.registrarCredito(
@@ -78,14 +70,6 @@ public class CreditoController {
                     segudesg,
                     seguince,
                     comiad,
-                    comprobanteIngresos.getBytes(),
-                    certificadoAvaluo.getBytes(),
-                    historialCrediticio != null ? historialCrediticio.getBytes() : null,
-                    escrituraPrimeraVivienda != null ? escrituraPrimeraVivienda.getBytes() : null,
-                    planNegocios != null ? planNegocios.getBytes() : null,
-                    estadosFinancieros != null ? estadosFinancieros.getBytes() : null,
-                    presupuestoRemodelacion != null ? presupuestoRemodelacion.getBytes() : null,
-                    dicom.getBytes(),
                     usuarioId
             );
             return ResponseEntity.ok(credito);

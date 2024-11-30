@@ -29,7 +29,7 @@ public class CreditoService {
     }
     //-----------------------[P3]- FUNCIONES DE CREACIÓN  DE SOLICITUD DE CRÉDITO-------------------------//
     // + CREACIÓN DE SOLICITUD DE CRÉDITO POR VALORES INGRESADOS BAJO ID DE USUARIO INGRESADO:
-    public Credito registrarCredito(double montop, int plazo, double intanu, double intmen, double segudesg, double seguince, double comiad, byte[] comprobanteIngresos, byte[] certificadoAvaluo, byte[] historialCrediticio, byte[] escrituraPrimeraVivienda, byte[] planNegocios, byte[] estadosFinancieros, byte[] presupuestoRemodelacion, byte[] dicom, int usuarioId) {
+    public Credito registrarCredito(double montop, int plazo, double intanu, double intmen, double segudesg, double seguince, double comiad, int usuarioId) {
         Credito credito = new Credito();
         credito.setMontop(montop);
         credito.setPlazo(plazo);
@@ -38,14 +38,6 @@ public class CreditoService {
         credito.setSegudesg(segudesg);
         credito.setSeguince(seguince);
         credito.setComiad(comiad);
-        credito.setComprobanteIngresos(comprobanteIngresos);
-        credito.setCertificadoAvaluo(certificadoAvaluo);
-        credito.setHistorialCrediticio(historialCrediticio);
-        credito.setEscrituraPrimeraVivienda(escrituraPrimeraVivienda);
-        credito.setPlanNegocios(planNegocios);
-        credito.setEstadosFinancieros(estadosFinancieros);
-        credito.setPresupuestoRemodelacion(presupuestoRemodelacion);
-        credito.setDicom(dicom);
         credito.setState("PENDIENTE");
         credito.setUsuarioId(usuarioId);
         return creditoRepository.save(credito);
