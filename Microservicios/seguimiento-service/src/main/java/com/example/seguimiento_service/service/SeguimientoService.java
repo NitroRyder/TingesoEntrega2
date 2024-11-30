@@ -9,7 +9,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class SeguimientoService {
 
-     RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
     //----------------------[P5]- FUNCIONES DE SEGUIMENTO ---------------------------------------//
     // + SEQUIMIENTO DEL ESTADO DE LA SOLICITUD POR ID DEL USUARIO:
     public Credito followCredito(Long userId, Long creditId) {
