@@ -21,7 +21,7 @@ public class SeguimientoService {
             throw new IllegalArgumentException("ERROR: USUARIO NO ENCONTRADO");
         }
 
-        List<Credito> solicitudes = restTemplate.getForObject("http://usuario-service/creditos/" + userId, List.class);
+        List<Credito> solicitudes = restTemplate.getForObject("http://usuario-service/usuario/creditos/" + userId, List.class);
         if (solicitudes == null) {
             throw new IllegalArgumentException("ERROR: USUARIO NO TIENE SOLICITUDES");
         }
