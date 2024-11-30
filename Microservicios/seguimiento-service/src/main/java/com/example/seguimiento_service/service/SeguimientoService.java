@@ -12,7 +12,7 @@ import java.util.List;
 public class SeguimientoService {
 
     @Autowired
-    private RestTemplate restTemplate;
+    RestTemplate restTemplate;
     //----------------------[P5]- FUNCIONES DE SEGUIMENTO ---------------------------------------//
     // + SEQUIMIENTO DEL ESTADO DE LA SOLICITUD POR ID DEL USUARIO:
     public List<Credito> followCredito(Long userId) {
