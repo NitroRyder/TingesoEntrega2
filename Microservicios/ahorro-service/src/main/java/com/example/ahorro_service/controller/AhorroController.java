@@ -43,7 +43,8 @@ public class AhorroController {
         return ResponseEntity.ok(ahorros);
     }
     @PostMapping("/create")
-    public ResponseEntity<Ahorro> createAhorro(@RequestParam int transaccion, @RequestParam String tipo, @RequestParam int usuarioId) {
+    public ResponseEntity<Ahorro> createAhorro(
+            @RequestParam int transaccion, @RequestParam String tipo, @RequestParam int usuarioId) {
         Ahorro ahorro = ahorroService.createAhorro(transaccion, tipo, usuarioId);
         return ResponseEntity.ok(ahorro);
     }

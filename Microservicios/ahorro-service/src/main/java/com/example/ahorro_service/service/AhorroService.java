@@ -29,7 +29,7 @@ public class AhorroService {
         ahorro.setTransaccion(transaccion);
         ahorro.setTipo(tipo);
         ahorro.setUsuarioId(usuarioId);
-        return ahorro;
+        return ahorroRepository.save(ahorro);
     }
 
     public void deleteAhorro(int id) {
