@@ -27,7 +27,6 @@ public class CreditoService {
             Credito creditoNew = creditoRepository.save(credito);
             return creditoNew;
         }
-         @Transactional(readOnly = true)
         public void deleteCredito(int id) {creditoRepository.deleteById(id);}
 
     public List<Credito> byUsuarioId(int usuarioId) {
