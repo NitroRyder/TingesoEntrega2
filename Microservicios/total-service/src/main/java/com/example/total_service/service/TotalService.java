@@ -96,26 +96,25 @@ public class TotalService {
         // [PASO 1]- CALCULO DE CUOTA MENSUAL DEL PRESTAMO------------------------------------//
         double cuota = montop * (intmen * Math.pow(1 + intmen, meses)) / (Math.pow(1 + intmen, meses) - 1);
         resultados.add(cuota);
-        //System.out.println("CUOTA MENSUAL DEL PRÉSTAMO: "+Math.round(cuota));
+        System.out.println("CUOTA MENSUAL DEL PRÉSTAMO: "+Math.round(cuota));
         // [PASO 2]- CALCULO DE LOS SEGUROS------------------------------------//
         double segudesgtotal = montop * segudesg;
         resultados.add(segudesgtotal);
         resultados.add(seguince);
-        //System.out.println("SEGURO DE DESGRAVAMEN: "+Math.round(segudesgtotal));
+        System.out.println("SEGURO DE DESGRAVAMEN: "+Math.round(segudesgtotal));
         // [PASO 3]- CALCULO DE COMISION POR ADMINISTRACIÓN--------------//
         double comiadtotal = montop * comiad;
         resultados.add(comiadtotal);
-        //System.out.println("COMISIÓN ADMINISTRATIVA: "+Math.round(comiadtotal));
+        System.out.println("COMISIÓN ADMINISTRATIVA: "+Math.round(comiadtotal));
         // [PASO 4]- CALCULO DE COSTO TOTAL DE PRESTAMO------------------//
         double costomensual = cuota + segudesgtotal + seguince;
         double costototal = (costomensual * meses) + comiadtotal;
         resultados.add(costomensual);
         resultados.add(costototal);
-        //System.out.println("COSTO MENSUAL DEL PRÉSTAMO: "+Math.round(costomensual));
+        System.out.println("COSTO MENSUAL DEL PRÉSTAMO: "+Math.round(costomensual));
         // [PASO 5]- REVICIÓN Y ENTREGA DE SOLICITUD-------------------------//
-        //System.out.println("COSTO TOTAL DEL PRÉSTAMO: "+Math.round(costototal));
+        System.out.println("COSTO TOTAL DEL PRÉSTAMO: "+Math.round(costototal));
 
         return resultados;
-    }
     }
 }
