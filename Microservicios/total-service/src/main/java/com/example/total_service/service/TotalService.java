@@ -16,8 +16,6 @@ public class TotalService {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    private ObjectMapper objectMapper;
     //-----------------------[P6]- FUNCIONES DE CALCULO DE COSTOS TOTALES-------------------//
     // + CALCULO DE COSTOS TOTALES DE LA SOLICITUD DE CRÉDITO POR ID DEL USUARIO:
     public List<Double> calcularCostosTotales(Long userId, Long creditId) {
