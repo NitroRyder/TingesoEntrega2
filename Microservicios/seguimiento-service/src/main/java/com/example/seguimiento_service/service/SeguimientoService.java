@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 public class SeguimientoService {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    RestTemplate restTemplate;
     //----------------------[P5]- FUNCIONES DE SEGUIMENTO ---------------------------------------//
     // + SEQUIMIENTO DEL ESTADO DE LA SOLICITUD POR ID DEL USUARIO:
     public Credito followCredito(Long userId, Long creditId) {
@@ -18,9 +19,13 @@ public class SeguimientoService {
         if (usuario == null) {
             throw new IllegalArgumentException("ERROR: USUARIO NO ENCONTRADO");
         }
-        Credito solicitud = restTemplate.getForObject("http://credito-service/credito/byusuario/" + creditId, Credito.class);
+        List<Credito> solicitudes = restTemplate.getForObject("http://credito-service/credito/byusuario/" + userId, List.class);
+        if (solicitudes == null) {
+            throw new IllegalArgumentException("ERROR: USUARIO NO TIENE SOLICITUDES");
+        }
+        Credito solicitud = solicitudes.stream().filter(s -> s.getId() == creditId).findFirst().orElse(null);
         if (solicitud == null) {
-            throw new IllegalArgumentException("ERROR: SOLICITUD NO ENCONTRADA");
+            throw new IllegalArgumentException("ERROR: SOLICITUD NO EXISTENTE");
         }
         return solicitud;
     }
