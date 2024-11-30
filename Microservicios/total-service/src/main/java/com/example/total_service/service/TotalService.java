@@ -5,7 +5,9 @@ import com.example.total_service.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -25,15 +27,29 @@ public class TotalService {
             throw new IllegalArgumentException("ERROR: USUARIO NO ENCONTRADO");
         }
 
-        List<Credito> solicitudes = restTemplate.getForObject("http://usuario-service/usuario/creditos/" + userId, List.class);
+        ResponseEntity<List<Credito>> response = restTemplate.exchange(
+                "http://usuario-service/usuario/creditos/" + userId,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Credito>>() {}
+        );
+        List<Credito> solicitudes = response.getBody();
         if (solicitudes == null) {
             throw new IllegalArgumentException("ERROR: USUARIO NO TIENE SOLICITUDES");
         }
 
-        // IMPRIMIR SOLICITUDES
-        System.out.println("SOLICITUDES:");
+        Credito solicitud = null;
         for (Credito c : solicitudes) {
-            System.out.println(c);
+            if (c.getId() == (creditId)) {
+                solicitud = c;
+                break;
+            }
+        }
+
+        if (solicitud == null) {
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "SOLICITUD NO EXISTENTE EN EL USUARIO.", String.class);
+            return null;
         }
 
         /*
