@@ -11,15 +11,16 @@ import java.util.List;
 @Service
 public class SeguimientoService {
 
-    RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
     //----------------------[P5]- FUNCIONES DE SEGUIMENTO ---------------------------------------//
     // + SEQUIMIENTO DEL ESTADO DE LA SOLICITUD POR ID DEL USUARIO:
-    public List<Credito>  followCredito(Long userId) {
+    public List<Credito> followCredito(Long userId) {
         Usuario usuario = restTemplate.getForObject("http://usuario-service/usuario/" + userId, Usuario.class);
         if (usuario == null) {
             throw new IllegalArgumentException("ERROR: USUARIO NO ENCONTRADO");
         }
-        //----------------------------------------------------------------------------------------------------//
+
         List<Credito> solicitudes = restTemplate.getForObject("http://usuario-service/creditos/" + userId, List.class);
         if (solicitudes == null) {
             throw new IllegalArgumentException("ERROR: USUARIO NO TIENE SOLICITUDES");
