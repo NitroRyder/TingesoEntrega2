@@ -73,7 +73,6 @@ public class TotalService {
         System.out.printf("Comisión administrativa: %f\n", comiad);
         System.out.printf("Meses: %f\n", meses);
         //-------------------------------------------------------------------------//
-         /*
         // ANÁLISIS DE QUE LOS DATOS SOLICITADOS DEL CRÉDITO SEAN CORRECTOS// VALORES REDONDEADOS PARA COMPARAR
         if (Math.round(intmen) == Math.round(intanu / 12.0)) {
             //System.out.println("TASA DE INTERÉS MENSUAL CORRECTA");
@@ -118,8 +117,5 @@ public class TotalService {
 
         return resultados;
     }
-
-    */
-    return null;
     }
 }
