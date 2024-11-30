@@ -30,11 +30,13 @@ public class TotalService {
             throw new IllegalArgumentException("ERROR: USUARIO NO TIENE SOLICITUDES");
         }
 
-        // IMPRIMIR LA LISTA DE SOLICITUDES
+        // IMPRIMIR SOLICITUDES
+        System.out.println("SOLICITUDES:");
         for (Credito c : solicitudes) {
             System.out.println(c);
         }
 
+        /*
         Credito solicitud = null;
         for (Credito c : solicitudes) {
             if (c.getId() == creditId) {
@@ -48,6 +50,7 @@ public class TotalService {
             restTemplate.postForObject(notificationUrl, "SOLICITUD NO EXISTENTE EN EL USUARIO.", String.class);
             return null;
         }
+
         //-------------------------------------------------------------------------//
         double montop = solicitud.getMontop();        // MONTO DEL PRÉSTAMO
         int plazo = solicitud.getPlazo();                      // PLAZO DEL PRÉSTAMO EN AÑOS
@@ -110,5 +113,9 @@ public class TotalService {
         //System.out.println("COSTO TOTAL DEL PRÉSTAMO: "+Math.round(costototal));
 
         return resultados;
+    }
+
+    */
+    return null;
     }
 }
