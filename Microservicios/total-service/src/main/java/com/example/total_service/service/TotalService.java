@@ -33,10 +33,9 @@ public class TotalService {
         }
 
         Credito solicitud = null;
-        for (Credito map : solicitudes) {
-            Credito credito = objectMapper.convertValue(map, Credito.class);
-            if (credito.getId() == creditId) {
-                solicitud = credito;
+        for (Credito c : solicitudes) {
+            if (c.getId() == creditId) {
+                solicitud = c;
                 break;
             }
         }
