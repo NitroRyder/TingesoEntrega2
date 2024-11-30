@@ -14,11 +14,7 @@ public class SeguimientoController {
 
     @GetMapping("/followCredito")
     public ResponseEntity<Credito> followCredito(@RequestParam Long userId, @RequestParam Long creditId) {
-        try {
-            Credito solicitud = seguimientoService.followCredito(userId, creditId);
-            return ResponseEntity.ok(solicitud);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        Credito solicitud = seguimientoService.followCredito(userId, creditId);
+        return ResponseEntity.ok(solicitud);
     }
 }

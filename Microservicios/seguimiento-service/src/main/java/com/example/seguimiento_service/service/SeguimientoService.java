@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-
 @Service
 public class SeguimientoService {
 
@@ -20,10 +18,10 @@ public class SeguimientoService {
         if (usuario == null) {
             throw new IllegalArgumentException("ERROR: USUARIO NO ENCONTRADO");
         }
-        List<Credito> solicitudes = restTemplate.getForObject("http://credito-service/credito/byusuario/" + creditId, List.class);
-        if (solicitudes == null || solicitudes.isEmpty()) {
+        Credito solicitud = restTemplate.getForObject("http://credito-service/credito/byusuario/" + creditId, Credito.class);
+        if (solicitud == null) {
             throw new IllegalArgumentException("ERROR: SOLICITUD NO ENCONTRADA");
         }
-        return solicitudes.get(0); // Asumiendo que quieres el primer elemento de la lista
+        return solicitud;
     }
 }
