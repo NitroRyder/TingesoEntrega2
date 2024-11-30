@@ -52,6 +52,14 @@ public class TotalService {
             return null;
         }
 
+        System.out.printf("Monto: %f\n", solicitud.getMontop());
+        System.out.printf("Plazo: %d\n", solicitud.getPlazo());
+        System.out.printf("Tasa de interés anual: %f\n", solicitud.getIntanu());
+        System.out.printf("Tasa de interés mensual: %f\n", solicitud.getIntmen());
+        System.out.printf("Seguro de desgravamen: %f\n", solicitud.getSegudesg());
+        System.out.printf("Seguro de incendio: %f\n", solicitud.getSeguince());
+        System.out.printf("Comisión administrativa: %f\n", solicitud.getComiad());
+        System.out.printf("Meses: %f\n", solicitud.getPlazo() * 12);
         /*
         Credito solicitud = null;
         for (Credito c : solicitudes) {
