@@ -1,13 +1,10 @@
 package com.example.credito_service.service;
 
 import com.example.credito_service.entity.Credito;
-import com.example.credito_service.model.Ahorro;
-import com.example.credito_service.model.Usuario;
 import com.example.credito_service.repository.CreditoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -16,8 +13,6 @@ public class CreditoService {
 
         @Autowired
         CreditoRepository creditoRepository;
-
-        RestTemplate restTemplate;
 
         public List<Credito> getAll() {return creditoRepository.findAll();}
 
