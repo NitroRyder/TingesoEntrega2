@@ -52,28 +52,7 @@ public class TotalService {
             return null;
         }
 
-        System.out.printf("Monto: %f\n", solicitud.getMontop());
-        System.out.printf("Plazo: %d\n", solicitud.getPlazo());
-        System.out.printf("Tasa de interés anual: %f\n", solicitud.getIntanu());
-        System.out.printf("Tasa de interés mensual: %f\n", solicitud.getIntmen());
-        System.out.printf("Seguro de desgravamen: %f\n", solicitud.getSegudesg());
-        System.out.printf("Seguro de incendio: %f\n", solicitud.getSeguince());
-        System.out.printf("Comisión administrativa: %f\n", solicitud.getComiad());
-        System.out.printf("Meses: %f\n", solicitud.getPlazo() * 12);
-        /*
-        Credito solicitud = null;
-        for (Credito c : solicitudes) {
-            if (c.getId() == creditId) {
-                solicitud = c;
-                break;
-            }
-        }
 
-        if (solicitud == null){
-            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "SOLICITUD NO EXISTENTE EN EL USUARIO.", String.class);
-            return null;
-        }
 
         //-------------------------------------------------------------------------//
         double montop = solicitud.getMontop();        // MONTO DEL PRÉSTAMO
@@ -94,6 +73,7 @@ public class TotalService {
         System.out.printf("Comisión administrativa: %f\n", comiad);
         System.out.printf("Meses: %f\n", meses);
         //-------------------------------------------------------------------------//
+         /*
         // ANÁLISIS DE QUE LOS DATOS SOLICITADOS DEL CRÉDITO SEAN CORRECTOS// VALORES REDONDEADOS PARA COMPARAR
         if (Math.round(intmen) == Math.round(intanu / 12.0)) {
             //System.out.println("TASA DE INTERÉS MENSUAL CORRECTA");
