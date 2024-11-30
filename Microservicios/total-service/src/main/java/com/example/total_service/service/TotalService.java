@@ -5,6 +5,7 @@ import com.example.total_service.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -14,6 +15,9 @@ public class TotalService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
     //-----------------------[P6]- FUNCIONES DE CALCULO DE COSTOS TOTALES-------------------//
     // + CALCULO DE COSTOS TOTALES DE LA SOLICITUD DE CRÉDITO POR ID DEL USUARIO:
     public List<Double> calcularCostosTotales(Long userId, Long creditId) {
@@ -29,9 +33,10 @@ public class TotalService {
         }
 
         Credito solicitud = null;
-        for (Credito c : solicitudes) {
-            if (c.getId() == creditId) {
-                solicitud = c;
+        for (Credito map : solicitudes) {
+            Credito credito = objectMapper.convertValue(map, Credito.class);
+            if (credito.getId() == creditId) {
+                solicitud = credito;
                 break;
             }
         }
