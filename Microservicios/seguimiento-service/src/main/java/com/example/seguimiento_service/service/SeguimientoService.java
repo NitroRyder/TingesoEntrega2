@@ -10,8 +10,7 @@ import java.util.List;
 
 @Service
 public class SeguimientoService {
-
-    @Autowired
+    
     RestTemplate restTemplate;
     //----------------------[P5]- FUNCIONES DE SEGUIMENTO ---------------------------------------//
     // + SEQUIMIENTO DEL ESTADO DE LA SOLICITUD POR ID DEL USUARIO:
