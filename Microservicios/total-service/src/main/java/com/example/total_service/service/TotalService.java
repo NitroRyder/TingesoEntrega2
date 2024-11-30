@@ -17,14 +17,26 @@ public class TotalService {
     // + CALCULO DE COSTOS TOTALES DE LA SOLICITUD DE CRÉDITO POR ID DEL USUARIO:
     public List<Double> calcularCostosTotales(Long userId, Long creditId) {
         // Fetch the Usuario object using RestTemplate
-        Usuario usuario = restTemplate.getForObject("http://localhost:8030/usuario/" + userId, Usuario.class); // OBTENCIÓN DE USUARIO COMPLETO POR ID
+        Usuario usuario = restTemplate.getForObject("http://usuario-service/usuario/" + userId, Usuario.class); // OBTENCIÓN DE USUARIO COMPLETO POR ID
         if (usuario == null) {
             throw new IllegalArgumentException("ERROR: USUARIO NO ENCONTRADO");
         }
-        // ENTREGAME LA SOLICITUD POR SU ID
-        Credito solicitud = restTemplate.getForObject("http://localhost:8020/credito/" + creditId, Credito.class); // OBTENGO LA SOLICITUD DEL USUARIO -> PARA EL RETORNO DE ARCHIVOS
+
+        List<Credito> solicitudes = restTemplate.getForObject("http://usuario-service/usuario/creditos/" + userId, List.class);
+        if (solicitudes == null) {
+            throw new IllegalArgumentException("ERROR: USUARIO NO TIENE SOLICITUDES");
+        }
+
+        Credito solicitud = null;
+        for (Credito c : solicitudes) {
+            if (c.getId() == creditId) {
+                solicitud = c;
+                break;
+            }
+        }
+
         if (solicitud == null){
-            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
             restTemplate.postForObject(notificationUrl, "SOLICITUD NO EXISTENTE EN EL USUARIO.", String.class);
             return null;
         }
@@ -37,6 +49,15 @@ public class TotalService {
         double seguince = solicitud.getSeguince();  // SEGURO DE INCENDIO
         double comiad = solicitud.getComiad();       // COMISIÓN ADMINISTRATIVA
         double meses = plazo * 12; // PASA DE AÑOS A MESES
+
+        System.out.printf("Monto: %f\n", montop);
+        System.out.printf("Plazo: %d\n", plazo);
+        System.out.printf("Tasa de interés anual: %f\n", intanu);
+        System.out.printf("Tasa de interés mensual: %f\n", intmen);
+        System.out.printf("Seguro de desgravamen: %f\n", segudesg);
+        System.out.printf("Seguro de incendio: %f\n", seguince);
+        System.out.printf("Comisión administrativa: %f\n", comiad);
+        System.out.printf("Meses: %f\n", meses);
         //-------------------------------------------------------------------------//
         // ANÁLISIS DE QUE LOS DATOS SOLICITADOS DEL CRÉDITO SEAN CORRECTOS// VALORES REDONDEADOS PARA COMPARAR
         if (Math.round(intmen) == Math.round(intanu / 12.0)) {
@@ -46,11 +67,11 @@ public class TotalService {
             solicitud.setState("RECHAZADA");
             //-------------------------------------------------------------------------//
             // GUARDAR LA SOLICITUD ACTUALIZADA
-            Credito savedSolicitud = restTemplate.postForObject("http://localhost:8020/credito/save", solicitud, Credito.class);
+            Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", solicitud, Credito.class);
 
             //-------------------------------------------------------------------------//
             // ENVIAR NOTIFICACIÓN AL SERVICIO DE USUARIO
-            String notificationUrl = "http://localhost:8030/usuario/addnotification/" + userId;
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
             restTemplate.postForObject(notificationUrl, "TASA DE INTERÉS MENSUAL ES INCORRECTA", String.class);
             //-------------------------------------------------------------------------//
             return null;
