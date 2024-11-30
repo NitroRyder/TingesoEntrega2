@@ -30,6 +30,11 @@ public class TotalService {
             throw new IllegalArgumentException("ERROR: USUARIO NO TIENE SOLICITUDES");
         }
 
+        // IMPRIMIR LA LISTA DE SOLICITUDES
+        for (Credito c : solicitudes) {
+            System.out.println(c);
+        }
+
         Credito solicitud = null;
         for (Credito c : solicitudes) {
             if (c.getId() == creditId) {
