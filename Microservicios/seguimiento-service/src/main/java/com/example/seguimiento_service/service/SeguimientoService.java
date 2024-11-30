@@ -18,10 +18,10 @@ public class SeguimientoService {
         if (usuario == null) {
             throw new IllegalArgumentException("ERROR: USUARIO NO ENCONTRADO");
         }
-        Credito solicitud = restTemplate.getForObject("http://credito-service/credito/byusuario/" + creditId, Credito.class);
-        if (solicitud == null) {
+        List<Credito> solicitudes = restTemplate.getForObject("http://credito-service/credito/byusuario/" + creditId, List.class);
+        if (solicitudes == null || solicitudes.isEmpty()) {
             throw new IllegalArgumentException("ERROR: SOLICITUD NO ENCONTRADA");
         }
-        return solicitud;
+        return solicitudes.get(0); // Asumiendo que quieres el primer elemento de la lista
     }
 }
