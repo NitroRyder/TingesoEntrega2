@@ -6,6 +6,7 @@ import com.example.credito_service.model.Usuario;
 import com.example.credito_service.repository.CreditoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -26,7 +27,7 @@ public class CreditoService {
             Credito creditoNew = creditoRepository.save(credito);
             return creditoNew;
         }
-
+         @Transactional(readOnly = true)
         public void deleteCredito(int id) {creditoRepository.deleteById(id);}
 
     public List<Credito> byUsuarioId(int usuarioId) {
