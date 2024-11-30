@@ -53,29 +53,17 @@ public class CreditoController {
 
     @PostMapping("/registrar")
     public ResponseEntity<Credito> registrarCredito(
-            @RequestParam("montop") double montop,
-            @RequestParam("plazo") int plazo,
-            @RequestParam("intanu") double intanu,
-            @RequestParam("intmen") double intmen,
-            @RequestParam("segudesg") double segudesg,
-            @RequestParam("seguince") double seguince,
-            @RequestParam("comiad") double comiad,
-            @RequestParam("usuarioId") int usuarioId) {
-        try {
-            Credito credito = creditoService.registrarCredito(
-                    montop,
-                    plazo,
-                    intanu,
-                    intmen,
-                    segudesg,
-                    seguince,
-                    comiad,
-                    usuarioId
+            @RequestBody Credito credito) {
+            Credito creditoRegistrado = creditoService.registrarCredito(
+                    credito.getMontop(),
+                    credito.getPlazo(),
+                    credito.getIntanu(),
+                    credito.getIntmen(),
+                    credito.getSegudesg(),
+                    credito.getSeguince(),
+                    credito.getComiad(),
+                    credito.getUsuarioId()
             );
-            return ResponseEntity.ok(credito);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body(null);
-        }
+            return ResponseEntity.ok(creditoRegistrado);
     }
 }
