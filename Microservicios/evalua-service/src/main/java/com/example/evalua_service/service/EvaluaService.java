@@ -3,6 +3,7 @@ package com.example.evalua_service.service;
 import com.example.evalua_service.model.Credito;
 import com.example.evalua_service.model.Ahorro;
 import com.example.evalua_service.model.Usuario;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,7 +13,8 @@ import java.util.*;
 @Service
 public class EvaluaService {
 
-    RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
     //-----------------------[P4]- EVALUACIÓN DE CRÉDITO-------------------------//
     // + REVICIÓN DE SOLCITUD CREADA Y ENTREGA DE ARCHIVOS EN CASO DE PASAR LAS PRUEBAS:
