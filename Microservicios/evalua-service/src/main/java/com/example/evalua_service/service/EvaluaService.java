@@ -157,30 +157,16 @@ public class EvaluaService {
         }
         // [R5]--------------------------------------------------------------------//
         // REVICIÓN DEL TIPO DE CRÉDITO SOLICITADO, SI NO COINSIDE, RECHAZA
-        if (plazo <= 30 && 0.035 <= intanu && intanu <= 0.05 && montop <= usuario.getValorpropiedad() * 0.8 &&
-                solicitud.getComprobanteIngresos() != null && solicitud.getComprobanteIngresos().length > 0 &&
-                solicitud.getCertificadoAvaluo() != null && solicitud.getCertificadoAvaluo().length > 0 &&
-                solicitud.getHistorialCrediticio() != null && solicitud.getHistorialCrediticio().length > 0 && usuario.getHouses() == 0 && usuario.getObjective().equalsIgnoreCase("PRIMERA VIVIENDA")) {
+        if (plazo <= 30 && 0.035 <= intanu && intanu <= 0.05 && montop <= usuario.getValorpropiedad() * 0.8 && usuario.getHouses() == 0 && usuario.getObjective().equalsIgnoreCase("PRIMERA VIVIENDA")) {
             //System.out.println("CRÉDITO APROBADO: PRIMERA VIVIENDA");
             //-------------------------------------------------------------------------//
-        } else if (plazo <= 20 && 0.04 <= intanu && intanu <= 0.06 && montop <= usuario.getValorpropiedad() * 0.7 &&
-                solicitud.getComprobanteIngresos() != null && solicitud.getComprobanteIngresos().length > 0 &&
-                solicitud.getCertificadoAvaluo() != null  && solicitud.getCertificadoAvaluo().length > 0 &&
-                solicitud.getEscrituraPrimeraVivienda() != null && solicitud.getEscrituraPrimeraVivienda().length > 0 &&
-                solicitud.getHistorialCrediticio() != null  && solicitud.getHistorialCrediticio().length > 0 && usuario.getHouses() > 0 && usuario.getObjective().equalsIgnoreCase("SEGUNDA VIVIENDA")) {
+        } else if (plazo <= 20 && 0.04 <= intanu && intanu <= 0.06 && montop <= usuario.getValorpropiedad() * 0.7 && usuario.getHouses() > 0 && usuario.getObjective().equalsIgnoreCase("SEGUNDA VIVIENDA")) {
             //System.out.println("CRÉDITO APROBADO: SEGUNDA VIVIENDA");
             //-------------------------------------------------------------------------//
-        } else if (plazo <= 25 && 0.05 <= intanu && intanu <= 0.07 && montop <= usuario.getValorpropiedad() * 0.6 &&
-                solicitud.getEstadosFinancieros() != null && solicitud.getEstadosFinancieros().length > 0 &&
-                solicitud.getComprobanteIngresos() != null && solicitud.getComprobanteIngresos().length > 0 &&
-                solicitud.getCertificadoAvaluo() != null && solicitud.getCertificadoAvaluo().length > 0 &&
-                solicitud.getPlanNegocios() != null && solicitud.getPlanNegocios().length > 0 && usuario.getObjective().equalsIgnoreCase("PROPIEDAD COMERCIAL")) {
+        } else if (plazo <= 25 && 0.05 <= intanu && intanu <= 0.07 && montop <= usuario.getValorpropiedad() * 0.6 && usuario.getObjective().equalsIgnoreCase("PROPIEDAD COMERCIAL")) {
             //System.out.println("CRÉDITO APROBADO: PROPIEDADES COMERCIALES");
             //-------------------------------------------------------------------------//
-        } else if (plazo <= 15 && 0.045 <= intanu && intanu <= 0.06 && montop <= usuario.getValorpropiedad() * 0.5 &&
-                solicitud.getComprobanteIngresos() != null && solicitud.getComprobanteIngresos().length > 0 &&
-                solicitud.getPresupuestoRemodelacion() != null && solicitud.getPresupuestoRemodelacion().length > 0 &&
-                solicitud.getCertificadoAvaluo() != null && solicitud.getCertificadoAvaluo().length > 0 && usuario.getObjective().equalsIgnoreCase("REMODELACION")) {
+        } else if (plazo <= 15 && 0.045 <= intanu && intanu <= 0.06 && montop <= usuario.getValorpropiedad() * 0.5 && usuario.getObjective().equalsIgnoreCase("REMODELACION")) {
             //System.out.println("CRÉDITO APROBADO: REMODELACIÓN");
         } else {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
