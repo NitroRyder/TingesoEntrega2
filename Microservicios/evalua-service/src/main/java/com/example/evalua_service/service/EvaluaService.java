@@ -566,9 +566,9 @@ public class EvaluaService {
         Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", request, Credito.class);
 
         //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
-        // Update the Usuario object with the updated Credito object using RestTemplate
-        String updateUsuarioUrl = "http://usuario-service/usuario/updateSolicitud/" + userId;
-        restTemplate.postForObject(updateUsuarioUrl, solicitud, Usuario.class);
+
+        //String updateUsuarioUrl = "http://usuario-service/usuario/updateSolicitud/" + userId;
+        //restTemplate.postForObject(updateUsuarioUrl, solicitud, Usuario.class);
 
         return 0;
     }
