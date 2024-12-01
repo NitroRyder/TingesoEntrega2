@@ -16,13 +16,11 @@ import java.util.List;
 public class DocumentosController {
 
     @Autowired
-    DocumentosRepository documentosRepository;
-    @Autowired
     private DocumentosService documentosService;
 
     @GetMapping
     public ResponseEntity<List<Documentos>> getAll() {
-        List<Documentos> documentos = documentosRepository.findAll();
+        List<Documentos> documentos = documentosService.getAll();
         if(documentos.isEmpty())
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(documentos);
@@ -30,7 +28,7 @@ public class DocumentosController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Documentos> getById(@PathVariable("id") int id) {
-        Documentos documentos = documentosRepository.findById(id).orElse(null);
+        Documentos documentos = documentosService.getDocumentosById(id);
         if(documentos == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(documentos);
@@ -38,19 +36,19 @@ public class DocumentosController {
 
     @PostMapping("/save")
     public ResponseEntity<Documentos> saveDocumentos(@RequestBody Documentos documentos) {
-        Documentos documentosNew = documentosRepository.save(documentos);
+        Documentos documentosNew = documentosService.saveDocumentos(documentos);
         return ResponseEntity.ok(documentosNew);
     }
 
     @GetMapping("/bycredito/{creditoId}")
     public ResponseEntity<List<Documentos>> getByCreditoId(@PathVariable("creditoId") int creditoId) {
-        List<Documentos> documentos = documentosRepository.findByCreditoId(creditoId);
+        List<Documentos> documentos = documentosService.byCreditoId(creditoId);
         return ResponseEntity.ok(documentos);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteDocumentos(@PathVariable("id") int id) {
-        documentosRepository.deleteById(id);
+        documentosService.deleteDocumentos(id);
         return ResponseEntity.ok("Documentos eliminado");
     }
 
