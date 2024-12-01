@@ -127,8 +127,13 @@ public class EvaluaService {
             // OBTENCIÓN DE LOS AHORROS DEL USUARIO
             //--------------------------------------------------------------------------------//
             // OBRENCIÓN DE AHORROS POR ID DEL USUARIO
-            List<Ahorro> ahorros = restTemplate.getForObject("http://ahorro-service/ahorro/byusuario/" + userId, List.class); // OBTENGO LOS AHORROS DEL USUARIO -> PARA REALIZAR EVALUACIÓN
-
+            ResponseEntity<List<Ahorro>> ahorroResponse = restTemplate.exchange(
+                    "http://ahorro-service/ahorro/byusuario/" + userId,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Ahorro>>() {}
+            );
+            List<Ahorro> ahorros = ahorroResponse.getBody();
             if (ahorros == null) {
                 System.out.printf("ERROR: USUARIO NO TIENE AHORROS");
                 return 0;
@@ -214,8 +219,13 @@ public class EvaluaService {
         // OBTENGO LOS AHORROS DEL USUARIO
         //--------------------------------------------------------------------------------//
         // OBRENCIÓN DE AHORROS POR ID DEL USUARIO
-        List<Ahorro> ahorros = restTemplate.getForObject("http://ahorro-service/ahorro/byusuario/" + userId, List.class); // OBTENGO LOS AHORROS DEL USUARIO -> PARA REALIZAR EVALUACIÓN
-
+        ResponseEntity<List<Ahorro>> ahorroResponse = restTemplate.exchange(
+                "http://ahorro-service/ahorro/byusuario/" + userId,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Ahorro>>() {}
+        );
+        List<Ahorro> ahorros = ahorroResponse.getBody();
         if (ahorros == null) {
             System.out.printf("ERROR: USUARIO NO TIENE AHORROS");
             return 0;
