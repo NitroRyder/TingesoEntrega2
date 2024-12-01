@@ -42,7 +42,8 @@ public class EvaluaService {
         );
         List<Credito> solicitudes = response.getBody();
         if (solicitudes == null) {
-            throw new IllegalArgumentException("ERROR: USUARIO NO TIENE SOLICITUDES");
+            System.out.printf("ERROR: USUARIO NO TIENE SOLICITUDES");
+            return 0;
         }
         //--------------------------------------------------------------------------------//
         // OBTENCIÓN DEL CREDITO A MODIFICAR
@@ -62,7 +63,8 @@ public class EvaluaService {
         if ( !"PENDIENTE".equalsIgnoreCase(solicitud.getState())) {
             System.out.println("SOLICITUD NO ESTÁ EN ESTADO PENDIENTE");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ERROR: LA SOLICITUD DE CRÉDITO NO ESTÁ EN ESTADO PENDIENTE", String.class);
+            String notificationMessage = "Credit ID: " + creditId + " - SOLICITUD NO EXISTENTE EN EL USUARIO.";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             return 0;
         }
         //-------------------------------------------------------------------------//
