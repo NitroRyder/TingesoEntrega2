@@ -51,6 +51,15 @@ public class CreditoController {
         return ResponseEntity.ok("Credito eliminado");
     }
 
+    @GetMapping("/documento/{creditoId}")
+    public ResponseEntity<byte[]> getDocumentoByCreditoId(@PathVariable("creditoId") int creditoId) {
+        byte[] documento = creditoService.getDocumentoByCreditoId(creditoId);
+        if (documento == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(documento);
+    }
+
     @PostMapping("/registrar")
     public ResponseEntity<Credito> registrarCredito(
             @RequestBody Credito credito) {
