@@ -96,6 +96,16 @@ public class UsuarioController {
         return ResponseEntity.ok("Usuario eliminado");
     }
 
+    @DeleteMapping("/clearNotifications/{userId}")
+    public ResponseEntity<String> clearNotifications(@PathVariable("userId") int userId) {
+        try {
+            usuarioService.clearNotifications(userId);
+            return ResponseEntity.ok("Notificaciones eliminadas");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/register")
     public ResponseEntity<Usuario> registerUsuario(@RequestBody Usuario usuario) {
         Usuario usuarioRegistrado = usuarioService.registerUsuario(

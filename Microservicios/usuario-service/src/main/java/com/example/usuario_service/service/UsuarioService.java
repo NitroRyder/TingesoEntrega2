@@ -69,6 +69,17 @@ public class UsuarioService {
     public void deleteUsuario(int id) {
         usuarioRepository.deleteById(id);
     }
+    
+    public void clearNotifications(int userId) {
+        Usuario usuario = usuarioRepository.findById(userId).orElse(null);
+        if (usuario != null) {
+            usuario.getNotifications().clear();
+            usuarioRepository.save(usuario);
+        } else {
+            throw new IllegalArgumentException("ERROR: USUARIO NO ENCONTRADO");
+        }
+    }
+
     //-----------------------[P2]- FUNCIONES DE REGISTRO DE USUARIO-------------------------//
     // + REGISTRO DE USUARIO POR VALORES INGRESADOS:
     public Usuario registerUsuario(String rut, String name, int age, int workage, int houses, int valorpropiedad, int ingresos, int sumadeuda, String objective, String independiente) {
