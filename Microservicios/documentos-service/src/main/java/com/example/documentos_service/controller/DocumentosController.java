@@ -42,8 +42,15 @@ public class DocumentosController {
 
     @GetMapping("/bycredito/{creditoId}")
     public ResponseEntity<List<Documentos>> getByCreditoId(@PathVariable("creditoId") int creditoId) {
-        List<Documentos> documentos = documentosService.byCreditoId(creditoId);
-        return ResponseEntity.ok(documentos);
+        try {
+            List<Documentos> documentos = documentosService.byCreditoId(creditoId);
+            if (documentos.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(documentos);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
