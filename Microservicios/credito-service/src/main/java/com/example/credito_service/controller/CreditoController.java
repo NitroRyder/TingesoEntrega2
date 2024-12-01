@@ -1,6 +1,7 @@
 package com.example.credito_service.controller;
 
 import com.example.credito_service.entity.Credito;
+import com.example.credito_service.model.Documentos;
 import com.example.credito_service.service.CreditoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -52,12 +53,12 @@ public class CreditoController {
     }
 
     @GetMapping("/documento/{creditoId}")
-    public ResponseEntity<byte[]> getDocumentoByCreditoId(@PathVariable("creditoId") int creditoId) {
-        byte[] documento = creditoService.getDocumentoByCreditoId(creditoId);
-        if (documento == null) {
+    public ResponseEntity<List<Documentos>> getDocumentoByCreditoId(@PathVariable("creditoId") int creditoId) {
+        List<Documentos> documentos = creditoService.getDocumentoByCreditoId(creditoId);
+        if (documentos == null || documentos.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(documento);
+        return ResponseEntity.ok(documentos);
     }
 
     @PostMapping("/registrar")
