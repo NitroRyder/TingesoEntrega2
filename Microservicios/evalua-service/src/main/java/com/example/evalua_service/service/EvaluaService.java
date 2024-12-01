@@ -24,13 +24,14 @@ public class EvaluaService {
     public int evaluateCredito(Long userId, Long creditId) {
         //--------------------------------------------------------------------------------//
         //OBTENCION DEL USUARIO POR SU ID
-
         Usuario usuario = restTemplate.getForObject("http://usuario-service/usuario/" + userId, Usuario.class); // OBTENCIÓN DE USUARIO COMPLETO POR ID
         if (usuario == null) {
             System.out.printf("ERROR: USUARIO NO ENCONTRADO");
             return 0;
         }
-
+        // ELIMINACIÓN DE NOTIFICACIONES DE USUARIO
+        String clearNotificationsUrl = "http://usuario-service/usuario/clearNotifications/" + userId;
+        restTemplate.delete(clearNotificationsUrl);
         //--------------------------------------------------------------------------------//
         // OBTENCIÓN DE LA LISTA DE CREDITOS DEL USUARIO POR SU ID DE USUARIO
         ResponseEntity<List<Credito>> response = restTemplate.exchange(

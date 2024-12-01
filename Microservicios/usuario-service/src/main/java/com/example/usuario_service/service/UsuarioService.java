@@ -69,7 +69,7 @@ public class UsuarioService {
     public void deleteUsuario(int id) {
         usuarioRepository.deleteById(id);
     }
-    
+
     public void clearNotifications(int userId) {
         Usuario usuario = usuarioRepository.findById(userId).orElse(null);
         if (usuario != null) {
