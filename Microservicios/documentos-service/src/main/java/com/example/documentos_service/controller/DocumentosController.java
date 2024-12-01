@@ -46,6 +46,17 @@ public class DocumentosController {
         return ResponseEntity.ok(documentos);
     }
 
+    @GetMapping("/download/{id}")
+    public ResponseEntity<byte[]> downloadDocument(@PathVariable("id") int id) {
+        Documentos documentos = documentosService.getDocumentosById(id);
+        if (documentos == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=document_" + id + ".bin")
+                .body(documentos.getDocumento());
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteDocumentos(@PathVariable("id") int id) {
         documentosService.deleteDocumentos(id);
