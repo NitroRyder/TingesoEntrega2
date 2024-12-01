@@ -3,8 +3,10 @@ package com.example.credito_service.service;
 import com.example.credito_service.entity.Credito;
 import com.example.credito_service.repository.CreditoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -13,6 +15,9 @@ public class CreditoService {
 
         @Autowired
         CreditoRepository creditoRepository;
+
+        @Autowired
+        RestTemplate restTemplate;
 
         public List<Credito> getAll() {return creditoRepository.findAll();}
 
@@ -23,6 +28,12 @@ public class CreditoService {
             return creditoNew;
         }
         public void deleteCredito(int id) {creditoRepository.deleteById(id);}
+
+    public byte[] getDocumentoByCreditoId(int creditoId) {
+        String url = "http://documentos-service/documentos/bycredito/" + creditoId;
+        ResponseEntity<byte[]> response = restTemplate.getForEntity(url, byte[].class);
+        return response.getBody();
+    }
 
     public List<Credito> byUsuarioId(int usuarioId) {
         return creditoRepository.findByUsuarioId(usuarioId);
