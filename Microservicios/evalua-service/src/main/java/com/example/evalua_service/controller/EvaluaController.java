@@ -23,7 +23,7 @@ public class EvaluaController {
     @PostMapping("/updateState")
     public ResponseEntity<String> updateState(@RequestParam Long userId, @RequestParam Long creditId, @RequestParam int state) {
         int result = evaluaService.updateState(userId, creditId, state);
-        if (result == 1) {
+        if (result == 0) {
             return ResponseEntity.ok("Evaluación actualizada");
         } else {
             return ResponseEntity.ok("Error al actualizar la evaluación");
