@@ -1,6 +1,7 @@
 package com.example.credito_service.service;
 
 import com.example.credito_service.entity.Credito;
+import com.example.credito_service.model.Documentos;
 import com.example.credito_service.repository.CreditoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +30,9 @@ public class CreditoService {
         }
         public void deleteCredito(int id) {creditoRepository.deleteById(id);}
 
-    public byte[] getDocumentoByCreditoId(int creditoId) {
-        String url = "http://documentos-service/documentos/bycredito/" + creditoId;
-        ResponseEntity<byte[]> response = restTemplate.getForEntity(url, byte[].class);
-        return response.getBody();
+    public List<Documentos> getDocumentoByCreditoId(int creditoId) {
+        List<Documentos> documentos = restTemplate.getForObject("http://documentos-service/documentos/bycredito/" + creditoId, List.class);
+        return documentos;
     }
 
     public List<Credito> byUsuarioId(int usuarioId) {
