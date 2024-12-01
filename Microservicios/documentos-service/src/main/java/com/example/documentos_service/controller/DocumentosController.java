@@ -54,11 +54,12 @@ public class DocumentosController {
 
     @PostMapping("/registrar")
     public ResponseEntity<Documentos> registrarDocumentos(
-            @RequestBody Documentos documentos) {
-            Documentos documentosRegistrado = documentosService.registrarDocumentos(
-                    documentos.getCreditoId(),
-                    documentos.getDocumento()
-            );
-            return ResponseEntity.ok(documentosRegistrado);
+            @RequestParam int creditoId,
+            @RequestParam byte[] documento) {
+        Documentos documentosRegistrado = documentosService.registrarDocumentos(
+                creditoId,
+                documento
+        );
+        return ResponseEntity.ok(documentosRegistrado);
     }
 }
