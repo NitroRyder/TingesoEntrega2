@@ -95,6 +95,7 @@ public class UsuarioController {
         usuarioService.deleteUsuario(id);
         return ResponseEntity.ok("Usuario eliminado");
     }
+
     @PostMapping("/register")
     public ResponseEntity<Usuario> registerUsuario(@RequestBody Usuario usuario) {
         Usuario usuarioRegistrado = usuarioService.registerUsuario(
