@@ -24,7 +24,8 @@ public class EvaluaService {
     public int evaluateCredito(Long userId, Long creditId) {
         //--------------------------------------------------------------------------------//
         //OBTENCION DEL USUARIO POR SU ID
-        Usuario usuario = restTemplate.getForObject("http:/usuario-service/usuario/" + userId, Usuario.class); // OBTENCIÓN DE USUARIO COMPLETO POR ID
+
+        Usuario usuario = restTemplate.getForObject("http://usuario-service/usuario/" + userId, Usuario.class); // OBTENCIÓN DE USUARIO COMPLETO POR ID
         if (usuario == null) {
             System.out.printf("ERROR: USUARIO NO ENCONTRADO");
             return 0;
