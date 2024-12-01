@@ -15,9 +15,13 @@ public class EvaluaController {
     EvaluaService evaluaService;
 
     @PostMapping("/evaluateCredito")
-    public ResponseEntity<Map<String, Object>> evaluateCredito(@RequestParam Long userId, @RequestParam Long creditId) {
-        Map<String, Object> response = evaluaService.evaluateCredito(userId, creditId);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<String> evaluateCredito(@RequestParam Long userId, @RequestParam Long creditId) {
+        int response = evaluaService.evaluateCredito(userId, creditId);
+        if (response == 1) {
+            return ResponseEntity.ok("EVALUACIÓN TERMINADA");
+        } else {
+            return ResponseEntity.ok("EVALUACIÓN RECHAZADA");
+        }
     }
 
     @PostMapping("/updateState")

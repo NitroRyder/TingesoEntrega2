@@ -21,38 +21,46 @@ public class EvaluaService {
 
     //-----------------------[P4]- EVALUACIÓN DE CRÉDITO-------------------------//
     // + REVICIÓN DE SOLCITUD CREADA Y ENTREGA DE ARCHIVOS EN CASO DE PASAR LAS PRUEBAS:
-    public Map<String, Object> evaluateCredito(Long userId, Long creditId) {
-
-        // Fetch the Usuario object using RestTemplate
+    public int evaluateCredito(Long userId, Long creditId) {
+        //--------------------------------------------------------------------------------//
+        //OBTENCION DEL USUARIO POR SU ID
         Usuario usuario = restTemplate.getForObject("http:/usuario-service/usuario/" + userId, Usuario.class); // OBTENCIÓN DE USUARIO COMPLETO POR ID
         if (usuario == null) {
-            throw new IllegalArgumentException("ERROR: USUARIO NO ENCONTRADO");
+            System.out.printf("ERROR: USUARIO NO ENCONTRADO");
+            return 0;
         }
-        // ENTREGAME LA SOLICITUD POR SU ID
-        Credito ayuda = restTemplate.getForObject("http://credito-service/credito/" + creditId, Credito.class);
-        if (ayuda == null) {
-            throw new IllegalArgumentException("ERROR: SOLICITUD NO ENCONTRADA");
+        //--------------------------------------------------------------------------------//
+        // OBTENCIÓN DE LA LISTA DE CREDITOS DEL USUARIO POR SU ID DE USUARIO
+        ResponseEntity<List<Credito>> response = restTemplate.exchange(
+                "http://usuario-service/usuario/creditos/" + userId,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Credito>>() {}
+        );
+        List<Credito> solicitudes = response.getBody();
+        if (solicitudes == null) {
+            throw new IllegalArgumentException("ERROR: USUARIO NO TIENE SOLICITUDES");
         }
-        Credito solicitud = restTemplate.getForObject("http://credito-service/credito/" + creditId, Credito.class); // OBTENGO LA SOLICITUD DEL USUARIO -> VARA LA EVALUACIÓN -> ES EL MISMO QUE AYUDA, NO NECESITA VER SI EXISTE O  NO
-        //-------------------------------------------------------------------------//
-        Map<String, Object> response = new HashMap<>();
-        response.put("ayuda", ayuda);
-        List<Map<String, String>> files = new ArrayList<>();
-        files.add(Map.of("name", "Comprobante de Ingresos", "data", ayuda.getComprobanteIngresos() != null ? Base64.getEncoder().encodeToString(ayuda.getComprobanteIngresos()) : ""));
-        files.add(Map.of("name", "Certificado de Avaluo", "data", ayuda.getCertificadoAvaluo() != null ? Base64.getEncoder().encodeToString(ayuda.getCertificadoAvaluo()) : ""));
-        files.add(Map.of("name", "Historial Crediticio", "data", ayuda.getHistorialCrediticio() != null ? Base64.getEncoder().encodeToString(ayuda.getHistorialCrediticio()) : ""));
-        files.add(Map.of("name", "Escritura Primera Vivienda", "data", ayuda.getEscrituraPrimeraVivienda() != null ? Base64.getEncoder().encodeToString(ayuda.getEscrituraPrimeraVivienda()) : ""));
-        files.add(Map.of("name", "Plan de Negocios", "data", ayuda.getPlanNegocios() != null ? Base64.getEncoder().encodeToString(ayuda.getPlanNegocios()) : ""));
-        files.add(Map.of("name", "Estados Financieros", "data", ayuda.getEstadosFinancieros() != null ? Base64.getEncoder().encodeToString(ayuda.getEstadosFinancieros()) : ""));
-        files.add(Map.of("name", "Presupuesto de Remodelación", "data", ayuda.getPresupuestoRemodelacion() != null ? Base64.getEncoder().encodeToString(ayuda.getPresupuestoRemodelacion()) : ""));
-        files.add(Map.of("name", "Dicom", "data", ayuda.getDicom() != null ? Base64.getEncoder().encodeToString(ayuda.getDicom()) : ""));
-        response.put("files", files);
+        //--------------------------------------------------------------------------------//
+        // OBTENCIÓN DEL CREDITO A MODIFICAR
+        Credito solicitud = null;
+        for (Credito c : solicitudes) {
+            if (c.getId() == (creditId)) {
+                solicitud = c;
+                break;
+            }
+        }
+        if (solicitud == null) {
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "SOLICITUD NO EXISTENTE EN EL USUARIO.", String.class);
+            return 0;
+        }
         //-------------------------------------------------------------------------//
         if ( !"PENDIENTE".equalsIgnoreCase(solicitud.getState())) {
             System.out.println("SOLICITUD NO ESTÁ EN ESTADO PENDIENTE");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
             restTemplate.postForObject(notificationUrl, "ERROR: LA SOLICITUD DE CRÉDITO NO ESTÁ EN ESTADO PENDIENTE", String.class);
-            return null;
+            return 0;
         }
         //-------------------------------------------------------------------------//
         // OBTENCIÓN DE DATOS DE LA SOLICITUD
@@ -71,20 +79,15 @@ public class EvaluaService {
         } else {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "TASA DE INTERÉS MENSUAL ES INCORRECTA", String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
 
             HttpEntity<Credito> request = new HttpEntity<>(solicitud);
             Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", request, Credito.class);
 
-            // Add the saved Credito object to the response
-            response.put("savedSolicitud", savedSolicitud);
-            //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
-            // AGREGAR NOTIFICACIÓN AL USUARIO
-            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "TASA DE INTERÉS MENSUAL ES INCORRECTA", String.class);
-
-            return null;
+            return 0;
         }
         //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
         // [R1]- RELACIÓN CUOTA/INGRESO------------------------------------//
@@ -96,61 +99,22 @@ public class EvaluaService {
         } else {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "RELACIÓN CUOTA/INGRESO RECHAZADA: CUOTA/INGRESO TIENE QUE SER MENOR O IGUAL QUE EL UMBRAL ESTABLECIDO POR EL BANCO", String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
+
             HttpEntity<Credito> request = new HttpEntity<>(solicitud);
             Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", request, Credito.class);
 
-            // Add the saved Credito object to the response
-            response.put("savedSolicitud", savedSolicitud);
-            //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
-            // AGREGAR NOTIFICACIÓN AL USUARIO
-            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "RELACIÓN CUOTA/INGRESO RECHAZADA: CUOTA/INGRESO TIENE QUE SER MENOR O IGUAL QUE EL UMBRAL ESTABLECIDO POR EL BANCO", String.class);
-
-            return null;
+            return 0;
         }
         //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
         // [R2]- HISTORIAL DE  CREDITOS--------------------------------------//
         // OBRENCIÓN DE documents DE USUARIO
-        // VERIFICACIÓN DE QUE HAYA DOCUMENTO REFERENTE A DICOM.PDF
-        byte[] dicom = solicitud.getDicom();
-        if (dicom == null || dicom.length == 0) {
-            // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
-            solicitud.setState("RECHAZADA");
-            // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            HttpEntity<Credito> request = new HttpEntity<>(solicitud);
-            Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", request, Credito.class);
 
-            // Add the saved Credito object to the response
-            response.put("savedSolicitud", savedSolicitud);
+        // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| VER COMO HACER
 
-            // AGREGAR NOTIFICACIÓN AL USUARIO
-            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "NO SE HA INGRESADO UN ARCHIVO DICOM", String.class);
-
-            return null;
-            //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
-        } else if (dicom.length < 4 || dicom[0] != '%' || dicom[1] != 'P' || dicom[2] != 'D' || dicom[3] != 'F') {
-            //System.out.println("DICOM no es un archivo PDF.");
-            // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
-            solicitud.setState("RECHAZADA");
-            // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
-            HttpEntity<Credito> request = new HttpEntity<>(solicitud);
-            Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", request, Credito.class);
-
-            // Add the saved Credito object to the response
-            response.put("savedSolicitud", savedSolicitud);
-
-            // AGREGAR NOTIFICACIÓN AL USUARIO
-            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "NO SE HA INGRESADO UN ARCHIVO DICOM DEL TIPO PDF", String.class);
-
-            return null;
-            //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
-        } else {
-            //System.out.println("DICOM GUARDADO EN FORMATO PDF.");
-        }
         //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
         // [R3]- -------------------------------------------------------------------//
         // VER SI DENTRO AÑOS DE TRABAJO ES MAYOR O IGUAL A 2
@@ -163,38 +127,30 @@ public class EvaluaService {
         } else {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "POR FAVOR, SI NO ERES UN TRABAJADOR INDEPENDIENTE, DEBES TENER MÁS DE 1 AÑO DE TRABAJO", String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
+
             HttpEntity<Credito> request = new HttpEntity<>(solicitud);
             Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", request, Credito.class);
 
-            // Add the saved Credito object to the response
-            response.put("savedSolicitud", savedSolicitud);
-
-            // AGREGAR NOTIFICACIÓN AL USUARIO
-            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "POR FAVOR, SI NO ERES UN TRABAJADOR INDEPENDIENTE, DEBES TENER MÁS DE 1 AÑO DE TRABAJO", String.class);
-
-            return null;
+            return 0;
         }
         // [R4]--------------------------------------------------------------------//
         // RECHAZO DE LA SOLICITUD SI LA SUMA DE LAS DEUDAS ES MAYOR AL 50% DE LOS INGRESOS
         if (Double.valueOf(usuario.getSumadeuda()) > usuario.getIngresos() * 0.5) {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "LA SUMA DE DEUDAS NO PUEDE SER MAYOR AL 50% DE LOS INGRESOS", String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
+
             HttpEntity<Credito> request = new HttpEntity<>(solicitud);
             Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", request, Credito.class);
 
-            // Add the saved Credito object to the response
-            response.put("savedSolicitud", savedSolicitud);
-
-            // AGREGAR NOTIFICACIÓN AL USUARIO
-            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "LA SUMA DE DEUDAS NO PUEDE SER MAYOR AL 50% DE LOS INGRESOS", String.class);
-
-            return null;
+            return 0;
         } else {
             //System.out.println("LA SUMA DE DEUDAS ES MENOR AL 50% DE LOS INGRESOS");
         }
@@ -229,38 +185,30 @@ public class EvaluaService {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             //System.out.println("CRÉDITO RECHAZADO: NO CUMPLE CON LOS REQUISITOS, PORFAVOR REVIZAR LOS VALORES INGRESADOS Y LOS ARCHIVOS");
             solicitud.setState("RECHAZADA");
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "CREDITO RECHAZADO: NO CUMPLE CON LOS REQUISITOS, PORFAVOR REVIZAR LOS VALORES INGRESADOS Y LOS ARCHIVOS", String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
+
             HttpEntity<Credito> request = new HttpEntity<>(solicitud);
             Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", request, Credito.class);
 
-            // Add the saved Credito object to the response
-            response.put("savedSolicitud", savedSolicitud);
-
-            // AGREGAR NOTIFICACIÓN AL USUARIO
-            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "CREDITO RECHAZADO: NO CUMPLE CON LOS REQUISITOS, PORFAVOR REVIZAR LOS VALORES INGRESADOS Y LOS ARCHIVOS", String.class);
-
-            return null;
+            return 0;
         }
         // [R6]--------------------------------------------------------------------//
         // RECHAZO DE LA SOLICITUD SI EL SOLICITANTE ESTÁ MUY CERCANO A LA EDAD MÁXIMA PERMITIDA
         if (usuario.getAge() + plazo > 75 || (usuario.getAge() + plazo >= 70 && usuario.getAge() + plazo <= 75)) {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "CREDITO RECHAZADO: EL SOLICITANTE ESTÁ MUY CERCANO A LA EDAD MÁXIMA PERMITIDA", String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
+
             HttpEntity<Credito> request = new HttpEntity<>(solicitud);
             Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", request, Credito.class);
 
-            // Add the saved Credito object to the response
-            response.put("savedSolicitud", savedSolicitud);
-
-            // AGREGAR NOTIFICACIÓN AL USUARIO
-            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "CREDITO RECHAZADO: EL SOLICITANTE ESTÁ MUY CERCANO A LA EDAD MÁXIMA PERMITIDA", String.class);
-
-            return null;
+            return 0;
         } else {
             //System.out.println("EDAD DENTRO DE RANGO ACEPTABLE");
         }
@@ -423,52 +371,45 @@ public class EvaluaService {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "APROBADO"
             solicitud.setState("APROBADO");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "CRÉDITO APROBADO", String.class);
+            //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
+
             HttpEntity<Credito> request = new HttpEntity<>(solicitud);
             Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", request, Credito.class);
 
-            // Add the saved Credito object to the response
-            response.put("savedSolicitud", savedSolicitud);
+            return 1;
 
-            // AGREGAR NOTIFICACIÓN AL USUARIO
-            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "CRÉDITO APROBADO", String.class);
-
-            return response;
         } else if (errores >= 3 && errores < 5) {
             //System.out.println("SOLICITUD DE CRÉDITO EN REVISIÓN ADICIONAL");
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("REVISION ADICIONAL");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "SOLICITUD DE CRÉDITO EN REVISIÓN ADICIONAL", String.class);
+            //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
+
             HttpEntity<Credito> request = new HttpEntity<>(solicitud);
             Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", request, Credito.class);
 
-            // Add the saved Credito object to the response
-            response.put("savedSolicitud", savedSolicitud);
-
-            // AGREGAR NOTIFICACIÓN AL USUARIO
-            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "SOLICITUD DE CRÉDITO EN REVISIÓN ADICIONAL", String.class);
-
-            return response;
+            return 1;
         } else {
             //System.out.println("SOLICITUD DE CRÉDITO RECHAZADO");
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
+            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
+            restTemplate.postForObject(notificationUrl, "CRÉDITO RECHAZADO: EL SOLICITANTE NO CUMPLE CON LOS REQUISITOS", String.class);
+            //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
+            // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
+
             HttpEntity<Credito> request = new HttpEntity<>(solicitud);
             Credito savedSolicitud = restTemplate.postForObject("http://credito-service/credito/save", request, Credito.class);
 
-            // Add the saved Credito object to the response
-            response.put("savedSolicitud", savedSolicitud);
-
-            // AGREGAR NOTIFICACIÓN AL USUARIO
-            String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "CRÉDITO RECHAZADO: EL SOLICITANTE NO CUMPLE CON LOS REQUISITOS", String.class);
-
-            return response;
+            return 1;
         }
     }
 
