@@ -2,6 +2,7 @@ package com.example.documentos_service.controller;
 
 import com.example.documentos_service.entity.Documentos;
 import com.example.documentos_service.repository.DocumentosRepository;
+import com.example.documentos_service.service.DocumentosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ public class DocumentosController {
 
     @Autowired
     DocumentosRepository documentosRepository;
+    @Autowired
+    private DocumentosService documentosService;
 
     @GetMapping
     public ResponseEntity<List<Documentos>> getAll() {
@@ -52,7 +55,7 @@ public class DocumentosController {
     @PostMapping("/registrar")
     public ResponseEntity<Documentos> registrarDocumentos(
             @RequestBody Documentos documentos) {
-            Documentos documentosRegistrado = documentosRepository.registrarDocumentos(
+            Documentos documentosRegistrado = documentosService.registrarDocumentos(
                     documentos.getCreditoId(),
                     documentos.getDocumento()
             );

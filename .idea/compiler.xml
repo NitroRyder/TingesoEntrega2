@@ -17,6 +17,7 @@
         <module name="evalua-service" />
         <module name="seguimiento-service" />
         <module name="total-service" />
+        <module name="documentos-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -31,6 +32,7 @@
       <module name="config-service" options="-parameters" />
       <module name="credito-service" options="-parameters" />
       <module name="credito-service (1)" options="-parameters" />
+      <module name="documentos-service" options="-parameters" />
       <module name="eureka-service" options="-parameters" />
       <module name="evalua-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />

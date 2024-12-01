@@ -15,6 +15,7 @@
         <option value="$PROJECT_DIR$/Microservicios/seguimiento-service/pom.xml" />
         <option value="$PROJECT_DIR$/Microservicios/calculo-total-service/pom.xml" />
         <option value="$PROJECT_DIR$/Microservicios/total-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Microservicios/documentos-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
