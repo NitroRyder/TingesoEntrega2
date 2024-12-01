@@ -85,7 +85,9 @@ public class EvaluaService {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "TASA DE INTERÉS MENSUAL ES INCORRECTA", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - TASA DE INTERÉS MENSUAL ES INCORRECTA";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
 
@@ -105,7 +107,9 @@ public class EvaluaService {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "RELACIÓN CUOTA/INGRESO RECHAZADA: CUOTA/INGRESO TIENE QUE SER MENOR O IGUAL QUE EL UMBRAL ESTABLECIDO POR EL BANCO", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - RELACIÓN CUOTA/INGRESO RECHAZADA: CUOTA/INGRESO TIENE QUE SER MENOR O IGUAL QUE EL UMBRAL ESTABLECIDO POR EL BANCO";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
 
@@ -145,7 +149,9 @@ public class EvaluaService {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "POR FAVOR, SI NO ERES UN TRABAJADOR INDEPENDIENTE, DEBES TENER MÁS DE 1 AÑO DE TRABAJO", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - POR FAVOR, SI NO ERES UN TRABAJADOR INDEPENDIENTE, DEBES TENER MÁS DE 1 AÑO DE TRABAJO";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
 
@@ -160,7 +166,8 @@ public class EvaluaService {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "LA SUMA DE DEUDAS NO PUEDE SER MAYOR AL 50% DE LOS INGRESOS", String.class);
+            String notificationMessage = "Credit ID: " + creditId + " - LA SUMA DE DEUDAS NO PUEDE SER MAYOR AL 50% DE LOS INGRESOS";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
 
@@ -189,7 +196,9 @@ public class EvaluaService {
             //System.out.println("CRÉDITO RECHAZADO: NO CUMPLE CON LOS REQUISITOS, PORFAVOR REVIZAR LOS VALORES INGRESADOS Y LOS ARCHIVOS");
             solicitud.setState("RECHAZADA");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "CREDITO RECHAZADO: NO CUMPLE CON LOS REQUISITOS, PORFAVOR REVIZAR LOS VALORES INGRESADOS Y LOS ARCHIVOS", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - CREDITO RECHAZADO: NO CUMPLE CON LOS REQUISITOS, PORFAVOR REVIZAR LOS VALORES INGRESADOS Y LOS ARCHIVOS";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
 
@@ -204,7 +213,9 @@ public class EvaluaService {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "CREDITO RECHAZADO: EL SOLICITANTE ESTÁ MUY CERCANO A LA EDAD MÁXIMA PERMITIDA", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - CREDITO RECHAZADO: EL SOLICITANTE ESTÁ MUY CERCANO A LA EDAD MÁXIMA PERMITIDA";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
 
@@ -242,7 +253,9 @@ public class EvaluaService {
         }else{
             //-------------------------------------------------------------------------//
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ERROR-1: SALDO POSITIVO MÁS PEQUEÑO MENOR AL 10% DEL MONTO DEL PRÉSTAMO", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ERROR-1: SALDO POSITIVO MÁS PEQUEÑO MENOR AL 10% DEL MONTO DEL PRÉSTAMO";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//
             errores--; // CHEQUEO NEGATIVO
         }
@@ -275,20 +288,27 @@ public class EvaluaService {
         if (cantidad < 12) {   // SI NO HAY 12 MESES DE AHORRO MARCO MAL EL ANALISIS
             //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ERROR-2: MENOS DE 12 MESES DE AHORRO", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ERROR-2: MENOS DE 12 MESES DE AHORRO";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
+
             //System.out.println("ERROR-2: MENOS DE 12 MESES DE AHORRO");
             //-------------------------------------------------------------------------//
             errores--;// CHEQUEO NEGATIVO
         }else if (saldo < 0) { // SI EL SALDO ES NEGATIVO MARCO MAL EL ANALISIS
             //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ERROR-2: SALDO TOTAL ES NEGATIVO", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ERROR-2: SALDO TOTAL ES NEGATIVO";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//
             errores--;// CHEQUEO NEGATIVO
         }else if (bandera == 1) { // SI HAY UN RETIRO MAYOR A 50% DEL SALDO DENTRO DE LOS ULTIMOS 12 MESES
             //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ERROR-2: RETIRO MAYOR A 50% DEL SALDO", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ERROR-2: RETIRO MAYOR A 50% DEL SALDO";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//
             errores--;// CHEQUEO NEGATIVO
         }else{
@@ -318,7 +338,9 @@ public class EvaluaService {
         if (mensual < 12 && trimestral < 4) {
             //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ERROR-3: HAY MENOS DE 12 DEPOSITOS MENSUALES O MENOS DE 4 DEPOSITOS TRIMESTRALES", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ERROR-3: HAY MENOS DE 12 DEPOSITOS MENSUALES O MENOS DE 4 DEPOSITOS TRIMESTRALES";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//
             bandera = 1; // SI ES 1, NO NECESITO SEGUIR RESTANDO ERRORES, PARA LA COMPARACIÓN DIGUIENTE
         }
@@ -326,7 +348,9 @@ public class EvaluaService {
         if (sumdepos < usuario.getIngresos() * 0.05) {
             //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ERROR-3: LOS DEPOSITOS NO SUMAN AL MENOS EL 5% DE LOS INGRESOS MENSUALES", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ERROR-3: LOS DEPOSITOS NO SUMAN AL MENOS EL 5% DE LOS INGRESOS MENSUALES";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
 
             bandera = 1; // SI ES 1, NO NECESITO SEGUIR RESTANDO ERRORES, PARA LA COMPARACIÓN DIGUIENTE
         }
@@ -345,7 +369,9 @@ public class EvaluaService {
         }else{
             //-------------------------------------------------------------------------//  -------------------------------------------------------------------------------------------------> REVIZAR |||||||||||||||||||||||||||||||||||||||||
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ERROR-4: CUENTA DE AHORROS NO CUMPLE CON RELACIÓN ENTRE AÑOS DE ANTIUGEDAD Y SALDO ACUMULADO RESPECTO AL MONTO DEL PRÉSTAMO", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ERROR-4: CUENTA DE AHORROS NO CUMPLE CON RELACIÓN ENTRE AÑOS DE ANTIUGEDAD Y SALDO ACUMULADO RESPECTO AL MONTO DEL PRÉSTAMO";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//
             //System.out.println("ERROR-4: CUENTA DE AHORROS NO CUMPLE CON RELACIÓN ENTRE AÑOS DE ANTIUGEDAD Y SALDO ACUMULADO RESPECTO AL MONTO DEL PRÉSTAMO");
             errores--; // CHEQUEO NEGATIVO
@@ -373,7 +399,9 @@ public class EvaluaService {
         if (bandera == 1) {
             //System.out.println("RETIROS MAYORES AL 30% DEL SALDO EN LOS ULTIMOS 6 MESES");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ERROR-5: RETIROS MAYORES AL 30% DEL SALDO EN LOS ULTIMOS 6 MESES", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ERROR-5: RETIROS MAYORES AL 30% DEL SALDO EN LOS ULTIMOS 6 MESES";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             errores--; // CHEQUEO NEGATIVO
         }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -387,7 +415,9 @@ public class EvaluaService {
             solicitud.setState("APROBADO");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "CRÉDITO APROBADO", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - CRÉDITO APROBADO";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
 
@@ -402,7 +432,9 @@ public class EvaluaService {
             solicitud.setState("REVISION ADICIONAL");
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "SOLICITUD DE CRÉDITO EN REVISIÓN ADICIONAL", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - SOLICITUD DE CRÉDITO EN REVISIÓN ADICIONAL";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
 
@@ -417,7 +449,9 @@ public class EvaluaService {
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "CRÉDITO RECHAZADO: EL SOLICITANTE NO CUMPLE CON LOS REQUISITOS", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - CRÉDITO RECHAZADO: EL SOLICITANTE NO CUMPLE CON LOS REQUISITOS";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
             // ACTUALIZACIÓN DE solicitud EN EL ESPACIO DE solicitud DEL USUARIO
 
@@ -468,52 +502,71 @@ public class EvaluaService {
         if (state ==1) {
             solicitud.setState("EN REVISION INICIAL");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: EN REVISIÓN INICIAL", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: EN REVISIÓN INICIAL";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
 
         }else if (state ==2) {
             solicitud.setState("PENDIENTE DE DOCUMENTACION");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: PENDIENTE DE DOCUMENTACIÓN", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: PENDIENTE DE DOCUMENTACIÓN";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
 
         }else if (state ==3) {
             solicitud.setState("EN EVALUACION");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: EN EVALUACIÓN", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: EN EVALUACIÓN";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
 
         }else if (state ==4) {
             solicitud.setState("PRE-APROBADA");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: PRE-APROBADA", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: PRE-APROBADA";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
 
         }else if (state ==5) {
             solicitud.setState("EN APROBACION FINAL");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: EN APROBACIÓN FINAL", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: EN APROBACIÓN FINAL";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
 
         }else if (state ==6) {
             solicitud.setState("APROBADA");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: APROBADA", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: APROBADA";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
 
         }else if (state ==7) {
             solicitud.setState("RECHAZADA");
             String notificationUrl = "http://usuario-service0/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: RECHAZADA", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: RECHAZADA";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
 
         }else if (state ==8) {
             solicitud.setState("CANCELADA POR EL CLIENTE");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: CANCELADA POR EL CLIENTE", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: CANCELADA POR EL CLIENTE";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
 
         }else if (state ==9) {
             solicitud.setState("EN DESEMBOLOSO");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: EN DESEMBOLOSO", String.class);
+
+            String notificationMessage = "Credit ID: " + creditId + " - ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: EN DESEMBOLOSO";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
 
         } else if (state == 10) {
             solicitud.setState("PENDIENTE");
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
-            restTemplate.postForObject(notificationUrl, "ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: PENDIENTE", String.class);
+            String notificationMessage = "Credit ID: " + creditId + " - ESTADO DE SOLICITUD ACTUALIZADO: SU SOLICITUD SE ENCUENTRA EN EL ESTADO: PENDIENTE";
+            restTemplate.postForObject(notificationUrl, notificationMessage, String.class);
 
         }
         //-------------------------------------------------------------------------//-------------------------------------------------------------------------//
