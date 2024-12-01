@@ -4,7 +4,10 @@ import com.example.evalua_service.model.Credito;
 import com.example.evalua_service.model.Ahorro;
 import com.example.evalua_service.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -477,9 +480,27 @@ public class EvaluaService {
         if (usuario == null) {
             throw new IllegalArgumentException("ERROR: USUARIO NO ENCONTRADO");
         }
-        // ENTREGAME LA SOLICITUD POR SU ID
-        Credito solicitud = restTemplate.getForObject("http://credito-service/credito/" + creditId, Credito.class); // OBTENGO LA SOLICITUD DEL USUARIO -> VARA LA EVALUACIÓN -> ES EL MISMO QUE AYUDA, NO NECESITA VER SI EXISTE O  NO
-        if (solicitud == null){
+
+        ResponseEntity<List<Credito>> response = restTemplate.exchange(
+                "http://usuario-service/usuario/creditos/" + userId,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Credito>>() {}
+        );
+        List<Credito> solicitudes = response.getBody();
+        if (solicitudes == null) {
+            throw new IllegalArgumentException("ERROR: USUARIO NO TIENE SOLICITUDES");
+        }
+
+        Credito solicitud = null;
+        for (Credito c : solicitudes) {
+            if (c.getId() == (creditId)) {
+                solicitud = c;
+                break;
+            }
+        }
+
+        if (solicitud == null) {
             String notificationUrl = "http://usuario-service/usuario/addnotification/" + userId;
             restTemplate.postForObject(notificationUrl, "SOLICITUD NO EXISTENTE EN EL USUARIO.", String.class);
             return -1;
