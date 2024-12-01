@@ -507,7 +507,7 @@ public class EvaluaService {
         }
 
         System.out.printf("ESTADO DE LA SOLICITUD ANTES DE LA ACTUALIZACIÓN: %s\n", solicitud.getState());
-        /*
+
         //-------------------------------------------------------------------------//
         if (state ==1) {
             solicitud.setState("EN REVISION INICIAL");
@@ -569,7 +569,7 @@ public class EvaluaService {
         // Update the Usuario object with the updated Credito object using RestTemplate
         String updateUsuarioUrl = "http://usuario-service/usuario/updateSolicitud/" + userId;
         restTemplate.postForObject(updateUsuarioUrl, solicitud, Usuario.class);
-     */
+
         return 0;
     }
 }
