@@ -29,6 +29,10 @@ spring:
           uri: lb://credito-service
           predicates:
             - Path=/credito/**
+        - id: documentos-service
+          uri: lb://documentos-service
+          predicates:
+            - Path=/documentos/**
         - id: evalua-service
           uri: lb://evalua-service
           predicates:
