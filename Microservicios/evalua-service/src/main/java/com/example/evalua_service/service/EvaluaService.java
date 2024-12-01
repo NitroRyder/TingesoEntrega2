@@ -30,6 +30,7 @@ public class EvaluaService {
             System.out.printf("ERROR: USUARIO NO ENCONTRADO");
             return 0;
         }
+
         //--------------------------------------------------------------------------------//
         // OBTENCIÓN DE LA LISTA DE CREDITOS DEL USUARIO POR SU ID DE USUARIO
         ResponseEntity<List<Credito>> response = restTemplate.exchange(
@@ -124,7 +125,14 @@ public class EvaluaService {
         } else if (usuario.getIndependiente().equalsIgnoreCase("INDEPENDIENTE")) {
             //System.out.println("TRABAJADOR INDEPENDIENTE");
             // OBTENCIÓN DE LOS AHORROS DEL USUARIO
-            List<Ahorro> ahorros =  restTemplate.getForObject("http://ahorro-service/ahorro/byusuario/" + userId, List.class); // OBTENGO LOS AHORROS DEL USUARIO -> PARA REALIZAR EVALUACIÓN
+            //--------------------------------------------------------------------------------//
+            // OBRENCIÓN DE AHORROS POR ID DEL USUARIO
+            List<Ahorro> ahorros = restTemplate.getForObject("http://ahorro-service/ahorro/byusuario/" + userId, List.class); // OBTENGO LOS AHORROS DEL USUARIO -> PARA REALIZAR EVALUACIÓN
+
+            if (ahorros == null) {
+                System.out.printf("ERROR: USUARIO NO TIENE AHORROS");
+                return 0;
+            }
         } else {
             // MODIFICAR EL ESTADO DE LA SOLICITUD A "RECHAZADA"
             solicitud.setState("RECHAZADA");
@@ -204,7 +212,14 @@ public class EvaluaService {
         // [R7]-----[R71]---------------------------------------------------------//--------------------------------------------------------------------//
         // + VERIFICO SI EL SALDO POSITIVO MÁS PEQUEÑO MAYOR O IGUAL AL 10% DEL MONTO DEL PRÉSTAMO:
         // OBTENGO LOS AHORROS DEL USUARIO
-        List<Ahorro> ahorros = restTemplate.getForObject("http://ahorro-service/ahorro/byusuario/" + userId, List.class);
+        //--------------------------------------------------------------------------------//
+        // OBRENCIÓN DE AHORROS POR ID DEL USUARIO
+        List<Ahorro> ahorros = restTemplate.getForObject("http://ahorro-service/ahorro/byusuario/" + userId, List.class); // OBTENGO LOS AHORROS DEL USUARIO -> PARA REALIZAR EVALUACIÓN
+
+        if (ahorros == null) {
+            System.out.printf("ERROR: USUARIO NO TIENE AHORROS");
+            return 0;
+        }
         // OBTENGO EL VALOR POSITIVO MÁS PEQUEÑO
         int valorPositivoMasPequeno = restTemplate.getForObject("http://ahorro-service/ahorro/valorpositivomaspequeno/" + userId, Integer.class);
 
