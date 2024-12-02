@@ -2,8 +2,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Home from './components/Home';
 import ClientHome from './components/ClientHome';
-{/*import ClientHome from './components/ClientHome';*/}
-{/*import RegisterUsuario from './components/RegisterUsuario';*/}
+import RegisterUsuario from './components/RegisterUsuario';
 {/*import SimularCredito from './components/SimularCredito';*/}
 {/*import SolicitarPrestamo from './components/SolicitarPrestamo';*/}
 {/*import EvaluarCredito from './components/EvaluarCredito';*/}
@@ -23,8 +22,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/home/Client" element={<ClientHome />}/>
-          {/*<Route path="/usuario/register" element={<RegisterUsuario />} />
-          <Route path="/credito/simular" element={<SimularCredito />} />
+          <Route path="/usuario/register" element={<RegisterUsuario />} />
+          {/*<Route path="/credito/simular" element={<SimularCredito />} />
           <Route path="/credito/solicitar" element={<SolicitarPrestamo />} />
           <Route path="/credito/evaluar" element={<EvaluarCredito />} />
           <Route path="/credito/seguimiento" element={<SeguimientoPrestamo />} />

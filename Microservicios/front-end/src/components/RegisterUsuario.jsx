@@ -3,9 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
-import usuarioServices from '../services/usuario.services';
+import usuarioServices from '../services/usuario.service';
 {/*---------------------------------------------------------------------------------------------------*/}  
-function RegisterUsuario() {
+function registerUsuario() {
   const [usuario, setUsuario] = useState({
     rut: '',
     name: '',
@@ -16,22 +16,8 @@ function RegisterUsuario() {
     ingresos: '',
     sumadeuda: '',
     objective: '',
-    independiente: '',
-    ahorros: Array(12).fill({ transaccion: '', tipo: '' }) // Inicializar con 12 transacciones vacías
+    independiente: ''
   });
-{/*---------------------------------------------------------------------------------------------------*/}  
-  const [creditos, setCreditos] = useState([
-    {
-      montop: '',
-      plazo: '',
-      intanu: '',
-      intmen: '',
-      segudesg: '',
-      seguince: '',
-      comiad: '',
-      state: 'APROBADO' // Valor predeterminado
-    }
-  ]);
 {/*---------------------------------------------------------------------------------------------------*/}  
   const [showModal, setShowModal] = useState(false);
   const [showCreditoModal, setShowCreditoModal] = useState(false);
@@ -40,45 +26,6 @@ function RegisterUsuario() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUsuario({ ...usuario, [name]: value });
-  };
-
-  const handleAhorroChange = (index, e) => {
-    const { name, value } = e.target;
-    const newAhorros = [...usuario.ahorros];
-    newAhorros[index] = { ...newAhorros[index], [name]: value };
-    setUsuario({ ...usuario, ahorros: newAhorros });
-  };
-
-  const handleCreditoChange = (index, e) => {
-    const { name, value } = e.target;
-    const newCreditos = [...creditos];
-    newCreditos[index] = { ...newCreditos[index], [name]: value };
-    setCreditos(newCreditos);
-  };
-
-  const addAhorro = () => {
-    setUsuario({ ...usuario, ahorros: [...usuario.ahorros, { transaccion: '', tipo: '' }] });
-  };
-
-  const addCredito = () => {
-    setCreditos([...creditos, {
-      montop: '',
-      plazo: '',
-      intanu: '',
-      intmen: '',
-      segudesg: '',
-      seguince: '',
-      comiad: '',
-      state: ''
-    }]);
-  };
-
-  const handleSaveAhorros = () => {
-    setShowModal(false);
-  };
-
-  const handleSaveCreditos = () => {
-    setShowCreditoModal(false);
   };
 
   const handleSubmit = async (e) => {
@@ -93,7 +40,7 @@ function RegisterUsuario() {
       alert('ERROR: EL RUT DEBE CONTENER UN "-" EN EL PENÚLTIMO CARÁCTER.');
       return;
     }
-    const { name, age, workage, houses, valorpropiedad, ingresos, sumadeuda, objective, independiente, ahorros } = usuario;
+    const { name, age, workage, houses, valorpropiedad, ingresos, sumadeuda, objective, independiente} = usuario;
     if(age < 18){
       alert('ERROR: DEBE SER MAYOR DE EDAD PARA REGISTRARSE.');
       return;
@@ -114,42 +61,9 @@ function RegisterUsuario() {
       alert('ERROR: EL TIPO DE TRABAJADOR DEBE SER INDEPENDIENTE O ASALARIADO.');
       return;
     }
-    if(ahorros.length < 12){
-      alert('ERROR: DEBE LLENAR LOS 12 CAMPOS DE AHORROS.');
-      return;
-    }
-{/*---------------------------------------------------------------------------------------------------*/}      
-    for (let i = 0; i < ahorros.length; i++) {
-      if(ahorros[i].transaccion === 0){
-        alert('ERROR: LAS TRANSACCIONES INGRESADAS NO PUEDEN SER IGUAL A 0 EN TRANSICIÓN.' + i);
-        return;
-      }
-      if(ahorros[i].tipo === ''){
-        alert('ERROR: DEBE LLENAR LOS CAMPOS DE TIPO DE AHORRO EN TRANSICIÓN.' + i);
-        return;
-      }
-      if(ahorros[i].tipo !== 'DEPOSITO' && ahorros[i].tipo !== 'PAGO' && ahorros[i].tipo !== 'TRANSFERENCIA' && ahorros[i].tipo !== 'RETIRO'){
-        alert('ERROR: EL TIPO DE AHORRO DEBE SER DEPOSITO O PAGO O TRANSFERENCIA O RETIRO EN TRANSICIÓN.' + i);
-        return;
-      }
-      if(ahorros[i].tipo === 'DEPOSITO' && ahorros[i].transaccion <= 0){
-        alert('ERROR: LA TRANSACCIÓN DE UN DEPOSITO DEBE SER MAYOR A 0 EN TRANSICIÓN.' + i);
-        return;
-      }
-      if((ahorros[i].tipo === 'PAGO' || ahorros[i].tipo === 'TRANSFERENCIA' || ahorros[i].tipo === 'RETIRO') && ahorros[i].transaccion >= 0){
-        alert('ERROR: LA TRANSACCIÓN DE UN PAGO, TRANSFERENCIA O RETIRO DEBE SER MENOR A 0 EN TRANSICIÓN.' + i);
-        return;
-      }
-    }
-    for(let i = 0; i < creditos.length; i++){
-      if(creditos[i].state !== 'APROBADO'){
-        alert('ERROR: NO PUEDE EXISTIR EN EL HISTORIAL DE CREDITOS UNO QUE NO SEA APROBADO.');
-        return;
-      }
-    }
 {/*---------------------------------------------------------------------------------------------------*/}      
     try {
-      const response = await usuarioServices.register({ ...usuario, creditos });
+      const response = await usuarioServices.register({ ...usuario });
       if(response.data === -2){
         alert('ERROR: EL RUT INGRESADO YA SE ENCUENTRA REGISTRADO EN EL SISTEMA.');
       }else{
@@ -255,136 +169,11 @@ function RegisterUsuario() {
           </small>
         </div>
       {/*---------------------------------------------------------------------------------------------*/}
-        {/* BOTÓN PARA ABRIR EL MODÁL DE AHORROS */}
-        <button type="button" className="btn btn-secondary w-100" onClick={handleShowModal}> Agregar historial de depósitos de los últimos 12 meses o más</button>
-
-        {/* BOTÓN PARA ABRIR EL MODÁL DE CRÉDITO */}
-        <button type="button" className="btn btn-secondary w-100 mt-3" onClick={handleShowCreditoModal}> Agregar información de crédito (opcional)</button>
         <div className="d-grid gap-2">
-        <button type="submit" className="btn btn-primary mt-3 btn-lg">Registrar</button>
+          <button type="submit" className="btn btn-primary mt-3 btn-lg">Registrar</button>
         </div>
       </form>
       {/*---------------------------------------------------------------------------------------------*/}
-      {/* MODAL PARA AGREGAR AHORROS*/}
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Agregar Ahorro</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {usuario.ahorros.map((ahorro, index) => (
-            <div key={index} className="mb-3">
-              <label className="form-label">Transacción {index + 1}</label>
-              <input
-                type="number"
-                className="form-control"
-                name="transaccion"
-                value={ahorro.transaccion}
-                onChange={(e) => handleAhorroChange(index, e)}
-                placeholder="Ejemplo: 1000"
-                required
-              />
-              <label className="form-label">Tipo {index + 1}</label>
-              <input
-                type="text"
-                className="form-control"
-                name="tipo"
-                value={ahorro.tipo}
-                onChange={(e) => handleAhorroChange(index, e)}
-                placeholder="ESCOGER: DEPOSITO | PAGO | TRANSFERENCIA | RETIRO"
-                required
-              />
-            </div>
-          ))}
-          <Button variant="secondary" onClick={addAhorro}>Agregar Ahorro</Button>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleSaveAhorros}>Guardar Ahorros</Button>
-          <Button variant="secondary" onClick={handleCloseModal}>Cerrar</Button>
-        </Modal.Footer>
-      </Modal>
-      {/*---------------------------------------------------------------------------------------------*/}
-      {/* MODAL PARA AGREGAR CRÉDITO */}
-      <Modal show={showCreditoModal} onHide={handleCloseCreditoModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Agregar Crédito</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {creditos.map((credito, index) => (
-            <div key={index} className="mb-3">
-              <label className="form-label">Monto del Préstamo {index + 1}</label>
-              <input
-                type="number"
-                className="form-control"
-                name="montop"
-                value={credito.montop}
-                onChange={(e) => handleCreditoChange(index, e)}
-                placeholder="Ejemplo: 1000000"
-              />
-              <label className="form-label">Plazo (años) {index + 1}</label>
-              <input
-                type="number"
-                className="form-control"
-                name="plazo"
-                value={credito.plazo}
-                onChange={(e) => handleCreditoChange(index, e)}
-                placeholder="Ejemplo: 5"
-              />
-              <label className="form-label">Interés Anual {index + 1}</label>
-              <input
-                type="number"
-                className="form-control"
-                name="intanu"
-                value={credito.intanu}
-                onChange={(e) => handleCreditoChange(index, e)}
-                placeholder="Ejemplo: 5.5"
-              />
-              <label className="form-label">Interés Mensual {index + 1}</label>
-              <input
-                type="number"
-                className="form-control"
-                name="intmen"
-                value={credito.intmen}
-                onChange={(e) => handleCreditoChange(index, e)}
-                placeholder="Ejemplo: 0.5"
-              />
-              <label className="form-label">Seguro de Desgravamen {index + 1}</label>
-              <input
-                type="number"
-                className="form-control"
-                name="segudesg"
-                value={credito.segudesg}
-                onChange={(e) => handleCreditoChange(index, e)}
-                placeholder="Ejemplo: 10000"
-              />
-              <label className="form-label">Seguro de Incendio {index + 1}</label>
-              <input
-                type="number"
-                className="form-control"
-                name="seguince"
-                value={credito.seguince}
-                onChange={(e) => handleCreditoChange(index, e)}
-                placeholder="Ejemplo: 5000"
-              />
-              <label className="form-label">Comisión Administrativa {index + 1}</label>
-              <input
-                type="number"
-                className="form-control"
-                name="comiad"
-                value={credito.comiad}
-                onChange={(e) => handleCreditoChange(index, e)}
-                placeholder="Ejemplo: 2000"
-              />
-            
-            </div>
-          ))}
-          <Button variant="secondary" onClick={addCredito}>Agregar Crédito</Button>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleSaveCreditos}>Guardar Créditos</Button>
-          <Button variant="secondary" onClick={handleCloseCreditoModal}>Cerrar</Button>
-        </Modal.Footer>
-      </Modal>
-
       <div className="mt-3 d-grid gap-2">
         <button 
           className="btn btn-dark btn-lg" 
@@ -396,5 +185,4 @@ function RegisterUsuario() {
     </div>
   );
 }
-
-export default RegisterUsuario;
+export default registerUsuario;
