@@ -1,16 +1,16 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Home from './components/Home';
-import ClientHome from './components/ClientHome';
-import RegisterUsuario from './components/RegisterUsuario';
-import SimularCredito from './components/SimularCredito';
-import SolicitarPrestamo from './components/SolicitarPrestamo';
-import EvaluarCredito from './components/EvaluarCredito';
-import CalcularCosto from './components/CalcularCosto';
-import SeguimientoPrestamo from './components/SeguimientoPrestamo';
-import VerNotificationes from './components/VerNotificationes';
-import UpdateUser from './components/UpdateUser';
-import UpdateState from './components/UpdateState';
+{/*import ClientHome from './components/ClientHome';*/}
+{/*import RegisterUsuario from './components/RegisterUsuario';*/}
+{/*import SimularCredito from './components/SimularCredito';*/}
+{/*import SolicitarPrestamo from './components/SolicitarPrestamo';*/}
+{/*import EvaluarCredito from './components/EvaluarCredito';*/}
+{/*import CalcularCosto from './components/CalcularCosto';*/}
+{/*import SeguimientoPrestamo from './components/SeguimientoPrestamo';*/}
+{/*import VerNotificationes from './components/VerNotificationes';*/}
+{/*import UpdateUser from './components/UpdateUser';*/}
+{/*import UpdateState from './components/UpdateState';*/}
 
 import UsuarioList from './components/UsuarioList';
 
@@ -21,7 +21,7 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<Home/>} />
-          <Route path="/home/Client" element={<ClientHome />}/>
+          {/*<Route path="/home/Client" element={<ClientHome />}/>
           <Route path="/usuario/register" element={<RegisterUsuario />} />
           <Route path="/credito/simular" element={<SimularCredito />} />
           <Route path="/credito/solicitar" element={<SolicitarPrestamo />} />
@@ -30,7 +30,7 @@ function App() {
           <Route path="/costo/calcular" element={<CalcularCosto />} />
           <Route path="/usuario/notificaciones" element={<VerNotificationes />} />
           <Route path="/update-user" element={<UpdateUser />}/>
-          <Route path="/update-state" element={<UpdateState/>}/>
+          <Route path="/update-state" element={<UpdateState/>}/>*/}
 
           {/*<Route path="/home/Ejecutivo" element={<EjecutivoHome />} />*/}
           

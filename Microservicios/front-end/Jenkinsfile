@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+    tools {
+        nodejs 'nodejs_jenkins_20'
+    }
+    stages {
+        stage("Checkout") {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install npm dependencies') {
+            steps {
+                dir('front-end') {
+                    bat 'npm install'
+                }
+            }
+        }
+
+        stage('Run npm build') {
+            steps {
+                dir('front-end') {
+                    bat 'npm run build'
+                }
+            }
+        }
+
+        stage('Build docker image') {
+            steps {
+                dir('front-end') {
+                    bat 'docker build -t nitroryder/front-end:latest .'
+                }
+            }
+        }
+
+        stage('Push image to Docker Hub') {
+            steps {
+                dir('front-end') {
+                    withCredentials([string(credentialsId: 'dkrhubpassword', variable: 'dhpsw')]) {
+                        bat 'docker login -u nitroryder -p %dhpsw%'
+                    }
+                    bat 'docker push nitroryder/front-end:latest'
+                }
+            }
+        }
+    }
+}
