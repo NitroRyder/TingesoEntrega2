@@ -77,16 +77,6 @@ function ClientHome() {
         {/*---------------------------------------------------------------------------------------------*/}
         <div className="col-md-4 mb-3 d-flex justify-content-center">
           <button 
-            className="btn btn-info btn-lg w-100" 
-            style={{ backgroundColor: 'orange', borderColor: 'orange', color: 'white' }}
-            onClick={() => navigate('/update-user')}
-          >
-            Actualizar Usuario
-          </button>
-        </div>
-        {/*---------------------------------------------------------------------------------------------*/}
-        <div className="col-md-4 mb-3 d-flex justify-content-center">
-          <button 
             className="btn btn-dark btn-lg w-100" 
             onClick={() => navigate('/')}
           >
