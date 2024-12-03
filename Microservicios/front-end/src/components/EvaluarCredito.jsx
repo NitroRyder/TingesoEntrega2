@@ -1,53 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import usuarioServices from '../services/usuario.services';
 
-const EvaluarCredito = () => {
+import evaluaService from '../services/evalua.service';
+import creditoService from '../services/credito.service';
+import usuarioService from '../services/usuario.service';
+
+const evaluateCredito = () => {
   const [usuariosPendientes, setUsuariosPendientes] = useState([]);
   const [userId, setUserId] = useState('');
+  const [creditId, setCreditId] = useState('');
   const [files, setFiles] = useState([]);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setUserId(Number(e.target.value));
+    const { name, value } = e.target;
+    if (name === 'userId') {
+      setUserId(Number(value));
+    } else if (name === 'creditId') {
+      setCreditId(Number(value));
+    }
   };
 
+
   useEffect(() => {
-    // Función para obtener usuarios con estado pendiente
-    const fetchUsuariosPendientes = async () => {
+    // Función para obtener créditos con estado pendiente y sus usuarios
+    const fetchCreditosPendientes = async () => {
       try {
-        const response = await usuarioServices.getAll(); // Usar el servicio configurado
-        const usuariosPendientes = response.data.filter(usuario => usuario.solicitud && usuario.solicitud.state === 'PENDIENTE');
-        setUsuariosPendientes(usuariosPendientes);
+        const response = await creditoService.getAll(); // Usar el servicio configurado
+        const creditosPendientes = response.data.filter(credito => credito.state === 'PENDIENTE');
+
+        // Obtener datos del usuario para cada crédito pendiente
+        const creditosConUsuarios = await Promise.all(
+          creditosPendientes.map(async (credito) => {
+            const usuarioResponse = await usuarioService.getById(credito.usuarioId);
+            return {
+              ...credito,
+              usuario: usuarioResponse.data
+            };
+          })
+        );
+
+        setCreditosPendientes(creditosConUsuarios);
       } catch (error) {
-        console.error('Error al obtener usuarios pendientes:', error);
+        console.error('Error al obtener créditos pendientes:', error);
       }
     };
 
-    fetchUsuariosPendientes();
+    fetchCreditosPendientes();
   }, []);
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   console.log('Submitting userId:', userId);
+  console.log('Submitting creditId:', creditId);
 
 
   try {
-    const response = await usuarioServices.aprobarCredito({ userId });
+    const response = await evaluaService.evaluateCredito(userId, creditId);
     console.log('Response:', response.data);
-    if (response.data === -1) {
-      alert('ERROR: ERROR MARCADO EN LAS NOTIFICACIONES');
-    } else if (response.data === -2) {
-      alert('ERROR: EL USER ID INGRESADO NO SE ENCUENTRA REGISTRADO EN EL SISTEMA, POR FAVOR INGRESAR UN USER ID REGISTRADO O REGISTRARSE EN EL SISTEMA.');
-    } else if (response.data === null || response.data === "") {
-      alert('ERROR: ERROR MARCADO EN LAS NOTIFICACIONES');
-    } else {
+    if (response.data === "EVALUACIÓN TERMINADA") {
+      alert('EVALUACIÓN DE SOLICITUD DE CRÉDITO EXITOSA');
       // Asumiendo que la respuesta contiene un array de archivos en response.data.files
       const files = response.data.files || [];
       setFiles(files);
       console.log('Files:', files);
-      alert('EVALUACIÓN DE SOLICITUD DE CRÉDITO EXITOSA');
+    } else {
+      alert('EVALUACIÓN RECHAZADA');
     }
   } catch (error) {
     console.error('Error response:', error.response);
@@ -97,6 +117,14 @@ const handleSubmit = async (e) => {
           </small>
         </div>
       {/*---------------------------------------------------------------------------------------------*/}
+        <div className="mb-3">
+          <label>Credit ID:</label>
+          <input type="number" id="creditId" value={creditId} onChange={handleChange} className="form-control" placeholder="Ejemplo: 1" required />
+          <small className="form-text text-muted">
+            Ingrese el ID de su cuenta. Ej 102
+          </small>
+        </div>  
+      {/*---------------------------------------------------------------------------------------------*/}
         <div className="d-grid gap-2">
         <button type="submit" className="btn btn-primary btn-lg">Realizar Seguimiento</button>
         </div>
@@ -139,4 +167,4 @@ const handleSubmit = async (e) => {
   );
 };
 
-export default EvaluarCredito;
+export default evaluateCredito;

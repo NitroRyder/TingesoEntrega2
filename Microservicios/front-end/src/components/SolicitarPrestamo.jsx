@@ -5,7 +5,6 @@ import creditoService from '../services/credito.service';
 
 const registrarCredito = () => {
   const [formData, setFormData] = useState({
-    id: '',
     montop: '',
     plazo: '',
     intanu: '',
@@ -34,10 +33,6 @@ const registrarCredito = () => {
       data.append(key, formData[key]);
     }
     const {userId, montop, plazo, intanu, intmen, segudesg, seguince, comiad } = formData;
-    if (id <= 0) {
-      alert("ERROR: EL ID DE LA SOLICITUD DEBE SER MAYOR A 0");
-      return;
-    }
     if (montop <= 0) {
       alert("ERROR: EL MONTO DEL PRÉSTAMO DEBE SER MAYOR A 0");
       return;
@@ -77,6 +72,7 @@ const registrarCredito = () => {
       }else if(response.data !== -2){
         alert('Solicitud de crédito creada o actualizada correctamente');
       }
+      {/*navigate('/documento/register');*/}
     } catch (error) {
       alert('Error al crear la solicitud de crédito: ' + error.response.data);
     }
@@ -86,13 +82,6 @@ const registrarCredito = () => {
     <div className="container">
       <h2>Solicitar Préstamo</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label>User ID:</label>
-          <input type="text" name="userId" value={formData.userId} onChange={handleChange} className="form-control" placeholder="Ejemplo: 102" required />
-          <small className="form-text text-muted">
-            Ingrese el ID de su cuenta. Ej 102
-          </small>
-        </div>
         {/*---------------------------------------------------------------------------------------------*/}  
         <div className="mb-3">
           <label>Monto del préstamo:</label>
@@ -147,6 +136,14 @@ const registrarCredito = () => {
           <input type="number" step="0.01" name="comiad" value={formData.comiad} onChange={handleChange} className="form-control" placeholder="Ejemplo: 50" required />
           <small className="form-text text-muted">
             Ingrese el valor de la comisión administrativa. Ej: 50 pesos Chilenos.
+          </small>
+        </div>
+        {/*---------------------------------------------------------------------------------------------*/}
+        <div className="mb-3">
+          <label>User ID:</label>
+          <input type="text" name="userId" value={formData.userId} onChange={handleChange} className="form-control" placeholder="Ejemplo: 102" required />
+          <small className="form-text text-muted">
+            Ingrese el ID de su cuenta. Ej 102
           </small>
         </div>
         {/*---------------------------------------------------------------------------------------------*/}

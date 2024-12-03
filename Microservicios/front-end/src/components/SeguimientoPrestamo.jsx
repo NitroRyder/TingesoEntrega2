@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import usuarioServices from '../services/usuario.services';
+import seguimientoService from '../services/seguimiento.service';
 
-const SeguimientoPrestamo = () => {
+const followCredito = () => {
   const [userId, setUserId] = useState('');
-  const [solicitud, setSolicitud] = useState(null);
+  const [solicitudes, setSolicitudes] = useState([]);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -17,19 +17,12 @@ const SeguimientoPrestamo = () => {
     console.log('Submitting userId:', userId);
 
     try {
-      const response = await usuarioServices.seguimiento({ userId });
-      //console.log('Response:', response);
-      if (response.data === -2) {
-        alert('ERROR: EL USER ID INGRESADO NO SE ENCUENTRA REGISTRADO EN EL SISTEMA, POR FAVOR INGRESAR UN USER ID REGISTRADO O REGISTRARSE EN EL SISTEMA.');
-      } else if (response.data == null) {
-        alert('ERROR: EL USUARIO NO TIENE UNA SOLICITUD DE CRÉDITO RECHAZADA');
-
-      }else if (response.data == "") {
-        alert('ERROR: EL USUARIO NO TIENE UNA SOLICITUD DE CRÉDITO CREADA');
+      const response = await seguimientoService.followCredito(userId);
+      if (response.data.length === 0) {
+        alert('ERROR: EL USUARIO NO TIENE SOLICITUDES DE CRÉDITO');
       } else {
-        setSolicitud(response.data); // Almacenar la solicitud en el estado
-        //console.log('Solicitud recibida:', response.data); // Verificar los datos recibidos
-        //alert('Seguimiento de préstamo realizado correctamente');
+        setSolicitudes(response.data); // Almacenar las solicitudes en el estado
+        console.log('Solicitudes recibidas:', response.data); // Verificar los datos recibidos
       }
     } catch (error) {
       console.error('Error response:', error.response);
@@ -44,7 +37,7 @@ const SeguimientoPrestamo = () => {
 
   return (
     <div className="container">
-      <h2>Seguimiento de Préstamo</h2>
+      <h2>Seguimiento de Préstamos</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label>User ID:</label>
@@ -57,12 +50,14 @@ const SeguimientoPrestamo = () => {
         <div className="d-grid gap-2">
           <button type="submit" className="btn btn-primary btn-lg">Realizar Seguimiento</button>
         </div>
-        </form>
-        {solicitud && (
-          <div className="mt-3">
-            <h3>Detalles de la Solicitud</h3>
-            <div className="card">
+      </form>
+      {solicitudes.length > 0 && (
+        <div className="mt-3">
+          <h3>Detalles de las Solicitudes</h3>
+          {solicitudes.map((solicitud, index) => (
+            <div className="card mb-3" key={index}>
               <div className="card-body">
+                <p className="card-text"><strong>ID de la Solicitud:</strong> {solicitud.id}</p>
                 <p className="card-text"><strong>Estado de la solicitud:</strong> {solicitud.state}</p>
                 <p className="card-text"><strong>Monto del Préstamo:</strong> {solicitud.montop}</p>
                 <p className="card-text"><strong>Plazo:</strong> {solicitud.plazo} años</p>
@@ -73,8 +68,9 @@ const SeguimientoPrestamo = () => {
                 <p className="card-text"><strong>Comisión Administrativa:</strong> {solicitud.comiad}</p>
               </div>
             </div>
-          </div>
-        )}
+          ))}
+        </div>
+      )}
         {/*---------------------------------------------------------------------------------------------*/}        
         <div className="mt-3 d-grid gap-2">
           <button 
@@ -89,4 +85,4 @@ const SeguimientoPrestamo = () => {
   );
 };
 
-export default SeguimientoPrestamo;
+export default followCredito;
