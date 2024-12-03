@@ -176,6 +176,15 @@ function registerUsuario() {
       {/*---------------------------------------------------------------------------------------------*/}
       <div className="mt-3 d-grid gap-2">
         <button 
+          className="btn btn-danger btn-lg" 
+          onClick={() => navigate('/ahorro/solicitar')}
+        >
+          Agregar Ahorros a un Usuario
+        </button>
+      </div>
+      {/*---------------------------------------------------------------------------------------------*/}
+      <div className="mt-3 d-grid gap-2">
+        <button 
           className="btn btn-dark btn-lg" 
           onClick={() => navigate('/home/Client')}
         >
