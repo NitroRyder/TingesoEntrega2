@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Home from './components/Home';
 import ClientHome from './components/ClientHome';
 import RegisterUsuario from './components/RegisterUsuario';
-{/*import SimularCredito from './components/SimularCredito';*/}
+import SimularCredito from './components/SimularCredito';
 {/*import SolicitarPrestamo from './components/SolicitarPrestamo';*/}
 {/*import EvaluarCredito from './components/EvaluarCredito';*/}
 {/*import CalcularCosto from './components/CalcularCosto';*/}
@@ -23,8 +23,8 @@ function App() {
           <Route path="/" element={<Home/>} />
           <Route path="/home/Client" element={<ClientHome />}/>
           <Route path="/usuario/register" element={<RegisterUsuario />} />
-          {/*<Route path="/credito/simular" element={<SimularCredito />} />
-          <Route path="/credito/solicitar" element={<SolicitarPrestamo />} />
+          <Route path="/credito/simular" element={<SimularCredito />} />
+          {/*<Route path="/credito/solicitar" element={<SolicitarPrestamo />} />
           <Route path="/credito/evaluar" element={<EvaluarCredito />} />
           <Route path="/credito/seguimiento" element={<SeguimientoPrestamo />} />
           <Route path="/costo/calcular" element={<CalcularCosto />} />
