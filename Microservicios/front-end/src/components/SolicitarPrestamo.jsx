@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import usuarioServices from '../services/usuario.services';
+import creditoService from '../services/credito.service';
 
-const SolicitarPrestamo = () => {
+const registrarCredito = () => {
   const [formData, setFormData] = useState({
-    userId: '',
+    id: '',
     montop: '',
     plazo: '',
     intanu: '',
@@ -13,14 +13,7 @@ const SolicitarPrestamo = () => {
     segudesg: '',
     seguince: '',
     comiad: '',
-    comprobanteIngresos: null,
-    certificadoAvaluo: null,
-    historialCrediticio: null,
-    escrituraPrimeraVivienda: null,
-    planNegocios: null,
-    estadosFinancieros: null,
-    presupuestoRemodelacion: null,
-    dicom: null,
+    usuarioId: ''
   });
 
   const navigate = useNavigate();
@@ -41,8 +34,8 @@ const SolicitarPrestamo = () => {
       data.append(key, formData[key]);
     }
     const {userId, montop, plazo, intanu, intmen, segudesg, seguince, comiad } = formData;
-    if (userId <= 0) {
-      alert("ERROR: EL USER ID DEBE SER MAYOR A 0");
+    if (id <= 0) {
+      alert("ERROR: EL ID DE LA SOLICITUD DEBE SER MAYOR A 0");
       return;
     }
     if (montop <= 0) {
@@ -73,13 +66,12 @@ const SolicitarPrestamo = () => {
       alert("ERROR: LA COMISIÓN ADMINISTRATIVA DEBE SER MAYOR A 0");
       return;
     }
-    const { comprobanteIngresos, certificadoAvaluo, dicom } = formData;
-    if (!comprobanteIngresos || !certificadoAvaluo || !dicom) {
-      alert("ERROR: LOS ARCHIVOS COMPROBANTE DE INGRESOS, CERTIFICADO DE AVALÚO Y DICOM SON OBLIGATORIOS");
+    if(userId <= 0) {
+      alert("ERROR: EL USER ID DEBE SER MAYOR A 0");
       return;
     }
     try {
-      const response = usuarioServices.solicitarCredito(data);
+      const response = solicitarCredito.solicitarCredito(data);
       if(response.data === -2) {
         alert('ERROR: EL USER ID INGRESADO NO SE ENCUENTRA REGISTRADO EN EL SISTEMA, POR FAVOR INGRESAR UN USER ID REGISTRADO O REGISTRARSE EN EL SISTEMA.');
       }else if(response.data !== -2){
@@ -157,70 +149,6 @@ const SolicitarPrestamo = () => {
             Ingrese el valor de la comisión administrativa. Ej: 50 pesos Chilenos.
           </small>
         </div>
-        {/*---------------------------------------------------------------------------------------------*/}  
-        <div className="mb-3">
-          <label>Comprobante de ingresos:</label>
-          <input type="file" name="comprobanteIngresos" onChange={handleChange} className="form-control" required />
-          <small className="form-text text-muted">
-            Formato: ARCHIVO PDF
-          </small>
-        </div>
-        {/*---------------------------------------------------------------------------------------------*/}  
-        <div className="mb-3">
-          <label>Certificado de avalúo:</label>
-          <input type="file" name="certificadoAvaluo" onChange={handleChange} className="form-control" required />
-          <small className="form-text text-muted">
-            Formato: ARCHIVO PDF
-          </small>
-        </div>
-        {/*---------------------------------------------------------------------------------------------*/}  
-        <div className="mb-3">
-          <label>Historial crediticio:</label>
-          <input type="file" name="historialCrediticio" onChange={handleChange} className="form-control" />
-          <small className="form-text text-muted">
-            Formato: ARCHIVO PDF
-          </small>
-        </div>
-        {/*---------------------------------------------------------------------------------------------*/}  
-        <div className="mb-3">
-          <label>Escritura primera vivienda:</label>
-          <input type="file" name="escrituraPrimeraVivienda" onChange={handleChange} className="form-control" />
-          <small className="form-text text-muted">
-            Formato: ARCHIVO PDF
-          </small>
-        </div>
-        {/*---------------------------------------------------------------------------------------------*/}  
-        <div className="mb-3">
-          <label>Plan de negocios:</label>
-          <input type="file" name="planNegocios" onChange={handleChange} className="form-control" />
-          <small className="form-text text-muted">
-            Formato: ARCHIVO PDF
-          </small>
-        </div>
-        {/*---------------------------------------------------------------------------------------------*/}  
-        <div className="mb-3">
-          <label>Estados financieros:</label>
-          <input type="file" name="estadosFinancieros" onChange={handleChange} className="form-control" />
-          <small className="form-text text-muted">
-            Formato: ARCHIVO PDF
-          </small>
-        </div>
-        {/*---------------------------------------------------------------------------------------------*/}  
-        <div className="mb-3">
-          <label>Presupuesto de remodelación:</label>
-          <input type="file" name="presupuestoRemodelacion" onChange={handleChange} className="form-control" />
-          <small className="form-text text-muted">
-            Formato: ARCHIVO PDF
-          </small>
-        </div>
-        {/*---------------------------------------------------------------------------------------------*/}  
-        <div className="mb-3">
-          <label>DICOM:</label>
-          <input type="file" name="dicom" onChange={handleChange} className="form-control" required />
-          <small className="form-text text-muted">
-            Formato: ARCHIVO PDF
-          </small>
-        </div>
         {/*---------------------------------------------------------------------------------------------*/}
         <div className="d-grid gap-2">
         <button type="submit" className="btn btn-primary btn-lg">Solicitar Préstamo</button>
@@ -239,4 +167,4 @@ const SolicitarPrestamo = () => {
   );
 };
 
-export default SolicitarPrestamo;
+export default registrarCredito;
