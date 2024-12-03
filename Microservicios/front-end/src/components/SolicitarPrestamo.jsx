@@ -156,6 +156,15 @@ const registrarCredito = () => {
       </form>
       {/*---------------------------------------------------------------------------------------------*/}  
       <div className="mt-3 d-grid gap-2">
+          <button 
+            className="btn btn-danger btn-lg" 
+            onClick={() => navigate('/documento/register')}
+          >
+            Ingresar Documentación
+          </button>
+      </div>
+      {/*---------------------------------------------------------------------------------------------*/}        
+      <div className="mt-3 d-grid gap-2">
         <button 
           className="btn btn-dark btn-lg" 
           onClick={() => navigate('/home/Client')}

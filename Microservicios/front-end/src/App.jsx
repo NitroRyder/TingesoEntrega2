@@ -6,6 +6,7 @@ import RegisterUsuario from './components/RegisterUsuario';
 import SimularCredito from './components/SimularCredito';
 import SolicitarPrestamo from './components/SolicitarPrestamo';
 import SolicitarAhorro from './components/SolicitarAhorro';
+import RegisterDocumento from './components/RegisterDocumento';
 {/*import EvaluarCredito from './components/EvaluarCredito';*/}
 {/*import CalcularCosto from './components/CalcularCosto';*/}
 {/*import SeguimientoPrestamo from './components/SeguimientoPrestamo';*/}
@@ -27,6 +28,7 @@ function App() {
           <Route path="/credito/simular" element={<SimularCredito />} />
           <Route path="/credito/solicitar" element={<SolicitarPrestamo />} />
           <Route path="/ahorro/solicitar" element={<SolicitarAhorro />} />
+          <Route path="/documento/register" element={<RegisterDocumento />} />
           {/*<Route path="/credito/evaluar" element={<EvaluarCredito />} />
           <Route path="/credito/seguimiento" element={<SeguimientoPrestamo />} />
           <Route path="/costo/calcular" element={<CalcularCosto />} />

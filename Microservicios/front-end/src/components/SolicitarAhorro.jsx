@@ -55,6 +55,7 @@ const createAhorro = () => {
   return (
     <div className="container">
       <h2>Solicitar Ahorro</h2>
+      <h3><small>Se recomienda realizar el ingreso de 12 ahorros como minimo</small></h3>
       <form onSubmit={handleSubmit}>
       {/*---------------------------------------------------------------------------------------------*/}
         <div className="mb-3">
