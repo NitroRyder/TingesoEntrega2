@@ -16,6 +16,7 @@ const createAhorro = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+        console.log(formData);
     };
 
     const handleSubmit = async (e) => {
@@ -25,11 +26,10 @@ const createAhorro = () => {
             alert('ERROR: DEBE INGRESAR TODOS LOS DATOS.');
             return;
         }
-        if (transaccion < 0) {
-            alert('ERROR: EL MONTO DEBE SER MAYOR A 0.');
+        if (transaccion == 0) {
+            alert('ERROR: EL MONTO NO PUEDE SER 0.');
             return;
         }
-
         if(tipo !== 'DEPOSITO' && tipo !== 'PAGO' && tipo !== 'TRANSFERENCIA' && tipo !== 'RETIRO'){
             alert('ERROR: EL TIPO DE AHORRO DEBE SER DEPOSITO O PAGO O TRANSFERENCIA O RETIRO EN TRANSICIÓN.' + i);
             return;
@@ -45,7 +45,6 @@ const createAhorro = () => {
         try {
             await ahorroService.createAhorro(transaccion, tipo, usuarioId);
             alert('Ahorro creado con éxito');
-            navigate('/home/Client'); // Redirige a la página de operaciones del cliente
           } catch (error) {
             console.error('Error al crear el ahorro:', error);
             alert('Error al crear el ahorro: ' + (error.response?.data || error.message));

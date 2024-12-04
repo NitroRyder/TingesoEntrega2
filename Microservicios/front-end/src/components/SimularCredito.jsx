@@ -12,6 +12,7 @@ function simularCredito() {
     tipo: ''
   });
 
+
   const [resultado, setResultado] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ function simularCredito() {
     {/*IMPRECIÓN PASO A PASO*/}
     console.log(credito);
   };
+
 {/*---------------------------------------------------------------------------------------------------*/} 
   const handleSubmit = async (e) => {
     e.preventDefault();
