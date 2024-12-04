@@ -43,8 +43,9 @@ const createAhorro = () => {
             return;
           }
         try {
-            await ahorroService.createAhorro(transaccion, tipo, usuarioId);
+            const response = await ahorroService.createAhorro(transaccion, tipo, usuarioId);
             alert('Ahorro creado con éxito');
+            alert('ATENCIÓN, el ID de la ahorro es: ' + response.data.id);
           } catch (error) {
             console.error('Error al crear el ahorro:', error);
             alert('Error al crear el ahorro: ' + (error.response?.data || error.message));

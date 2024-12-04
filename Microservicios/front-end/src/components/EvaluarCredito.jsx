@@ -70,8 +70,6 @@ const handleSubmit = async (e) => {
     console.log('Response:', response.data);
     if (response.data === "EVALUACIÓN TERMINADA") {
       alert('EVALUACIÓN DE SOLICITUD DE CRÉDITO EXITOSA');
-      fetchDocumentos(creditId);
-      console.log('Documentos:', files);
     } else {
       alert('EVALUACIÓN RECHAZADA');
     }
@@ -152,6 +150,15 @@ const handleSubmit = async (e) => {
           </div>
         </div>
       )}
+      {/*---------------------------------------------------------------------------------------------*/}
+      <div className="mt-3 d-grid gap-2">
+        <button 
+          className="btn btn-warning btn-lg w-100"
+          onClick={() => navigate('/view/Documento')}
+        >
+          Obener Documentación del Usuario
+        </button>
+      </div>
       {/*---------------------------------------------------------------------------------------------*/}
       <div className="mt-3 d-grid gap-2">
         <button 

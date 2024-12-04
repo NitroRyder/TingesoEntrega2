@@ -41,8 +41,9 @@ const registrarDocumentos = () => {
             return;
         }
         try {
-            await documentosService.registrarDocumentos(creditoId, documento);
+            const response = await documentosService.registrarDocumentos(creditoId, documento);
             alert('Documento registrado con éxito');
+            alert('ATENCIÓN, el ID de la documento es: ' + response.data.id);
             navigate('/home/Client'); // Redirige a la página de operaciones del cliente
         } catch (error) {
             console.error('Error al registrar el documento:', error);

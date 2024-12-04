@@ -62,13 +62,23 @@ const registrarCredito = () => {
       alert("ERROR: EL USER ID DEBE SER MAYOR A 0");
       return;
     }
+
     try {
-      const response = await creditoService.registrarCredito(formData);
-      if (response.data === -2) {
+      const revicion = await creditoService.getByUsuarioId(usuarioId);  
+
+      console.log('Revición ' + revicion.data.length);
+  
+      if (revicion.data.length == 0) {
         alert('ERROR: EL USER ID INGRESADO NO SE ENCUENTRA REGISTRADO EN EL SISTEMA, POR FAVOR INGRESAR UN USER ID REGISTRADO O REGISTRARSE EN EL SISTEMA.');
-      } else {
-        alert('Solicitud de crédito creada o actualizada correctamente');
-        navigate('/documento/register');
+      }else{
+        const response = await creditoService.registrarCredito(formData);
+        if (response.data === -2) {
+          alert('ERROR: EL USER ID INGRESADO NO SE ENCUENTRA REGISTRADO EN EL SISTEMA, POR FAVOR INGRESAR UN USER ID REGISTRADO O REGISTRARSE EN EL SISTEMA.');
+        } else {
+          alert('Solicitud de crédito creada o actualizada correctamente');
+          alert('ATENCIÓN, el ID de la solicitud es: ' + response.data.id);
+          navigate('/documento/register');
+        }
       }
     } catch (error) {
       alert('Error al crear la solicitud de crédito: ' + error.response.data);

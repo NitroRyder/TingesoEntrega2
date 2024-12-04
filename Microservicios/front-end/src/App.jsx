@@ -12,6 +12,7 @@ import CalcularCosto from './components/CalcularCosto';
 import SeguimientoPrestamo from './components/SeguimientoPrestamo';
 import VerNotificationes from './components/VerNotificationes';
 import UpdateState from './components/UpdateState';
+import ViewDocument from './components/ViewDocument';
 
 import UsuarioList from './components/UsuarioList';
 
@@ -32,11 +33,9 @@ function App() {
           <Route path="/credito/seguimiento" element={<SeguimientoPrestamo />} />
           <Route path="/costo/calcular" element={<CalcularCosto />} />
           <Route path="/usuario/notificaciones" element={<VerNotificationes />} />
-          <Route path="/update-state" element={<UpdateState/>}/>
-
-          {/*<Route path="/home/Ejecutivo" element={<EjecutivoHome />} />*/}
-          
+          <Route path="/update-state" element={<UpdateState/>}/>    
           <Route path="/usuario/list" element={<UsuarioList/>} />
+          <Route path="/view/Documento" element={<ViewDocument />} />
         </Routes>
       </div>
         {/*---------------------------------------------------------------------------------------------*/}

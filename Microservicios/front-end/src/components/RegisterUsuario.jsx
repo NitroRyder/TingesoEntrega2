@@ -71,6 +71,7 @@ function registerUsuario() {
         alert('ATENCIÓN, el ID del usuario es: ' + response.data.id);
         navigate('/home/Client');
       }
+      
     } catch (error) {
       alert('ERROR AL REGISTRAR UN USUARIO DEL TIPO: ' + error.response.data);
     }
