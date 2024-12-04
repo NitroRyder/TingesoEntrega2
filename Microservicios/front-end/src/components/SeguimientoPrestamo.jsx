@@ -10,7 +10,7 @@ const followCredito = () => {
   const handleChange = (e) => {
     setUserId(Number(e.target.value));
   };
-
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
