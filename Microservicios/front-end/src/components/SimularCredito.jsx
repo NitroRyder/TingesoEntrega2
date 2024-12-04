@@ -64,16 +64,9 @@ function simularCredito() {
       return;
     }
     {/*---------------------------------------------------------------------------------------------*/}  
-    try {      
+    try {
       const response = await simulaServices.simularCredito(P, r, n, V, tipo);
-      if(response.data === -2) {
-        setError('ERROR: EL RUT INGRESADO NO SE ENCUENTRA REGISTRADO EN EL SISTEMA, POR FAVOR INGRESAR UN RUT REGISTRADO O REGISTRARSE EN EL SISTEMA.');
-      }else if(response.data === -1) {
-        setError('ERROR: LOS VALORES INGRESADOS NO PUEDEN SER NEGARIVOS O IGUAL A 0.');
-      }else{
-        setResultado(response.data);
-      }
-
+      setResultado(response.data);
     } catch (error) {
       setError('ERROR AL SIMULAR EL CRÉDITO. POR FAVOR, INTENTAR DE NUEVO.');
       console.error('Error:', error);
@@ -114,20 +107,25 @@ function simularCredito() {
           <input type="number" className="form-control" name="V" value={credito.V} onChange={handleChange} placeholder="Ejemplo: 100000" required />
           <small className="form-text text-muted">
             Ingrese el valor de la propiedad en pesos.
-          </small>  
+          </small>
         </div>
         {/*---------------------------------------------------------------------------------------------*/}  
         <div className="mb-3">
           <label className="form-label">Tipo de Prestamo (tipo)</label>
-          <input type="number" className="form-control" name="tipo" value={credito.tipo} onChange={handleChange} placeholder="1" required />
-
+          <select className="form-control" name="tipo" value={credito.tipo} onChange={handleChange} required>
+            <option value="">Seleccione una opción</option>
+            <option value="1">1: Primera Vivienda</option>
+            <option value="2">2: Segunda Vivienda</option>
+            <option value="3">3: Propiedades Comerciales</option>
+            <option value="4">4: Remodelación</option>
+          </select>
           <small className="form-text text-muted">
             Ingrese el valor del tipo de prestamo. Por ejemplo: 1: Primera Vivienda | 2: Segunda Vivienda | 3: Propiedades Comerciales | 4: Remodelación.
           </small>
         </div>
         {/*---------------------------------------------------------------------------------------------*/}
         <div className="d-grid gap-2">
-        <button type="submit" className="btn btn-primary btn-lg">Simular</button>
+          <button type="submit" className="btn btn-primary btn-lg">Simular</button>
         </div>
       </form>
       {/*---------------------------------------------------------------------------------------------*/}
