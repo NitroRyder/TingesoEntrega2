@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import usuarioServices from '../services/usuario.services';
+import usuarioServices from '../services/usuario.service';
 
-const VerNotificaciones = () => {
+const getNotifications = () => {
   const [userId, setUserId] = useState('');
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setUserId(Number(e.target.value));
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,26 +17,26 @@ const VerNotificaciones = () => {
     console.log('Submitting userId:', userId);
 
     try {
-        const response = await usuarioServices.notificaciones({ userId });
-        console.log('Response:', response.data);
+      const response = await usuarioServices.getNotifications(userId);
+      console.log('Response:', response.data);
 
-        if (response.data === -2) {
-            alert('ERROR: EL USER ID INGRESADO NO SE ENCUENTRA REGISTRADO EN EL SISTEMA, POR FAVOR INGRESAR UN USER ID REGISTRADO O REGISTRARSE EN EL SISTEMA.');
-        } else if (response.data.length === 0) {
-            alert('No hay notificaciones para el usuario');
-        } else if (response.data === null || response.data === "") {
-            alert('ERROR: EL USUARIO NO EXISTE');
-        } else {
-            setNotifications(response.data);
-        }
+      if (response.data === -2) {
+        alert('ERROR: EL USER ID INGRESADO NO SE ENCUENTRA REGISTRADO EN EL SISTEMA, POR FAVOR INGRESAR UN USER ID REGISTRADO O REGISTRARSE EN EL SISTEMA.');
+      } else if (response.data.length === 0) {
+        alert('No hay notificaciones para el usuario');
+      } else if (response.data === null || response.data === "") {
+        alert('ERROR: EL USUARIO NO EXISTE');
+      } else {
+        setNotifications(response.data);
+      }
     } catch (error) {
-        console.error('Error response:', error.response);
-        if (error.response) {
-          console.error('Error data:', error.response.data);
-          console.error('Error status:', error.response.status);
-          console.error('Error headers:', error.response.headers);
-        }
-        alert('Error al realizar el seguimiento del préstamo: ' + (error.response?.data || error.message));
+      console.error('Error response:', error.response);
+      if (error.response) {
+        console.error('Error data:', error.response.data);
+        console.error('Error status:', error.response.status);
+        console.error('Error headers:', error.response.headers);
+      }
+      alert('Error al obtener las notificaciones: ' + (error.response?.data || error.message));
     }
   };
 
@@ -88,4 +88,4 @@ const VerNotificaciones = () => {
   );
 };
 
-export default VerNotificaciones;
+export default getNotifications;

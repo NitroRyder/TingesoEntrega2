@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
-import usuarioServices from '../services/usuario.services';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import evaluaService from '../services/evalua.service';
 
-function UpdateState() {
+function updateState() {
     const [userId, setUserId] = useState('');
+    const [creditId, setCreditId] = useState('');
     const [state, setState] = useState('');
     const navigate = useNavigate();
 
     const handleUserIdChange = (e) => {
         setUserId(e.target.value);
+    };
+
+    const handleCreditIdChange = (e) => {
+        setCreditId(e.target.value);
     };
 
     const handleStateChange = (e) => {
@@ -32,17 +37,12 @@ function UpdateState() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const data = { userId: parseInt(userId), state: parseInt(state) };
-            const response = await usuarioServices.updateState(data);
-            if(response.data === -2){
-                alert('ERROR: EL USER ID INGRESADO NO SE ENCUENTRA REGISTRADO EN EL SISTEMA, POR FAVOR INGRESAR UN USER ID REGISTRADO O REGISTRARSE EN EL SISTEMA.');
-            }else if(response.data === -1){
-                alert('ERROR: ERROR MARCADO EN LAS NOTIFICACIONES');
-            }else if(response.data === null || response.data === ""){
-                alert('ERROR: ERROR MARCADO EN LAS NOTIFICACIONES');
-            }else{
+            const response = await evaluaService.updateState(userId, creditId, state);
+            if (response.data === "Evaluación actualizada") {
                 alert('ESTADO ACTUALIZADO EXITOSAMENTE');
                 navigate('/home/Client');
+            } else {
+                alert('Error al actualizar la evaluación');
             }
         } catch (error) {
             alert('Error al actualizar el estado: ' + (error.response?.data || error.message));
@@ -63,6 +63,14 @@ function UpdateState() {
                 </div>
             {/*---------------------------------------------------------------------------------------------*/}                
                 <div className="mb-3">
+                    <label>Credit ID:</label>
+                    <input type="number" id="creditId" value={creditId} onChange={handleCreditIdChange} className="form-control" placeholder="Ejemplo: 1" required />
+                    <small className="form-text text-muted">
+                        Ingrese el ID del crédito. Ej 202
+                    </small>
+                </div>
+            {/*---------------------------------------------------------------------------------------------*/}                
+                <div className="mb-3">
                     <label>Nuevo Estado:</label>
                     <select value={state} onChange={handleStateChange} className="form-control" required>
                         <option value="" disabled>SELECCIONE UN ESTADO PARA LA SOLICITUD</option>
@@ -75,8 +83,8 @@ function UpdateState() {
                 </div>
             {/*---------------------------------------------------------------------------------------------*/}
                 <div className="d-grid gap-2">
-                <button type="submit" className="btn btn-primary btn-lg">Actualizar Estado</button>
-                <button type="button" onClick={() => navigate('/home/Client')} className="btn btn-danger btn-lg">Regresar a Operaciones del Cliente</button>
+                    <button type="submit" className="btn btn-primary btn-lg">Actualizar Estado</button>
+                    <button type="button" onClick={() => navigate('/home/Client')} className="btn btn-danger btn-lg">Regresar a Operaciones del Cliente</button>
                 </div>
             </form>
             {/*---------------------------------------------------------------------------------------------*/}
@@ -93,4 +101,4 @@ function UpdateState() {
     );
 }
 
-export default UpdateState;
+export default updateState;

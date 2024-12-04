@@ -1,32 +1,38 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import usuarioServices from '../services/usuario.services';
+import totalService from '../services/total.service';
 
-const CalcularCosto = () => {
+const calcularCostosTotales = () => {
   const [userId, setUserId] = useState('');
+  const [creditId, setCreditId] = useState('');
   const [costResult, setCostResult] = useState([]);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  const handleUserIdChange = (e) => {
     setUserId(Number(e.target.value));
+  };
+
+  const handleCreditIdChange = (e) => {
+    setCreditId(Number(e.target.value));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     console.log('Submitting userId:', userId);
+    console.log('Submitting creditId:', creditId);
 
     try {
-      const response = await usuarioServices.calcularCostosTotales({ userId });
+      const response = await totalService.calcularCostosTotales(userId, creditId);
       if (response.data === -2) {
         alert('ERROR: EL USER ID INGRESADO NO SE ENCUENTRA REGISTRADO EN EL SISTEMA, POR FAVOR INGRESAR UN USER ID REGISTRADO O REGISTRARSE EN EL SISTEMA.');
-      }else if (response.data === "") {
+      } else if (response.data === "") {
         alert('ERROR: EL USUARIO NO TIENE UNA SOLICITUD DE CRÉDITO CREADA');
       } else if (response.data === null) {
         alert('TASA DE INTERÉS MENSUAL INCORRECTA');
       } else {
         setCostResult(response.data); // Almacenar la solicitud en el estado
-        //alert('Cálculo de costos totales realizado correctamente');
+        console.log('Costos recibidos:', response.data); // Verificar los datos recibidos
       }
     } catch (error) {
       console.error('Error response:', error.response);
@@ -35,18 +41,28 @@ const CalcularCosto = () => {
         console.error('Error status:', error.response.status);
         console.error('Error headers:', error.response.headers);
       }
-      alert('Error al realizar el seguimiento del préstamo: ' + (error.response?.data || error.message));
+      alert('Error al calcular los costos totales: ' + (error.response?.data || error.message));
     }
   };
+
   return (
     <div className="container">
       <h2>Calcular Costos</h2>
       <form onSubmit={handleSubmit}>
+      {/*---------------------------------------------------------------------------------------------*/}        
         <div className="mb-3">
           <label>User ID:</label>
-          <input type="number" id="userId" value={userId} onChange={handleChange} className="form-control" placeholder="Ejemplo: 1" required />
+          <input type="number" id="userId" value={userId} onChange={handleUserIdChange} className="form-control" placeholder="Ejemplo: 1" required />
           <small className="form-text text-muted">
             Ingrese el ID de su cuenta. Ej 102
+          </small>
+        </div>
+      {/*---------------------------------------------------------------------------------------------*/}        
+        <div className="mb-3">
+          <label>Credit ID:</label>
+          <input type="number" id="creditId" value={creditId} onChange={handleCreditIdChange} className="form-control" placeholder="Ejemplo: 1" required />
+          <small className="form-text text-muted">
+            Ingrese el ID del crédito. Ej 202
           </small>
         </div>
       {/*---------------------------------------------------------------------------------------------*/}        
@@ -84,4 +100,4 @@ const CalcularCosto = () => {
   );
 };
 
-export default CalcularCosto;
+export default calcularCostosTotales;

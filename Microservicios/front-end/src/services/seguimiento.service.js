@@ -6,5 +6,6 @@ const followCredito = (userId) => {
         params: { userId }
     });
 };
+
 //--------------------------------------------------------------------//
 export default {followCredito};
