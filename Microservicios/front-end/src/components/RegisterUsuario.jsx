@@ -40,8 +40,8 @@ function registerUsuario() {
       alert('ERROR: EL RUT DEBE CONTENER UN "-" EN EL PENÚLTIMO CARÁCTER.');
       return;
     }
-    const { name, age, workage, houses, valorpropiedad, ingresos, sumadeuda, objective, independiente} = usuario;
-    if(age < 18){
+    const { name, age, workage, houses, valorpropiedad, ingresos, sumadeuda, objective, independiente } = usuario;
+    if (age < 18) {
       alert('ERROR: DEBE SER MAYOR DE EDAD PARA REGISTRARSE.');
       return;
     }
@@ -53,29 +53,28 @@ function registerUsuario() {
       alert('ERROR: DEBE LLENAR LOS CAMPOS DE Objetivo y Tipo de trabajador.');
       return;
     }
-    if(objective !== 'REMODELACION' && objective !== 'PROPIEDAD COMERCIAL' && objective !== 'PRIMERA VIVIENDA' && objective !== 'SEGUNDA VIVIENDA'){
+    if (objective !== 'REMODELACION' && objective !== 'PROPIEDAD COMERCIAL' && objective !== 'PRIMERA VIVIENDA' && objective !== 'SEGUNDA VIVIENDA') {
       alert('ERROR: EL OBJETIVO DEBE SER REMODELACION, PROPIEDAD COMERCIAL, PRIMERA VIVIENDA O SEGUNDA VIVIENDA.');
       return;
     }
-    if(independiente !== 'INDEPENDIENTE' && independiente !== 'ASALARIADO'){
+    if (independiente !== 'INDEPENDIENTE' && independiente !== 'ASALARIADO') {
       alert('ERROR: EL TIPO DE TRABAJADOR DEBE SER INDEPENDIENTE O ASALARIADO.');
       return;
     }
 {/*---------------------------------------------------------------------------------------------------*/}      
     try {
-      const response = await usuarioServices.register({ ...usuario });
-      if(response.data === -2){
+      const response = await usuarioServices.registerUsuario(usuario);
+      if (response.data === -2) {
         alert('ERROR: EL RUT INGRESADO YA SE ENCUENTRA REGISTRADO EN EL SISTEMA.');
-      }else{
+      } else {
         alert('Usuario registrado con éxito');
         alert('ATENCIÓN, el ID del usuario es: ' + response.data.id);
         navigate('/home/Client');
       }
-
     } catch (error) {
       alert('ERROR AL REGISTRAR UN USUARIO DEL TIPO: ' + error.response.data);
     }
-  };
+    };
 {/*---------------------------------------------------------------------------------------------------*/}  
       {/*---------------------------------------------------------------------------------------------*/}
   const handleShowModal = () => setShowModal(true);
@@ -131,7 +130,7 @@ function registerUsuario() {
       {/*---------------------------------------------------------------------------------------------*/}        
         <div className="mb-3">
           <label className="form-label">Valor de Propiedad:</label>
-          <input type="number" className="form-control" name="valorpropiedad" value={usuario.valorpropiedad} onChange={handleChange} placeholder="Ejemplo: 1000000" required/>
+          <input type="number" className="form-control" name="valorpropiedad" value={usuario.valorpropiedad} onChange={handleChange} placeholder="Ejemplo: 1000000" required />
           <small className="form-text text-muted">
             Ingrese el valor de su propiedad. Ej: 1000000 pesos Chilenos.
           </small>
@@ -147,7 +146,7 @@ function registerUsuario() {
       {/*---------------------------------------------------------------------------------------------*/}        
         <div className="mb-3">
           <label className="form-label">Deuda Total:</label>
-          <input type="number" className="form-control" name="sumadeuda" value={usuario.sumadeuda} onChange={handleChange} placeholder="Ejemplo: 240000" required/>
+          <input type="number" className="form-control" name="sumadeuda" value={usuario.sumadeuda} onChange={handleChange} placeholder="Ejemplo: 240000" required />
           <small className="form-text text-muted">
             Ingrese el valor de la suma de todas sus deudas actuales. Ej: 240000 pesos Chilenos.
           </small>
@@ -155,7 +154,13 @@ function registerUsuario() {
       {/*---------------------------------------------------------------------------------------------*/}
         <div className="mb-3">
           <label className="form-label">Objetivo:</label>
-          <input type="text" className="form-control" name="objective" value={usuario.objective} onChange={handleChange} placeholder="ESCOGER ENTRE: REMODELACION | PROPIEDAD COMERCIAL | PRIMERA VIVIENDA | SEGUNDA VIVIENDA" required/>
+          <select className="form-control" name="objective" value={usuario.objective} onChange={handleChange} required>
+            <option value="" disabled>ESCOGER ENTRE: REMODELACION | PROPIEDAD COMERCIAL | PRIMERA VIVIENDA | SEGUNDA VIVIENDA</option>
+            <option value="REMODELACION">REMODELACION</option>
+            <option value="PROPIEDAD COMERCIAL">PROPIEDAD COMERCIAL</option>
+            <option value="PRIMERA VIVIENDA">PRIMERA VIVIENDA</option>
+            <option value="SEGUNDA VIVIENDA">SEGUNDA VIVIENDA</option>
+          </select>
           <small className="form-text text-muted">
             Ingrese el motivo por el cual va a querer registrarse. Ej; REMODELACION, PROPIEDAD COMERCIAL, PRIMERA VIVIENDA O SEGUNDA VIVIENDA.
           </small>
@@ -163,7 +168,11 @@ function registerUsuario() {
       {/*---------------------------------------------------------------------------------------------*/}
         <div className="mb-3">
           <label className="form-label">Tipo de trabajador:</label>
-          <input type="text" className="form-control" name="independiente" value={usuario.independiente} onChange={handleChange} placeholder="ESCOGER ENTRE: INDEPENDIENTE | ASALARIADO" required />
+          <select className="form-control" name="independiente" value={usuario.independiente} onChange={handleChange} required>
+            <option value="">ESCOGER ENTRE: INDEPENDIENTE | ASALARIADO</option>
+            <option value="INDEPENDIENTE">INDEPENDIENTE</option>
+            <option value="ASALARIADO">ASALARIADO</option>
+          </select>
           <small className="form-text text-muted">
             Ingrese si es un trabajador independiente o asalariado. Ej: INDEPENDIENTE, ASALARIADO.
           </small>
