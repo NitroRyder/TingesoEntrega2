@@ -6,6 +6,5 @@ const simularCredito = (P, r, n, V, tipo) => {
         params: { P, r, n, V, tipo }
     });
 };
-
 //--------------------------------------------------------------------//
 export default {simularCredito};

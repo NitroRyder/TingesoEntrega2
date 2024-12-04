@@ -18,21 +18,18 @@ const registrarCredito = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (files) {
-      setFormData({ ...formData, [name]: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    for (const key in formData) {
-      data.append(key, formData[key]);
+
+    const {montop, plazo, intanu, intmen, segudesg, seguince, comiad, usuarioId} = formData;
+    if(usuarioId === '' || montop === '' || plazo === '' || intanu === '' || intmen === '' || segudesg === '' || seguince === '' || comiad === '') {
+      alert("ERROR: DEBE INGRESAR TODOS LOS DATOS");
+      return;
     }
-    const {userId, montop, plazo, intanu, intmen, segudesg, seguince, comiad } = formData;
     if (montop <= 0) {
       alert("ERROR: EL MONTO DEL PRÉSTAMO DEBE SER MAYOR A 0");
       return;
@@ -61,18 +58,18 @@ const registrarCredito = () => {
       alert("ERROR: LA COMISIÓN ADMINISTRATIVA DEBE SER MAYOR A 0");
       return;
     }
-    if(userId <= 0) {
+    if(usuarioId <= 0) {
       alert("ERROR: EL USER ID DEBE SER MAYOR A 0");
       return;
     }
     try {
-      const response = solicitarCredito.solicitarCredito(data);
-      if(response.data === -2) {
+      const response = await creditoService.registrarCredito(formData);
+      if (response.data === -2) {
         alert('ERROR: EL USER ID INGRESADO NO SE ENCUENTRA REGISTRADO EN EL SISTEMA, POR FAVOR INGRESAR UN USER ID REGISTRADO O REGISTRARSE EN EL SISTEMA.');
-      }else if(response.data !== -2){
+      } else {
         alert('Solicitud de crédito creada o actualizada correctamente');
+        navigate('/documento/register');
       }
-      {/*navigate('/documento/register');*/}
     } catch (error) {
       alert('Error al crear la solicitud de crédito: ' + error.response.data);
     }
@@ -141,17 +138,18 @@ const registrarCredito = () => {
         {/*---------------------------------------------------------------------------------------------*/}
         <div className="mb-3">
           <label>User ID:</label>
-          <input type="text" name="userId" value={formData.userId} onChange={handleChange} className="form-control" placeholder="Ejemplo: 102" required />
+          <input type="number" name="usuarioId" value={formData.usuarioId} onChange={handleChange} className="form-control" placeholder="Ejemplo: 102" required />
           <small className="form-text text-muted">
             Ingrese el ID de su cuenta. Ej 102
           </small>
         </div>
         {/*---------------------------------------------------------------------------------------------*/}
         <div className="d-grid gap-2">
-        <button type="submit" className="btn btn-primary btn-lg">Solicitar Préstamo</button>
+          <button type="submit" className="btn btn-primary btn-lg">Solicitar Préstamo</button>
         </div>
       </form>
       {/*---------------------------------------------------------------------------------------------*/}  
+      {/*
       <div className="mt-3 d-grid gap-2">
           <button 
             className="btn btn-danger btn-lg" 
@@ -160,6 +158,7 @@ const registrarCredito = () => {
             Ingresar Documentación
           </button>
       </div>
+      */}
       {/*---------------------------------------------------------------------------------------------*/}        
       <div className="mt-3 d-grid gap-2">
         <button 
