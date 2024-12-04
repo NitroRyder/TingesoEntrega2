@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import evaluaService from '../services/evalua.service';
 import creditoService from '../services/credito.service';
 import usuarioService from '../services/usuario.service';
+import documentosService from '../services/documentos.service';
 
 const evaluateCredito = () => {
   const [usuariosPendientes, setUsuariosPendientes] = useState([]);
@@ -40,7 +41,7 @@ const evaluateCredito = () => {
           })
         );
 
-        setCreditosPendientes(creditosConUsuarios);
+        setUsuariosPendientes(creditosConUsuarios);
       } catch (error) {
         console.error('Error al obtener créditos pendientes:', error);
       }
@@ -49,6 +50,14 @@ const evaluateCredito = () => {
     fetchCreditosPendientes();
   }, []);
 
+  const fetchDocumentos = async (creditId) => {
+    try {
+      const response = await documentosService.getByCreditoId(creditId);
+      setFiles(response.data);
+    } catch (error) {
+      console.error('Error al obtener documentos:', error);
+    }
+  };
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -56,16 +65,13 @@ const handleSubmit = async (e) => {
   console.log('Submitting userId:', userId);
   console.log('Submitting creditId:', creditId);
 
-
   try {
     const response = await evaluaService.evaluateCredito(userId, creditId);
     console.log('Response:', response.data);
     if (response.data === "EVALUACIÓN TERMINADA") {
       alert('EVALUACIÓN DE SOLICITUD DE CRÉDITO EXITOSA');
-      // Asumiendo que la respuesta contiene un array de archivos en response.data.files
-      const files = response.data.files || [];
-      setFiles(files);
-      console.log('Files:', files);
+      fetchDocumentos(creditId);
+      console.log('Documentos:', files);
     } else {
       alert('EVALUACIÓN RECHAZADA');
     }
@@ -82,7 +88,8 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="container">
-      <div className="mt-3">
+      {/*---------------------------------------------------------------------------------------------*/}
+      <div className="mt-3">        
         <h3>Usuarios con Estado Pendiente</h3>
         <table className="table table-striped">
           <thead>
@@ -108,10 +115,9 @@ const handleSubmit = async (e) => {
       {/*---------------------------------------------------------------------------------------------*/}
       <h2>Evaluar Prestamo</h2>
       <form onSubmit={handleSubmit}>
-      {/*---------------------------------------------------------------------------------------------*/}
         <div className="mb-3">
           <label>User ID:</label>
-          <input type="number" id="userId" value={userId} onChange={handleChange} className="form-control" placeholder="Ejemplo: 1" required />
+          <input type="number" name="userId" value={userId} onChange={handleChange} className="form-control" placeholder="Ejemplo: 1" required />
           <small className="form-text text-muted">
             Ingrese el ID de su cuenta. Ej 102
           </small>
@@ -119,14 +125,14 @@ const handleSubmit = async (e) => {
       {/*---------------------------------------------------------------------------------------------*/}
         <div className="mb-3">
           <label>Credit ID:</label>
-          <input type="number" id="creditId" value={creditId} onChange={handleChange} className="form-control" placeholder="Ejemplo: 1" required />
+          <input type="number" name="creditId" value={creditId} onChange={handleChange} className="form-control" placeholder="Ejemplo: 1" required />
           <small className="form-text text-muted">
             Ingrese el ID de su cuenta. Ej 102
           </small>
-        </div>  
+        </div>   
       {/*---------------------------------------------------------------------------------------------*/}
         <div className="d-grid gap-2">
-        <button type="submit" className="btn btn-primary btn-lg">Realizar Seguimiento</button>
+          <button type="submit" className="btn btn-primary btn-lg">Realizar Evaluación</button>
         </div>
       </form>
       {/*---------------------------------------------------------------------------------------------*/}
