@@ -11,6 +11,7 @@ const evaluateCredito = () => {
   const [userId, setUserId] = useState('');
   const [creditId, setCreditId] = useState('');
   const [files, setFiles] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -66,6 +67,18 @@ const handleSubmit = async (e) => {
   console.log('Submitting creditId:', creditId);
 
   try {
+    // Verificar si el usuario existe
+    const usuarioResponse = await usuarioService.getById(userId);
+      if (!usuarioResponse.data) {
+        setErrorMessage('ERROR: El usuario no existe');
+        return;
+    }
+    // Verificar si el crédito existe
+    const creditoResponse = await creditoService.getById(creditId);
+      if (!creditoResponse.data) {
+        alert('ERROR: El crédito no existe');
+        return;
+    }
     const response = await evaluaService.evaluateCredito(userId, creditId);
     console.log('Response:', response.data);
     if (response.data === "EVALUACIÓN TERMINADA") {
