@@ -74,11 +74,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.7.4</version>
-		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -106,5 +101,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>usuario-service</finalName>
 	</build>
 </project>
