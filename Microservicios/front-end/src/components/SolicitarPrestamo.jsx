@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import creditoService from '../services/credito.service';
+import usuarioService from '../services/usuario.service';
 
 const registrarCredito = () => {
   const [formData, setFormData] = useState({
@@ -64,7 +65,7 @@ const registrarCredito = () => {
     }
 
     try {
-      const revicion = await creditoService.getByUsuarioId(usuarioId);  
+      const revicion = await usuarioService.getById(usuarioId); 
 
       console.log('Revición ' + revicion.data.length);
   
