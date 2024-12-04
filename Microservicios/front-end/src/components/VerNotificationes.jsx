@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import usuarioServices from '../services/usuario.service';
+import usuarioService from '../services/usuario.service';
 
 const getNotifications = () => {
   const [userId, setUserId] = useState('');
   const [notifications, setNotifications] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -17,7 +18,15 @@ const getNotifications = () => {
     console.log('Submitting userId:', userId);
 
     try {
-      const response = await usuarioServices.getNotifications(userId);
+
+      // Verificar si el usuario existe
+      const usuarioResponse = await usuarioService.getById(userId);
+      if (!usuarioResponse.data) {
+        setErrorMessage('ERROR: El usuario no existe');
+        return;
+      }
+
+      const response = await usuarioService.getNotifications(userId);
       console.log('Response:', response.data);
 
       if (response.data === -2) {

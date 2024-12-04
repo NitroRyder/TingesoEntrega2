@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import totalService from '../services/total.service';
+import creditoService from '../services/credito.service';
+import usuarioService from '../services/usuario.service';
+
 
 const calcularCostosTotales = () => {
   const [userId, setUserId] = useState('');
   const [creditId, setCreditId] = useState('');
   const [costResult, setCostResult] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleUserIdChange = (e) => {
@@ -23,6 +27,19 @@ const calcularCostosTotales = () => {
     console.log('Submitting creditId:', creditId);
 
     try {
+      // Verificar si el usuario existe
+      const usuarioResponse = await usuarioService.getById(userId);
+      if (!usuarioResponse.data) {
+        setErrorMessage('ERROR: El usuario no existe');
+        return;
+      }
+      // Verificar si el crédito existe
+      const creditoResponse = await creditoService.getById(creditId);
+      if (!creditoResponse.data) {
+        alert('ERROR: El crédito no existe');
+        return;
+      }
+
       const response = await totalService.calcularCostosTotales(userId, creditId);
       if (response.data === -2) {
         alert('ERROR: EL USER ID INGRESADO NO SE ENCUENTRA REGISTRADO EN EL SISTEMA, POR FAVOR INGRESAR UN USER ID REGISTRADO O REGISTRARSE EN EL SISTEMA.');

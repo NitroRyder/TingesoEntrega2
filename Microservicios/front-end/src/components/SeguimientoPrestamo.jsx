@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import seguimientoService from '../services/seguimiento.service';
+import usuarioService from '../services/usuario.service';
 
 const followCredito = () => {
   const [userId, setUserId] = useState('');
@@ -17,6 +18,12 @@ const followCredito = () => {
     console.log('Submitting userId:', userId);
 
     try {
+      // Verificar si el usuario existe
+      const usuarioResponse = await usuarioService.getById(userId);
+      if (!usuarioResponse.data) {
+        setErrorMessage('ERROR: El usuario no existe');
+        return;
+      }
       const response = await seguimientoService.followCredito(userId);
       if (response.data.length === 0) {
         alert('ERROR: EL USUARIO NO TIENE SOLICITUDES DE CRÉDITO');

@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import evaluaService from '../services/evalua.service';
+import creditoService from '../services/credito.service';
+import usuarioService from '../services/usuario.service';
 
 function updateState() {
     const [userId, setUserId] = useState('');
     const [creditId, setCreditId] = useState('');
     const [state, setState] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const handleUserIdChange = (e) => {
@@ -37,6 +40,19 @@ function updateState() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            // Verificar si el usuario existe
+            const usuarioResponse = await usuarioService.getById(userId);
+            if (!usuarioResponse.data) {
+                setErrorMessage('ERROR: El usuario no existe');
+                return;
+            }
+            // Verificar si el crédito existe
+            const creditoResponse = await creditoService.getById(creditId);
+            if (!creditoResponse.data) {
+                alert('ERROR: El crédito no existe');
+                return;
+            }
+
             const response = await evaluaService.updateState(userId, creditId, state);
             if (response.data === "Evaluación actualizada") {
                 alert('ESTADO ACTUALIZADO EXITOSAMENTE');
