@@ -89,24 +89,26 @@ const handleSubmit = async (e) => {
   return (
     <div className="container">
       {/*---------------------------------------------------------------------------------------------*/}
-      <div className="mt-3">        
+      <div className="mt-3">
         <h3>Usuarios con Estado Pendiente</h3>
         <table className="table table-striped">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Usuario ID</th>
+              <th>Credito ID</th>
               <th>Nombre</th>
               <th>Rut</th>
               <th>Estado</th>
             </tr>
           </thead>
           <tbody>
-            {usuariosPendientes.map((usuario) => (
-              <tr key={usuario.id}>
-                <td>{usuario.id}</td>
-                <td>{usuario.name}</td>
-                <td>{usuario.rut}</td>
-                <td>{usuario.solicitud && usuario.solicitud.state}</td>
+            {usuariosPendientes.map((credito) => (
+              <tr key={credito.id}>
+                <td>{credito.usuario.id}</td>
+                <td>{credito.id}</td>
+                <td>{credito.usuario.name}</td>
+                <td>{credito.usuario.rut}</td>
+                <td>{credito.state}</td>
               </tr>
             ))}
           </tbody>
