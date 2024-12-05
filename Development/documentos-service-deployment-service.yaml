@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: documentos-deployment
+  labels:
+    app: documentos-deployment
+spec:
+  selector:
+    matchLabels:
+      app: documentos-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: documentos-deployment
+    spec:
+      containers:
+        - name: car-service
+          image: nitroryder/documentos-service
+          ports:
+            - containerPort: 8091
