@@ -6,7 +6,7 @@ spring:
       enabled: true
       uri: http://config-service-service:8081
   datasource:
-    url: jdbc:postgresql://documentos-db-service:5433/documentos-service-db
+    url: jdbc:postgresql://documentos-db-service:5434/documentos-service-db
     username: postgres
     password: 1234
     driver-class-name: org.postgresql.Driver
