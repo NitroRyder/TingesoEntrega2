@@ -4,11 +4,15 @@ spring:
   cloud:
     config:
       enabled: true
-      uri: http://localhost:8081
+      uri: http://config-service-service:8081
   datasource:
-    url: jdbc:postgresql://localhost:5433/entrega2
+    url: jdbc:postgresql://ahorro-db-service:5432/ahorro-service-db
     username: postgres
     password: 1234
+    driver-class-name: org.postgresql.Driver
   jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update

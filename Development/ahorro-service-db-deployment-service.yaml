@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ahorro-db-pv
+  labels:
+    type: local
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/ahorro-db-data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ahorro-db-pvc
+  labels:
+    app: postgres
+    tier: database
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ahorro-db-deployment
+  labels:
+    app: ahorro-db-deployment
+    tier: database
+spec:
+  selector:
+    matchLabels:
+      app: ahorro-db-deployment
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ahorro-db-deployment
+        tier: database
+    spec:
+      containers:
+        - name: ahorro-db
+          image: postgres
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_PASSWORD
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: ahorro-db-data
+      volumes:
+        - name: ahorro-db-data
+          persistentVolumeClaim:
+            claimName: ahorro-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ahorro-db-service
+  labels:
+    app: ahorro-db-service
+    tier: database
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+  selector:
+    app: ahorro-db-deployment
+    tier: database
+  type: LoadBalancer
