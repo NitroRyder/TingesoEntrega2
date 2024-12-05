@@ -15,7 +15,7 @@ spec:
         app: documentos-deployment
     spec:
       containers:
-        - name: car-service
+        - name: documentos-service
           image: nitroryder/documentos-service
           ports:
             - containerPort: 8091
