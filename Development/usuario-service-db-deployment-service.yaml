@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: ahorro-db-pv
+  name: usuario-db-pv
   labels:
     type: local
 spec:
@@ -11,12 +11,12 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/data/ahorro-db-data"
+    path: "/data/usuario-db-data"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ahorro-db-pvc
+  name: usuario-db-pvc
   labels:
     app: postgres
     tier: database
