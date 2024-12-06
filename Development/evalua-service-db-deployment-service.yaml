@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: evalua-db-pv
+  labels:
+    type: local
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/evalua-db-data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: evalua-db-pvc
+  labels:
+    app: postgres
+    tier: database
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evalua-db-deployment
+  labels:
+    app: evalua-db-deployment
+    tier: database
+spec:
+  selector:
+    matchLabels:
+      app: evalua-db-deployment
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: evalua-db-deployment
+        tier: database
+    spec:
+      containers:
+        - name: evalua-db
+          image: postgres
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_PASSWORD
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: evalua-db-data
+      volumes:
+        - name: evalua-db-data
+          persistentVolumeClaim:
+            claimName: evalua-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: evalua-db-service
+  labels:
+    app: evalua-db-service
+    tier: database
+spec:
+  ports:
+    - port: 5437
+      targetPort: 5432
+      protocol: TCP
+  selector:
+    app: evalua-db-deployment
+    tier: database
+  type: LoadBalancer

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evalua-deployment
+  labels:
+    app: evalua-deployment
+spec:
+  selector:
+    matchLabels:
+      app: evalua-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: evalua-deployment
+    spec:
+      containers:
+        - name: evalua-service
+          image: nitroryder/evalua-service
+          ports:
+            - containerPort: 8095
