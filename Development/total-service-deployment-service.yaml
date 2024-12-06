@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: total-deployment
+  labels:
+    app: total-deployment
+spec:
+  selector:
+    matchLabels:
+      app: total-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: total-deployment
+    spec:
+      containers:
+        - name: total-service
+          image: nitroryder/total-service
+          ports:
+            - containerPort: 8097

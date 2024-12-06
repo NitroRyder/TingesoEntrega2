@@ -7,3 +7,4 @@
 | `simula-service`      | 8094                  | 5436                 |
 | `evalua-service`      | 8095                  | 5437                 |
 | `seguimiento-service` | 8096                  | 5438                 |
+| `total-service` | 8097                  | 5439                 |
