@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simula-deployment
+  labels:
+    app: simula-deployment
+spec:
+  selector:
+    matchLabels:
+      app: simula-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: simula-deployment
+    spec:
+      containers:
+        - name: simula-service
+          image: nitroryder/simula-service
+          ports:
+            - containerPort: 8094
