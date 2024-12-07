@@ -24,12 +24,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: tingesolab2-front-end-service
+  name: tingesolab2-frontend-service
   labels:
-    app: tingesolab2-front-end
+    app: tingesolab2-frontend
 spec:
   selector:
-    app: tingesolab2-front-end-deployment
+    app: tingesolab2-frontend-deployment
   ports:
     - protocol: TCP
       port: 3000
