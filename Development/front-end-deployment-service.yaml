@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tingesolab2-front-end-deployment
+  name: tingesolab2-frontend-deployment
   labels:
-    app: tingesolab2-front-end-deployment
+    app: tingesolab2-frontend-deployment
 spec:
   selector:
     matchLabels:
-      app: tingesolab2-front-end-deployment
+      app: tingesolab2-frontend-deployment
   replicas: 1
   template:
     metadata:
       labels:
-        app: tingesolab2-front-end-deployment
+        app: tingesolab2-frontend-deployment
     spec:
       containers:
-        - name: tingesolab2-front-end
-          image: nitroryder/tingesolab2-front-end:latest
+        - name: tingesolab2-frontend
+          image: nitroryder/tingesolab2-frontend:latest
           ports:
             - containerPort: 3000
 
@@ -24,12 +24,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: tingesolab2-front-end-service
+  name: tingesolab2-frontend-service
   labels:
-    app: tingesolab2-front-end
+    app: tingesolab2-frontend
 spec:
   selector:
-    app: tingesolab2-front-end-deployment
+    app: tingesolab2-frontend-deployment
   ports:
     - protocol: TCP
       port: 3000
