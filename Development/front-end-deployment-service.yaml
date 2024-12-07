@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: tingesolab2-frontend
-          image: nitroryder/tingesolab2-frontend:latest
+          image: nitroryder/front-end:latest
           ports:
             - containerPort: 3000
 
