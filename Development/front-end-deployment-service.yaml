@@ -15,10 +15,10 @@ spec:
         app: tingesolab2-frontend-deployment
     spec:
       containers:
-      - name: tingesolab2-frontend
-        image: nitroryder/tingesolab2-frontend:latest
-        ports:
-        - containerPort: 3000
+        - name: tingesolab2-frontend
+          image: nitroryder/tingesolab2-frontend:latest
+          ports:
+            - containerPort: 3000
 
 ---
 apiVersion: v1
