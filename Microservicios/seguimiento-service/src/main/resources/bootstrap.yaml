@@ -4,9 +4,9 @@ spring:
   cloud:
     config:
       enabled: true
-      uri: http://config-service-service:8081
+      uri: http://localhost:8081
   datasource:
-    url: jdbc:postgresql://seguimiento-db-service:5438/seguimiento-service-db
+    url: jdbc:postgresql://localhost:5433/seguimiento-service-db
     username: postgres
     password: 1234
     driver-class-name: org.postgresql.Driver
